@@ -29,17 +29,17 @@ const ScrollableCards: React.FC = () => {
   };
 
   return (
-    <div className="overflow-hidden"> {/* Wrapper untuk menyembunyikan overflow */}
+    <div className="overflow-x-auto">
       <div
         ref={scrollRef}
-        className="flex space-x-4 cursor-grab active:cursor-grabbing" // Hapus overflow-x-auto
+        className="flex space-x-4 cursor-grab active:cursor-grabbing overflow-x-auto" // Enable horizontal scrolling
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeaveOrUp}
         onMouseUp={handleMouseLeaveOrUp}
-        style={{ maxHeight: '200px', width: '100%', overflow: 'hidden' }} // Sesuaikan tinggi sesuai kebutuhan
+        style={{ maxHeight: '200px', maxWidth: '1280px',  overflow: 'hidden'}} // Set height according to your need
       >
-        <div className="flex space-x-4">
+        <div className="flex space-x-4 min-w-fit"> {/* Prevent wrapping */}
           <CardDataStats title="Total Users" total="3.456K" rate="0.43%" levelUp>
             <svg className="fill-primary dark:fill-white" width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               {/* SVG Path */}
@@ -65,8 +65,8 @@ const ScrollableCards: React.FC = () => {
               {/* SVG Path */}
             </svg>
           </CardDataStats>
-          <CardDataStats title="Total Users" total="3.456K" rate="0.43%" levelUp>
-            <svg className="fill-primary dark:fill-white" width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <CardDataStats title="Total Profit" total="$45.2K" rate="4.35%" levelUp>
+            <svg className="fill-primary dark:fill-white" width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
               {/* SVG Path */}
             </svg>
           </CardDataStats>
@@ -75,13 +75,8 @@ const ScrollableCards: React.FC = () => {
               {/* SVG Path */}
             </svg>
           </CardDataStats>
-          <CardDataStats title="Total Product" total="2.450" rate="2.59%" levelUp>
-            <svg className="fill-primary dark:fill-white" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-              {/* SVG Path */}
-            </svg>
-          </CardDataStats>
-          <CardDataStats title="Total Users" total="3.456K" rate="0.43%" levelUp>
-            <svg className="fill-primary dark:fill-white" width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <CardDataStats title="Total Profit" total="$45.2K" rate="4.35%" levelUp>
+            <svg className="fill-primary dark:fill-white" width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
               {/* SVG Path */}
             </svg>
           </CardDataStats>
@@ -90,33 +85,9 @@ const ScrollableCards: React.FC = () => {
               {/* SVG Path */}
             </svg>
           </CardDataStats>
-          <CardDataStats title="Total Users" total="3.456K" rate="0.43%" levelUp>
-            <svg className="fill-primary dark:fill-white" width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              {/* SVG Path */}
-            </svg>
-          </CardDataStats>
-          <CardDataStats title="Total Profit" total="$45.2K" rate="4.35%" levelUp>
-            <svg className="fill-primary dark:fill-white" width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-              {/* SVG Path */}
-            </svg>
-          </CardDataStats>
-          <CardDataStats title="Total Product" total="2.450" rate="2.59%" levelUp>
-            <svg className="fill-primary dark:fill-white" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-              {/* SVG Path */}
-            </svg>
-          </CardDataStats>
-          <CardDataStats title="Total Users" total="3.456K" rate="0.43%" levelUp>
-            <svg className="fill-primary dark:fill-white" width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              {/* SVG Path */}
-            </svg>
-          </CardDataStats>
-          <CardDataStats title="Total Profit" total="$45.2K" rate="4.35%" levelUp>
-            <svg className="fill-primary dark:fill-white" width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-              {/* SVG Path */}
-            </svg>
-          </CardDataStats>
-
-          {/* Tambahkan kartu lainnya di sini */}
+          
+          
+          {/* Add other cards here */}
         </div>
       </div>
     </div>

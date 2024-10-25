@@ -24,8 +24,8 @@ export default function Home() {
         <div className="mb-4 block">
           <ScrollableCards />
         </div>
-        <div className="mt-4 flex flex-wrap gap-10">
-          <ChartOne />
+        <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
+        <ChartOne />
           <ChartTwo />
           <MapOne />
           <div className="col-span-12 xl:col-span-8">
