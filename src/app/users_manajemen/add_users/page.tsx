@@ -1,7 +1,12 @@
+import DefaultLayout from "@/components/Layouts/DefaultLayout"
+import TableAddUser from "@/components/Tables/TableAddUser"
+
 const addUser = () => {
     return (
         <>
-            <h1>Add User Page</h1>
+            <DefaultLayout>
+                <TableAddUser/>
+            </DefaultLayout>
         </>
     )
 }
