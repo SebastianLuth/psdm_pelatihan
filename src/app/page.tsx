@@ -4,18 +4,19 @@ import dynamic from "next/dynamic";
 import ScrollableCards from "@/components/CardScrollers";
 import Calendar from "@/components/Calender";
 
-export const metadata: Metadata = {
-  title: "PTPN4 | Dashboard PSDM Pelatihan ",
+export const metadata = {
+  title: "PTPN4 | Dashboard PSDM Pelatihan",
   description: "Dashboard PSDM Pelatihan",
 };
-
 const MapOne = dynamic(() => import("@/components/Maps/MapOne"), {
   ssr: false,
 });
 
 export default function Home() {
   return (
+    
     <>
+    
       <DefaultLayout>
         <div className="mb-4 block">
           <ScrollableCards />
