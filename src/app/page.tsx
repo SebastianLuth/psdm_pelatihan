@@ -3,6 +3,7 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import dynamic from "next/dynamic";
 import ScrollableCards from "@/components/CardScrollers";
 import Calendar from "@/components/Calender";
+import Head from "next/head";
 
 export const metadata = {
   title: "PTPN4 | Dashboard PSDM Pelatihan",
@@ -16,7 +17,6 @@ export default function Home() {
   return (
     
     <>
-    
       <DefaultLayout>
         <div className="mb-4 block">
           <ScrollableCards />

@@ -1,7 +1,12 @@
+import DefaultLayout from "@/components/Layouts/DefaultLayout"
+import TableDataAnggaran from "@/components/Tables/TableDataAnggaran"
+
 const dataBudget = () => {
     return (
         <>
-        <h1>Data Budget Page</h1>
+        <DefaultLayout>
+            <TableDataAnggaran/>
+        </DefaultLayout>
         </>
     )
 }

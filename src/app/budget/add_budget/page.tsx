@@ -1,5 +1,14 @@
+import FormAddBudget from "@/components/FormElements/FormAddBudget";
+import DefaultLayout from "@/components/Layouts/DefaultLayout";
+
 const addBudget = () => {
-    return <div>Add budget page</div>;
+    return (
+        <>
+        <DefaultLayout>
+            <FormAddBudget/>
+        </DefaultLayout>
+        </>
+    )
 };
 
 export default addBudget

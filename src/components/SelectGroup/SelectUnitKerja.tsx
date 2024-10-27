@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 
-const SelectGroupOne: React.FC = () => {
+const SelectUnitKerja: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState<string>("");
   const [isOptionSelected, setIsOptionSelected] = useState<boolean>(false);
 
@@ -10,10 +10,11 @@ const SelectGroupOne: React.FC = () => {
   };
 
   return (
-    <div className="mb-4.5">
+    <div className="p-8 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+       <div className="mb-4.5">
       <label className="mb-2.5 block text-black dark:text-white">
         {" "}
-        Subject{" "}
+        Unit Kerja{" "}
       </label>
 
       <div className="relative z-20 bg-transparent dark:bg-form-input">
@@ -28,7 +29,7 @@ const SelectGroupOne: React.FC = () => {
           }`}
         >
           <option value="" disabled className="text-body dark:text-bodydark">
-            Select your subject
+            Contoh : Bagian Sumber Daya Manusia
           </option>
           <option value="USA" className="text-body dark:text-bodydark">
             USA
@@ -62,7 +63,9 @@ const SelectGroupOne: React.FC = () => {
         </span>
       </div>
     </div>
+    </div>
+   
   );
 };
 
-export default SelectGroupOne;
+export default SelectUnitKerja;

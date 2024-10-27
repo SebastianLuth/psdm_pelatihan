@@ -1,7 +1,7 @@
 'use client';
 import { useState } from "react";
 
-const TableAddUser = () => {
+const FormDataUser = () => {
   const [selectedOption, setSelectedOption] = useState<string>("");
   const [isOptionSelected, setIsOptionSelected] = useState<boolean>(false);
 
@@ -208,4 +208,4 @@ const TableAddUser = () => {
   );
 };
 
-export default TableAddUser;
+export default FormDataUser;

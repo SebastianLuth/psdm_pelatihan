@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 
-const SelectGroupTwo: React.FC = () => {
+const SelectDepartment: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState<string>("");
   const [isOptionSelected, setIsOptionSelected] = useState<boolean>(false);
 
@@ -94,4 +94,4 @@ const SelectGroupTwo: React.FC = () => {
   );
 };
 
-export default SelectGroupTwo;
+export default SelectDepartment;
