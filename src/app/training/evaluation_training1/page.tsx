@@ -1,7 +1,12 @@
+import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import TableEvaluationTraining1 from "@/components/Tables/TableEvaluationTraining1";
+
 const training1 = () => {
     return (
         <>
-            <h1>Evaluation Training 1</h1>
+            <DefaultLayout>
+                <TableEvaluationTraining1/>
+            </DefaultLayout>
         </>
     );
 };

@@ -1,6 +1,11 @@
+import DefaultLayout from "@/components/Layouts/DefaultLayout"
+import TableDataTraingin from "@/components/Tables/TableDataTraingin"
+
 const trainingData = () => {
     return (
-        <h1>Training Data Page</h1>
+        <DefaultLayout>
+            <TableDataTraingin/>
+        </DefaultLayout>
     )
 }
 

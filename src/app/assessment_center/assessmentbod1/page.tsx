@@ -1,5 +1,12 @@
+import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import TableAssessmentBod1 from "@/components/Tables/TableAssessmentBod1";
+
 const assessmentbod1 = () => {
-    return <div>assessmentbod1 page</div>;
+    return (
+        <DefaultLayout>
+            <TableAssessmentBod1/>
+        </DefaultLayout>
+    )
 };
 
 export default assessmentbod1;

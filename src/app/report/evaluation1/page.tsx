@@ -1,6 +1,11 @@
+import DefaultLayout from "@/components/Layouts/DefaultLayout"
+import TableReportEvaluation1 from "@/components/Tables/TableReportEvaluation1"
+
 const evaluation1 = () => {
     return (
-        <h1>evaluation1 page</h1>
+        <DefaultLayout>
+            <TableReportEvaluation1/>
+        </DefaultLayout>
     )
 }
 

@@ -1,4 +1,11 @@
+import FormAddTraining from "@/components/FormElements/FormAddTraining"
+import DefaultLayout from "@/components/Layouts/DefaultLayout"
+
 const addTraining = () => {
-    return <div>Add training page</div>
+    return (
+        <DefaultLayout>
+            <FormAddTraining/>
+        </DefaultLayout>
+    )
 }
 export default addTraining

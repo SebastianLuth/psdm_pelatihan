@@ -1,8 +1,12 @@
-const training2 = () => {
+import DefaultLayout from "@/components/Layouts/DefaultLayout"
+import TableEvaluationTraining2 from "@/components/Tables/TableEvaluationTraining2"
 
+const training2 = () => {
     return (
         <>
-        <h1>Evaluation Training 2 page </h1>
+        <DefaultLayout>
+            <TableEvaluationTraining2/>
+        </DefaultLayout>
         </>
     )
 }

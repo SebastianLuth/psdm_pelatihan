@@ -1,7 +1,12 @@
+import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import AssessmentReport from "@/components/Tables/AssesmentReport";
+
 const assessmentReport = () => {
     return (
         <>
-            <h1>Assessment Report Page</h1>
+            <DefaultLayout>
+                <AssessmentReport/>
+            </DefaultLayout>
         </>
     );
 };
