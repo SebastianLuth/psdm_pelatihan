@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import ScrollableCards from "@/components/CardScrollers";
 import Calendar from "@/components/Calender";
 import Head from "next/head";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 export const metadata = {
   title: "PTPN4 | Dashboard PSDM Pelatihan",
@@ -15,14 +16,15 @@ const MapOne = dynamic(() => import("@/components/Maps/MapOne"), {
 
 export default function Home() {
   return (
-    
     <>
-      <DefaultLayout>
-        <div className="mb-4 block">
-          <ScrollableCards />
-        </div>
-        <Calendar/>
-      </DefaultLayout>
+      <ProtectedRoute>
+        <DefaultLayout>
+          <div className="mb-4 block">
+            <ScrollableCards />
+          </div>
+          <Calendar />
+        </DefaultLayout>
+      </ProtectedRoute>
     </>
   );
 }
