@@ -1,71 +1,71 @@
-"use client";
-import React, { useState } from "react";
+// src/components/SelectGroup/SelectUnitKerja.tsx
+"use client"
+import axios from "axios"
+import React, { useEffect, useState } from "react"
 
-const SelectUnitKerja: React.FC = () => {
-  const [selectedOption, setSelectedOption] = useState<string>("");
-  const [isOptionSelected, setIsOptionSelected] = useState<boolean>(false);
+interface UnitKerja {
+  id: number
+  unit_kerja: string
+}
+
+interface SelectUnitKerjaProps {
+  onUnitKerjaChange: (unitKerjaId: string) => void
+}
+
+const SelectUnitKerja: React.FC<SelectUnitKerjaProps> = ({ onUnitKerjaChange }) => {
+  const [selectedOptionUnitKerja, setSelectedOptionUnitKerja] = useState<string>("")
+  const [isOptionSelected, setIsOptionSelected] = useState<boolean>(false)
+  const [dataAllUnitKerja, setDataAllUnitKerja] = useState<UnitKerja[]>([])
 
   const changeTextColor = () => {
-    setIsOptionSelected(true);
-  };
+    setIsOptionSelected(true)
+  }
+
+  const fetchUnitKerjaData = async () => {
+    try {
+      const response = await axios.get<UnitKerja[]>("http://localhost:5000/api/unitkerja", {
+        withCredentials: true,
+      })
+      setDataAllUnitKerja(response.data)
+    } catch (error) {
+      console.error("Error fetching unit kerja data:", error)
+    }
+  }
+
+  useEffect(() => {
+    fetchUnitKerjaData()
+  }, [])
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value
+    setSelectedOptionUnitKerja(value)
+    onUnitKerjaChange(value) // Update selectedUnitKerja in parent
+    changeTextColor()
+  }
 
   return (
     <div className="p-8 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-       <div className="mb-4.5">
-      <label className="mb-2.5 block text-black dark:text-white">
-        {" "}
-        Unit Kerja{" "}
-      </label>
-
+      <label className="mb-2.5 block text-black dark:text-white">Unit Kerja</label>
       <div className="relative z-20 bg-transparent dark:bg-form-input">
         <select
-          value={selectedOption}
-          onChange={(e) => {
-            setSelectedOption(e.target.value);
-            changeTextColor();
-          }}
-          className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary ${
+          value={selectedOptionUnitKerja}
+          onChange={handleSelectChange}
+          className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-4 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${
             isOptionSelected ? "text-black dark:text-white" : ""
           }`}
         >
           <option value="" disabled className="text-body dark:text-bodydark">
-            Contoh : Bagian Sumber Daya Manusia
+            Pilih Unit Kerja
           </option>
-          <option value="USA" className="text-body dark:text-bodydark">
-            USA
-          </option>
-          <option value="UK" className="text-body dark:text-bodydark">
-            UK
-          </option>
-          <option value="Canada" className="text-body dark:text-bodydark">
-            Canada
-          </option>
+          {dataAllUnitKerja.map((unit) => (
+            <option key={unit.id} value={unit.id} className="text-body dark:text-bodydark">
+              {unit.unit_kerja}
+            </option>
+          ))}
         </select>
-
-        <span className="absolute right-4 top-1/2 z-30 -translate-y-1/2">
-          <svg
-            className="fill-current"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <g opacity="0.8">
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
-                fill=""
-              ></path>
-            </g>
-          </svg>
-        </span>
       </div>
     </div>
-    </div>
-   
-  );
-};
+  )
+}
 
-export default SelectUnitKerja;
+export default SelectUnitKerja
