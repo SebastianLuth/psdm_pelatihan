@@ -1,9 +1,111 @@
 'use client';
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
+interface UnitKerja {
+  id: number;
+  unit_kerja: string;
+}
+
+interface LevelJabatan{
+  label: string;
+  value: number;
+}
+
+interface Role{
+  label: string;
+  value: string;
+}
+
+const RoleOptions: Role[] = [
+  { value: "admin", label: "Admin" },
+  { value: "user", label: "User" },
+];
+
+const levelJabatanOptions: LevelJabatan[] = [
+  { value: 1, label: "BOD-1" },
+  { value: 2, label: "BOD-2" },
+  { value: 3, label: "BOD-3" },
+  { value: 4, label: "BOD-4" },
+  { value: 5, label: "BOD-5" },
+  { value: 6, label: "BOD-6" },
+];
+
 
 const FormDataUser = () => {
-  const [selectedOption, setSelectedOption] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<boolean>(false);
+  const [selectedOptionUnitKerja, setSelectedOptionUnitKerja] = useState<string>("");
+  const [selectedOptionLevelJabatan, setSelectedOptionLevelJabatan] = useState<number>(6);
+  const [selectedOptionRole, setSelectedOptionRole] = useState<string>("user");
+
+
   const [isOptionSelected, setIsOptionSelected] = useState<boolean>(false);
+
+  const [dataAllUnitKerja, setDataAllUnitKerja] = useState<UnitKerja[]>([]);
+
+  const [nama, setNama] = useState<string>("");
+  const [username, setUsername] = useState<number>(0);
+  const [nomorHp, setNomorHp] = useState<string>("");
+  const [unitKerja, setUnitKerja] = useState<number>(0);
+  const [jabatan, setJabatan] = useState<string>("");
+  const [level, setLevel] = useState<number>(0);
+  const [role, setRole] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [konfirmasiPassword, setKonfirmasiPassword] = useState<string>("");
+  const [biayaPelatihanUser, setBiayaPelatihanUser] = useState<number>(0);
+
+  // Fungsi untuk mengambil data unit kerja dari API
+  const fetchUnitKerjaData = async () => {
+    try {
+      const response = await axios.get<UnitKerja[]>(
+        "http://localhost:5000/api/unitkerja",
+        {
+          withCredentials: true,
+        },
+      );
+      setDataAllUnitKerja(response.data);
+    } catch (error) {
+      console.error("Error fetching unit kerja data:", error);
+    }
+  };
+
+  //Fungsi untuk menyimpan data user 
+  const handleAddUser = async (e: React.FormEvent) => {
+    e.preventDefault(); 
+    setError(null);     
+    setSuccess(false);
+    try {
+      const response = await axios.post('http://localhost:5000/api/auth/signup',
+        {
+          username : username,
+          nama : nama,
+          nomor_hp : nomorHp,
+          unit_kerja : selectedOptionUnitKerja,
+          jabatan : jabatan,
+          level : selectedOptionLevelJabatan,
+          role : selectedOptionRole,
+          password : password,
+          biaya_pelatihan_user : biayaPelatihanUser,
+        },
+        {
+          withCredentials: true, 
+        }
+       );
+       console.log('Response:', response.data);
+       setSuccess(true);  
+    } catch (error) {
+      setError("Gagal menambahkan User. Silakan coba lagi.");
+      console.error(error);
+    }
+
+  }
+
+
+  // Memuat data pada saat komponen pertama kali dirender
+  useEffect(() => {
+    fetchUnitKerjaData();
+    console.log(selectedOptionLevelJabatan);
+  }, []);
 
   const changeTextColor = () => {
     setIsOptionSelected(true);
@@ -15,7 +117,7 @@ const FormDataUser = () => {
         <h2 className="mb-4 text-2xl font-semibold text-gray-800">
           Tambah Data User
         </h2>
-        <form>
+        <form onSubmit={handleAddUser}>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <div>
               <label className="mb-1 block font-medium text-gray-600">
@@ -23,6 +125,7 @@ const FormDataUser = () => {
               </label>
               <input
                 type="text"
+                onChange={(e) => setNama(e.target.value)}
                 placeholder="Contoh : Muhammad Fikri Haikal"
                 className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-100"
               />
@@ -33,6 +136,7 @@ const FormDataUser = () => {
               </label>
               <input
                 type="text"
+                onChange={(e) => setUsername(Number(e.target.value))}
                 placeholder="Contoh : 499999"
                 className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-100"
               />
@@ -46,6 +150,7 @@ const FormDataUser = () => {
                 </label>
                 <input
                   type="text"
+                  onChange={(e) => setNomorHp(e.target.value)}
                   placeholder="Contoh : 081263270357"
                   className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-100"
                 />
@@ -55,9 +160,9 @@ const FormDataUser = () => {
                   Unit Kerja
                 </label>
                 <select
-                  value={selectedOption}
+                  value={selectedOptionUnitKerja}
                   onChange={(e) => {
-                    setSelectedOption(e.target.value);
+                    setSelectedOptionUnitKerja(e.target.value);
                     changeTextColor();
                   }}
                   className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-4 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${
@@ -71,18 +176,14 @@ const FormDataUser = () => {
                   >
                     Pilih Unit Kerja  
                   </option>
-                  <option value="USA" className="text-body dark:text-bodydark">
-                    USA
+                  {dataAllUnitKerja.map((unit) => (
+                    <option 
+                    key={unit.id}
+                    value={unit.id} 
+                    className="text-body dark:text-bodydark">
+                    {unit.unit_kerja}
                   </option>
-                  <option value="UK" className="text-body dark:text-bodydark">
-                    UK
-                  </option>
-                  <option
-                    value="Canada"
-                    className="text-body dark:text-bodydark"
-                  >
-                    Canada
-                  </option>
+                  ))}
                 </select>
               </div>
               <div>
@@ -91,6 +192,7 @@ const FormDataUser = () => {
                 </label>
                 <input
                   type="text"
+                  onChange={(e) => setJabatan(e.target.value)}
                   placeholder="Contoh : Staff Sub Bagian Persona"
                   className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-100"
                 />
@@ -102,34 +204,23 @@ const FormDataUser = () => {
                 Level Jabatan
               </label>
               <select
-                  value={selectedOption}
+                  value={selectedOptionLevelJabatan}
                   onChange={(e) => {
-                    setSelectedOption(e.target.value);
+                    setSelectedOptionLevelJabatan(Number(e.target.value));
                     changeTextColor();
                   }}
                   className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-4 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${
                     isOptionSelected ? "text-black dark:text-white" : ""
                   }`}
                 >
-                  <option
-                    value=""
-                    disabled
-                    className="text-body dark:text-bodydark"
-                  >
-                    Pilih Level  
+                  {levelJabatanOptions.map((option) => (
+                    <option 
+                    key={option.value}
+                    value={option.value} 
+                    className="text-body dark:text-bodydark">
+                    {option.label}
                   </option>
-                  <option value="USA" className="text-body dark:text-bodydark">
-                    USA
-                  </option>
-                  <option value="UK" className="text-body dark:text-bodydark">
-                    UK
-                  </option>
-                  <option
-                    value="Canada"
-                    className="text-body dark:text-bodydark"
-                  >
-                    Canada
-                  </option>
+                  ))}
                 </select>
             </div>
             <div>
@@ -137,34 +228,26 @@ const FormDataUser = () => {
                 Role
               </label>
               <select
-                  value={selectedOption}
+                  value={selectedOptionRole}
                   onChange={(e) => {
-                    setSelectedOption(e.target.value);
+                    setSelectedOptionRole(e.target.value);
                     changeTextColor();
                   }}
                   className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-4 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${
                     isOptionSelected ? "text-black dark:text-white" : ""
                   }`}
                 >
-                  <option
-                    value=""
-                    disabled
-                    className="text-body dark:text-bodydark"
-                  >
-                    Pilih Role 
-                  </option>
-                  <option value="USA" className="text-body dark:text-bodydark">
-                    USA
-                  </option>
-                  <option value="UK" className="text-body dark:text-bodydark">
-                    UK
-                  </option>
-                  <option
-                    value="Canada"
-                    className="text-body dark:text-bodydark"
-                  >
-                    Canada
-                  </option>
+                  
+                    {
+                      RoleOptions.map((role, index) => (
+                        <option 
+                        key={index}
+                        value={role.value}
+                        className="text-body dark:text-bodydark">
+                        {role.label}
+                      </option>
+                      ))
+                    }
                 </select>
             </div>
             <div>
@@ -172,16 +255,7 @@ const FormDataUser = () => {
                 Password
               </label>
               <input
-                type="password"
-                placeholder="*******"
-                className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-100"
-              />
-            </div>
-            <div>
-              <label className="mb-1 block font-medium text-gray-600">
-                Konfirmasi Password
-              </label>
-              <input
+                onChange={(e) => setPassword(e.target.value)}
                 type="password"
                 placeholder="*******"
                 className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-100"
@@ -190,12 +264,6 @@ const FormDataUser = () => {
           </div>
           <div className="mt-8 flex justify-end gap-4">
             <button
-              type="reset"
-              className="rounded-lg bg-orange-500 px-6 py-3 font-semibold text-white shadow-md hover:bg-orange-600 focus:outline-none focus:ring focus:ring-orange-300"
-            >
-              Reset Form
-            </button>
-            <button
               type="submit"
               className="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white shadow-md hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300"
             >
@@ -203,6 +271,8 @@ const FormDataUser = () => {
             </button>
           </div>
         </form>
+        {success && <p className="mt-4 text-green-500">User berhasil ditambahkan!</p>}
+        {error && <p className="mt-4 text-red-500">{error}</p>}
       </div>
     </>
   );

@@ -11,7 +11,6 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     }
   }, [userData, isLoading, ]);
 
-  // Show loading state or content if user is authenticated
   if (isLoading || !userData) return <div>Loading...</div>;
   return <>{children}</>;
 };

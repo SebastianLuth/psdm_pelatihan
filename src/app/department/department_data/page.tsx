@@ -1,7 +1,11 @@
+'use client'
 import DefaultLayout from "@/components/Layouts/DefaultLayout"
 import TableDataUnitKerja from "@/components/Tables/TableDataUnitKerja"
+import axios from "axios"
+import { useEffect, useState } from "react"
 
-const dataDepartment = () => {
+const DataDepartment = () => {
+  
     return (
         <DefaultLayout>
             <TableDataUnitKerja/>
@@ -9,4 +13,4 @@ const dataDepartment = () => {
     )
 }
 
-export default dataDepartment
+export default DataDepartment

@@ -17,6 +17,7 @@ import {
     level: number;
     role: string;
     biaya_pelatihan_user: number;
+    refreshToken: string;
   };
   
   type AuthContextType = {
@@ -44,14 +45,31 @@ import {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [isError, setIsError] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+
+    const refreshAccessToken = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/auth/refreshToken", {
+          method: "POST",
+          credentials: "include",
+        });
+        if (response.ok) {
+          console.log("Access token refreshed successfully");
+        } else {
+          console.error("Failed to refresh access token");
+        }
+      } catch (error) {
+        console.error("Error refreshing access token:", error);
+      }
+    };
   
     const fetchUserData = async () => {
       try {
+        await refreshAccessToken(); // Refresh token jika hampir kadaluarsa
         const response = await fetch("http://localhost:5000/api/auth/me", {
           method: "GET",
           credentials: "include",
         });
-  
+    
         if (response.ok) {
           const data = await response.json();
           setUserData(data);
@@ -111,6 +129,11 @@ import {
   
     useEffect(() => {
       fetchUserData();
+      const interval = setInterval(() => {
+        fetchUserData();
+      }, 10 * 60 * 1000); // Perbarui setiap 10 menit
+    
+      return () => clearInterval(interval);
     }, []);
   
     return (
