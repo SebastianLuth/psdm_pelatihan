@@ -80,6 +80,7 @@ const TableDataUser: React.FC<TableDataUserProps> = ({ selectedUnitKerja }) => {
       </div>
       {users.map((user, index) => (
         <Link
+        key={user.id}
         href={`/users_manajemen/users_data/${user.id}`}
         >
         <div

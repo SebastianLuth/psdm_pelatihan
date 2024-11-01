@@ -15,9 +15,18 @@ interface User {
   biaya_pelatihan_user: number;
 }
 
+interface BawahanUser{
+  bawahan_username: number,
+  nama: string
+} 
+
 const UserDetailPage = () => {
   const [user, setUser] = useState<User | null>(null);
+  const [usernameBawahan, setUsernameBawahan] = useState<number>(0);
   const { userId } = useParams();
+  const [showModal, setShowModal] = React.useState(false);
+  const [allBawahan, setAllBawahan] = useState<BawahanUser[]>([]);
+
   const fetchDetailUser = async () => {
     try {
       const response = await axios.get(
@@ -27,15 +36,57 @@ const UserDetailPage = () => {
         },
       );
       setUser(response.data);
-      console.log(response.data);
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
   };
 
+  const handleAddBawahan = async () => {
+    try {
+      
+        await axios.post(
+          `http://localhost:5000/api/atasan/`,
+          {
+            "atasan_username" : user?.username ,
+            "bawahan_username" : usernameBawahan
+          },
+          {
+            withCredentials: true,
+          }
+        )
+    } catch {
+      console.error("Error fetching user data:");
+    }
+  }
+
+  const getBawahan = async () => {
+    try {
+      // console.log("ini username atasanyya wakkk",user?.username);
+      const response = await axios.get(
+        `http://localhost:5000/api/atasan?atasan_username=${user?.username}`,
+        {
+          withCredentials: true,
+        }
+      )
+      setAllBawahan(response.data)
+      console.log("ini semua bahawan anda",response.data)
+    } catch  {
+      console.error("Error fetching user data:");
+
+    }
+  }
+
   useEffect(() => {
     fetchDetailUser();
   }, []);
+  
+  useEffect(() => {
+    // Call getBawahan only when user data is available
+    if (user?.username) {
+      getBawahan();
+    }
+  }, [user]);
+  
 
   if (!user) {
     return (
@@ -119,10 +170,86 @@ const UserDetailPage = () => {
                 <h3 className="text-xl font-semibold text-gray-800">
                   List Bawahan
                 </h3>
-                <button className="rounded-lg bg-blue-500 px-4 py-2 text-white transition hover:bg-blue-600">
+                <button
+                  onClick={() => setShowModal(true)}
+                  className="rounded-lg bg-blue-500 px-4 py-2 text-white transition hover:bg-blue-600"
+                >
                   Tambah Bawahan
                 </button>
               </div>
+
+              {/* Modal add bawahan */}
+              {showModal ? (
+                <>
+                  <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden outline-none focus:outline-none">
+                    <div className="relative mx-auto my-6 w-auto max-w-3xl">
+                      {/*content*/}
+                      <div className="relative flex w-full flex-col rounded-lg border-0 bg-white shadow-lg outline-none focus:outline-none">
+                        {/*header*/}
+                        <div className="border-blueGray-200 flex items-start justify-between rounded-t border-b border-solid p-5">
+                          <h3 className="text-3xl font-semibold">
+                            Modal Title
+                          </h3>
+                          <button
+                            className="float-right ml-auto border-0 bg-transparent p-1 text-3xl font-semibold leading-none text-black opacity-5 outline-none focus:outline-none"
+                            onClick={() => setShowModal(false)}
+                          >
+                            <span className="block h-6 w-6 bg-transparent text-2xl text-black opacity-5 outline-none focus:outline-none">
+                              ×
+                            </span>
+                          </button>
+                        </div>
+                        {/*body*/}
+                        <div className="flex flex-col gap-4 rounded-md bg-white p-6 shadow-md md:flex-row">
+                          <div className="flex w-full flex-col gap-2">
+                            <label className="text-base font-semibold text-gray-700 sm:text-lg">
+                              NIKSAP Atasan
+                            </label>
+                            <input
+                              className="rounded-md border border-gray-300 p-2 text-base leading-relaxed text-gray-800 transition-all focus:border-blue-500 focus:outline-none sm:p-3 sm:text-lg"
+                              value={user.username}
+                              readOnly
+                            />
+                          </div>
+
+                          <div className="flex w-full flex-col gap-2">
+                            <label className="text-base font-semibold text-gray-700 sm:text-lg">
+                              NIKSAP Bawahan
+                            </label>
+                            <input
+                              className="rounded-md border border-gray-300 p-2 text-base leading-relaxed text-gray-800 transition-all focus:border-blue-500 focus:outline-none sm:p-3 sm:text-lg"
+                              onChange={(e) => {
+                                setUsernameBawahan(parseInt(e.target.value));
+                              }}
+                            />
+                          </div>
+                        </div>
+
+                        {/*footer*/}
+                        <div className="border-blueGray-200 flex items-center justify-end rounded-b border-t border-solid p-6">
+                          <button
+                            className="background-transparent mb-1 mr-1 px-6 py-2 text-sm font-bold uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
+                            type="button"
+                            onClick={() => setShowModal(false)}
+                          >
+                            Close
+                          </button>
+                          <button
+                            className="mb-1 mr-1 rounded bg-emerald-500 px-6 py-3 text-sm font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none active:bg-emerald-600"
+                            type="button"
+                            onClick={handleAddBawahan}
+                          >
+                            Input Data
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="fixed inset-0 z-40 bg-black opacity-25"></div>
+                </>
+              ) : null}
+
+              {/* Modal add bawahan End*/}
 
               <table className="w-full overflow-hidden rounded-lg border border-gray-200 text-left">
                 <thead>
@@ -134,22 +261,16 @@ const UserDetailPage = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {[
-                    {
-                      id: 1,
-                      nik: "4000067",
-                      name: "Swelli Solihah Nasution, SP",
-                    },
-                  ].map((bawahan, index) => (
+                  {allBawahan.map((bawahan, index) => (
                     <tr
-                      key={bawahan.id}
+                      key={index}
                       className="border-t border-gray-200 hover:bg-gray-50"
                     >
                       <td className="px-4 py-3 text-center">{index + 1}</td>
                       <td className="cursor-pointer px-4 py-3 text-center text-blue-600 hover:underline">
-                        {bawahan.nik}
+                        {bawahan.bawahan_username}
                       </td>
-                      <td className="px-4 py-3">{bawahan.name}</td>
+                      <td className="px-4 py-3">{bawahan.nama}</td>
                       <td className="px-4 py-3 text-center">
                         <button className="rounded-md bg-red-500 px-3 py-1 text-white transition hover:bg-red-600">
                           Delete
