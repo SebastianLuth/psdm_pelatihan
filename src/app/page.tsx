@@ -2,8 +2,8 @@ import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import dynamic from "next/dynamic";
 import ScrollableCards from "@/components/CardScrollers";
-import Calendar from "@/components/Calender";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import Calendar from "@/components/Calendar/page";
 
 export const metadata = {
   title: "PTPN4 | Dashboard PSDM Pelatihan",
