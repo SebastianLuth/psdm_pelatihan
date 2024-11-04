@@ -1,7 +1,7 @@
 import FormDataUser from "@/components/FormElements/FormAddUser"
 import DefaultLayout from "@/components/Layouts/DefaultLayout"
 
-const addUser = () => {
+const AddUserPage = () => {
     return (
         <>
             <DefaultLayout>
@@ -11,4 +11,4 @@ const addUser = () => {
     )
 }
 
-export default addUser
+export default AddUserPage

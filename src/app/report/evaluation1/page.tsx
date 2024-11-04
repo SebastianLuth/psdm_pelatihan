@@ -1,7 +1,7 @@
 import DefaultLayout from "@/components/Layouts/DefaultLayout"
 import TableReportEvaluation1 from "@/components/Tables/TableReportEvaluation1"
 
-const evaluation1 = () => {
+const Evaluation1Page = () => {
     return (
         <DefaultLayout>
             <TableReportEvaluation1/>
@@ -9,4 +9,4 @@ const evaluation1 = () => {
     )
 }
 
-export default evaluation1
+export default Evaluation1Page

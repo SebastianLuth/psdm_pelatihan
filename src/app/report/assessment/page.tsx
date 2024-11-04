@@ -1,7 +1,7 @@
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import AssessmentReport from "@/components/Tables/AssesmentReport";
 
-const assessmentReport = () => {
+const AssessmentReportPage = () => {
     return (
         <>
             <DefaultLayout>
@@ -11,4 +11,4 @@ const assessmentReport = () => {
     );
 };
 
-export default assessmentReport;
+export default AssessmentReportPage;

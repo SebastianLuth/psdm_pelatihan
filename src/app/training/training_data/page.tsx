@@ -1,7 +1,7 @@
 import DefaultLayout from "@/components/Layouts/DefaultLayout"
 import TableDataTraingin from "@/components/Tables/TableDataTraingin"
 
-const trainingData = () => {
+const TrainingDataPage = () => {
     return (
         <DefaultLayout>
             <TableDataTraingin/>
@@ -9,4 +9,4 @@ const trainingData = () => {
     )
 }
 
-export default trainingData
+export default TrainingDataPage

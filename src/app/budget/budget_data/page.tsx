@@ -1,7 +1,7 @@
 import DefaultLayout from "@/components/Layouts/DefaultLayout"
 import TableDataAnggaran from "@/components/Tables/TableDataAnggaran"
 
-const dataBudget = () => {
+const DataBudgetPage = () => {
     return (
         <>
         <DefaultLayout>
@@ -10,4 +10,4 @@ const dataBudget = () => {
         </>
     )
 }
-export default dataBudget
+export default DataBudgetPage

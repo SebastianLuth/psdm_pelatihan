@@ -1,7 +1,7 @@
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import TableAssessmentBod1 from "@/components/Tables/TableAssessmentBod1";
 
-const assessmentbod1 = () => {
+const AssessmentBOD1Page = () => {
     return (
         <DefaultLayout>
             <TableAssessmentBod1/>
@@ -9,4 +9,4 @@ const assessmentbod1 = () => {
     )
 };
 
-export default assessmentbod1;
+export default AssessmentBOD1Page;

@@ -1,7 +1,7 @@
 import FormAddBudget from "@/components/FormElements/FormAddBudget";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 
-const addBudget = () => {
+const AddBudgetPage = () => {
     return (
         <>
         <DefaultLayout>
@@ -11,4 +11,4 @@ const addBudget = () => {
     )
 };
 
-export default addBudget
+export default AddBudgetPage

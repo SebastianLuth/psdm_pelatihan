@@ -1,7 +1,7 @@
 import DefaultLayout from "@/components/Layouts/DefaultLayout"
 import TableEvaluationTraining2 from "@/components/Tables/TableEvaluationTraining2"
 
-const training2 = () => {
+const Training2Page = () => {
     return (
         <>
         <DefaultLayout>
@@ -11,4 +11,4 @@ const training2 = () => {
     )
 }
 
-export default training2
+export default Training2Page

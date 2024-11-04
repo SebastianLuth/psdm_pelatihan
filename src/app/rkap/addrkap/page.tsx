@@ -1,4 +1,4 @@
-const addrkap = () => {
+const AddRKAPPage = () => {
     return (
         <div>
             <h1>addrkap page</h1>
@@ -6,4 +6,4 @@ const addrkap = () => {
     )
 }
 
-export default addrkap
+export default AddRKAPPage

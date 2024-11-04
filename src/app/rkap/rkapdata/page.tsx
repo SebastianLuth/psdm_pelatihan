@@ -1,7 +1,7 @@
 import DefaultLayout from "@/components/Layouts/DefaultLayout"
 import TableDataRKAP from "@/components/Tables/TableDataRKAP"
 
-const rkapdata = () => {
+const RKAPDataPage = () => {
     return ( 
         <div>
             <DefaultLayout>
@@ -11,4 +11,4 @@ const rkapdata = () => {
     )
 }
 
-export default rkapdata
+export default RKAPDataPage

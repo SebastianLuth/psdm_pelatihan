@@ -3,7 +3,7 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const AddDepartment = () => {
+const AddDepartmentPage = () => {
   const [unitKerja, setUnitKerja] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
@@ -62,4 +62,4 @@ const AddDepartment = () => {
   );
 };
 
-export default AddDepartment;
+export default AddDepartmentPage;
