@@ -4,7 +4,6 @@ import dayjs from "dayjs";
 import React from "react";
 import { EventRenderer } from "./event-renderer";
 
-
 export default function MonthViewBox({
   day,
   rowIndex,
@@ -13,17 +12,13 @@ export default function MonthViewBox({
   rowIndex: number;
 }) {
   const { openPopover, events } = useEventStore();
-
   const { setDate } = useDateStore();
 
   if (!day) {
-    return (
-      <div className="h-12 w-full border md:h-28 md:w-full lg:h-full"></div>
-    );
+    return <div className="h-6 w-full border md:h-28 lg:h-full"></div>;
   }
 
   const isFirstDayOfMonth = day.date() === 1;
-
   const isToday = day.format("DD-MM-YY") === dayjs().format("DD-MM-YY");
 
   const handleClick = (e: React.MouseEvent) => {
@@ -35,10 +30,11 @@ export default function MonthViewBox({
   return (
     <div
       className={cn(
-        "group relative flex flex-col items-center gap-y-2 border",
-        "transition-all hover:bg-violet-50",
+        "group relative flex flex-col items-center gap-y-1 border",
+        "transition-all hover:bg-gray-100"
       )}
       onClick={handleClick}
+      style={{ position: "relative" }}
     >
       <div className="flex flex-col items-center">
         {rowIndex === 0 && (
@@ -49,8 +45,7 @@ export default function MonthViewBox({
         <h4
           className={cn(
             "text-center text-sm",
-            isToday &&
-              "flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-white",
+            isToday && "flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-white"
           )}
         >
           {isFirstDayOfMonth ? day.format("MMM D") : day.format("D")}

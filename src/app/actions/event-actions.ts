@@ -9,10 +9,7 @@ export async function createEvent(formData: FormData): Promise<{ error: string }
   if (!title || !description || !date || !time) {
     return { error: 'All fields are required' };
   }
-
   const dateTime = `${date}T${time}:00`;
-
-  console.log(title, description, dateTime);
 
   try {
     // Send data to your Express API
@@ -20,7 +17,8 @@ export async function createEvent(formData: FormData): Promise<{ error: string }
       {
       title,
       description,
-      date: dateTime,
+      dateStart: dateTime,
+      dateEnd: dateTime,
       },
       {
         withCredentials: true,
@@ -29,7 +27,6 @@ export async function createEvent(formData: FormData): Promise<{ error: string }
 
     return { success: true };
   } catch (error) {
-    console.error("Error creating event:", error);
     return { error: "Failed to create event" };
   }
 }

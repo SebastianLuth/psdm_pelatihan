@@ -157,24 +157,6 @@ export default function EventPopover({
             />
           </div>
 
-          <div className="flex items-center space-x-3">
-            <IoMdCalendar className="size-5 text-slate-600" />
-            <div className="">
-              <div className="flex items-center space-x-3 text-sm">
-                {" "}
-                <p>De Mawo</p>{" "}
-                <div className="h-4 w-4 rounded-full bg-violet-500"></div>{" "}
-              </div>
-              <div className="flex items-center space-x-1 text-xs">
-                <span>Busy</span>
-                <div className="h-1 w-1 rounded-full bg-gray-500"></div>
-                <span>Default visibility</span>{" "}
-                <div className="h-1 w-1 rounded-full bg-gray-500"></div>
-                <span>Notify 30 minutes before</span>
-              </div>
-            </div>
-          </div>
-
           <div className="flex justify-end space-x-2">
             <ButtonCalendar type="submit" disabled={isPending}>
               {isPending ? "Saving..." : "Save"}

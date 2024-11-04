@@ -19,7 +19,7 @@ export default function MainView({
   eventsData: CalendarEventType[];
 }) {
   const { selectedView } = useViewStore();
-
+  console.log(eventsData);
   const {
     isPopoverOpen,
     closePopover,
@@ -34,10 +34,12 @@ export default function MainView({
   useEffect(() => {
     const mappedEvents: CalendarEventType[] = eventsData.map((event) => ({
       id: event.id,
-      date: dayjs(event.date),
+      dateStart: dayjs(event.dateStart),
+      dateEnd: dayjs(event.dateEnd),
       title: event.title,
       description: event.description,
     }));
+    console.log("ini hasil mapped :", mappedEvents);
 
     setEvents(mappedEvents);
   }, [eventsData, setEvents]);

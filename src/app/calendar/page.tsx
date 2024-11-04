@@ -13,10 +13,12 @@ const getEventsData = async () => {
     }
 
     const data = response.data;
+    console.log("ini data event dari pages/calendar",data);
 
     return data.map((event : any) => ({
       ...event,
-      date: dayjs(event.date).toISOString(), // Ensure date is in ISO format
+      dateStart: dayjs(event.date_start).toISOString(),
+      dateEnd: dayjs(event.date_end).toISOString(),
     }));
   } catch (error) { 
     console.error("Error fetching data from the API:", error);
