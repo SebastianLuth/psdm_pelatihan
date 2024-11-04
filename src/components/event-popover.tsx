@@ -105,15 +105,22 @@ export default function EventPopover({
             <Input
               type="text"
               name="title"
-              placeholder="Tambahkan Judul"
+              placeholder="Add title"
               className="my-4 rounded-none border-0 border-b text-2xl focus-visible:border-b-2 focus-visible:border-b-blue-600 focus-visible:ring-0 focus-visible:ring-offset-0"
             />
           </div>
-          
+          <div className="flex items-center justify-between">
             <ButtonCalendar className="bg-blue-100 text-blue-700 hover:bg-blue-100 hover:text-blue-700">
               Event
             </ButtonCalendar>
-        
+            <ButtonCalendar type="button" variant="ghost">
+              Task
+            </ButtonCalendar>
+            <ButtonCalendar type="button" variant="ghost">
+              Appointmet Schedule <sup className="bg-blue-500">new</sup>
+            </ButtonCalendar>
+          </div>
+
           <div className="flex items-center space-x-3">
             <FiClock className="size-5 text-gray-600" />
             <div className="flex items-center space-x-3 text-sm">
@@ -129,7 +136,7 @@ export default function EventPopover({
             <Input
               type="text"
               name="guests"
-              placeholder="Tambahkan Jabatan"
+              placeholder="Add guests"
               className={cn(
                 "w-full rounded-lg border-0 bg-slate-100 pl-7 placeholder:text-slate-600",
                 "focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0",
@@ -142,12 +149,30 @@ export default function EventPopover({
             <Input
               type="text"
               name="description"
-              placeholder="Tambahkan Deskripsi"
+              placeholder="Add description"
               className={cn(
                 "w-full rounded-lg border-0 bg-slate-100 pl-7 placeholder:text-slate-600",
                 "focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0",
               )}
             />
+          </div>
+
+          <div className="flex items-center space-x-3">
+            <IoMdCalendar className="size-5 text-slate-600" />
+            <div className="">
+              <div className="flex items-center space-x-3 text-sm">
+                {" "}
+                <p>De Mawo</p>{" "}
+                <div className="h-4 w-4 rounded-full bg-violet-500"></div>{" "}
+              </div>
+              <div className="flex items-center space-x-1 text-xs">
+                <span>Busy</span>
+                <div className="h-1 w-1 rounded-full bg-gray-500"></div>
+                <span>Default visibility</span>{" "}
+                <div className="h-1 w-1 rounded-full bg-gray-500"></div>
+                <span>Notify 30 minutes before</span>
+              </div>
+            </div>
           </div>
 
           <div className="flex justify-end space-x-2">

@@ -32,23 +32,18 @@ export default function MainView({
   const { userSelectedDate } = useDateStore();
 
   useEffect(() => {
-    if (Array.isArray(eventsData)) {
-      const mappedEvents: CalendarEventType[] = eventsData.map((event) => ({
-        id: event.id,
-        date: dayjs(event.date),
-        title: event.title,
-        description: event.description,
-      }));
-      setEvents(mappedEvents);
-    } else {
-      console.warn("eventsData is not an array:", eventsData);
-    }
+    const mappedEvents: CalendarEventType[] = eventsData.map((event) => ({
+      id: event.id,
+      date: dayjs(event.date),
+      title: event.title,
+      description: event.description,
+    }));
+
+    setEvents(mappedEvents);
   }, [eventsData, setEvents]);
-  
 
   return (
     <div className="flex">
-
       <div className="w-full flex-1">
         {selectedView === "month" && <MonthView />}
         {selectedView === "week" && <WeekView />}
