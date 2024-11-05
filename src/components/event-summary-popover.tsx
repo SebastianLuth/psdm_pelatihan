@@ -11,9 +11,10 @@ interface Event {
 interface EventSummaryPopoverProps {
   event: Event;
   onClose: () => void;
+  onDelete: () => void;
 }
 
-export default function EventSummaryPopover({ event, onClose }: EventSummaryPopoverProps) {
+export default function EventSummaryPopover({ event, onClose , onDelete }: EventSummaryPopoverProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
@@ -27,7 +28,10 @@ export default function EventSummaryPopover({ event, onClose }: EventSummaryPopo
         <p className="text-gray-700 mb-4">
           <strong>Tanggal Akhir:</strong> {moment(event.end).format('YYYY-MM-DD HH:mm')}
         </p>
+        <div className='flex justify-between'>
         <button onClick={onClose} className="px-4 py-2 bg-blue-600 text-white rounded">Close</button>
+        <button onClick={onDelete} className="px-4 py-2 bg-blue-600 text-white rounded">Delete Event</button>
+        </div>        
       </div>
     </div>
   );

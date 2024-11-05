@@ -15,7 +15,7 @@ const AddDepartmentPage = () => {
     setSuccess(false); 
     
     try { 
-      const response = await axios.post('http://localhost:5000/api/unitkerja', 
+      await axios.post('http://localhost:5000/api/unitkerja', 
         { unit_kerja: unitKerja },
         {
           withCredentials: true, 

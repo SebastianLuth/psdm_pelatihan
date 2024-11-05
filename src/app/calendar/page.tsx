@@ -10,6 +10,7 @@ moment.locale("en-GB");
 const localizer = momentLocalizer(moment);
 
 interface Event {
+  id?: number;
   start: Date;
   end: Date;
   title: string;
@@ -37,12 +38,14 @@ export default function MyCalendar() {
     try {
       const response = await axios.get("http://localhost:5000/api/calendar");
       const eventsData = response.data.map((event: any) => ({
+        id: event.id,
         start: new Date(event.date_start),
         end: new Date(event.date_end),
         title: event.title,
         description: event.description,
       }));
       setEvents(eventsData);
+      console.log(eventsData);
     } catch (error) {
       console.error("Error fetching events:", error);
     }
@@ -92,6 +95,21 @@ export default function MyCalendar() {
       setNewEvent({});
     }
   };
+  const handleDeleteEvent = async () => {
+    if (selectedEvent) {
+      try {
+        await axios.delete(`http://localhost:5000/api/calendar/${selectedEvent.id}`, {
+          withCredentials: true,
+        });
+        
+        // Setelah delete berhasil, fetch ulang data event
+        featchAllEvent();
+        setSelectedEvent(null);
+      } catch (error) {
+        console.error("Error deleting event:", error);
+      }
+    }
+  };
 
   const handleToday = () => {
     setCurrentDate(new Date());
@@ -117,6 +135,7 @@ export default function MyCalendar() {
 
   useEffect(() => {
     featchAllEvent();
+
   }, []);
   return (
     <div className="relative h-screen bg-gray-100 p-5">
@@ -195,6 +214,7 @@ export default function MyCalendar() {
         <EventSummaryPopover
           event={selectedEvent}
           onClose={() => setShowPopover(false)}
+          onDelete={handleDeleteEvent}
         />
       )}
 
