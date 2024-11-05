@@ -4,26 +4,12 @@ import { Calendar, momentLocalizer, SlotInfo } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import EventSummaryPopover from "@/components/event-summary-popover";
-import axios from "axios";
+import { colorsBarCalendar, Event } from "@/types/dashboar-tipe";
+import { deleteEvent, getEventDataCalendar, postEvent } from "@/service/dashboard";
+import EventPostPopover from "@/components/event-post-popover";
 
 moment.locale("en-GB");
 const localizer = momentLocalizer(moment);
-
-interface Event {
-  id?: number;
-  start: Date;
-  end: Date;
-  title: string;
-  description?: string;
-}
-
-const colors = [
-  "bg-blue-400",
-  "bg-green-400",
-  "bg-red-400",
-  "bg-yellow-400",
-  "bg-purple-400",
-];
 
 export default function MyCalendar() {
   const [events, setEvents] = useState<Event[]>([]);
@@ -36,34 +22,11 @@ export default function MyCalendar() {
 
   const featchAllEvent = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/calendar");
-      const eventsData = response.data.map((event: any) => ({
-        id: event.id,
-        start: new Date(event.date_start),
-        end: new Date(event.date_end),
-        title: event.title,
-        description: event.description,
-      }));
-      setEvents(eventsData);
-      console.log(eventsData);
+      // get data event from API
+      const response = await getEventDataCalendar();
+      setEvents(response);
     } catch (error) {
       console.error("Error fetching events:", error);
-    }
-  };
-
-  const postEvent = async (eventData: {
-    title: string;
-    description?: string;
-    dateStart: string;
-    dateEnd: string;
-  }) => {
-    try {
-      await axios.post("http://localhost:5000/api/calendar", eventData, {
-        withCredentials: true,
-      });
-    } catch (error) {
-      setIsUploaded(false);
-      console.error("Error posting event:", error);
     }
   };
 
@@ -78,30 +41,34 @@ export default function MyCalendar() {
   };
 
   const handleSaveEvent = async () => {
-    if (newEvent.title) {
-      const formattedEvent = {
-        title: newEvent.title,
-        description: newEvent.description,
-        dateStart: moment(newEvent.start).format("YYYY-MM-DD"),
-        dateEnd: moment(newEvent.end).format("YYYY-MM-DD"),
-      };
-
-      // Send the event to the backend
-      await postEvent(formattedEvent);
-      setIsUploaded(true);
-
-      // Update the events state with the new event
-      setEvents((prevEvents) => [...prevEvents, newEvent as Event]);
-      setNewEvent({});
+    try {
+      if (newEvent.title) {
+        const formattedEvent = {
+          title: newEvent.title,
+          description: newEvent.description,
+          dateStart: moment(newEvent.start).format("YYYY-MM-DD"),
+          dateEnd: moment(newEvent.end).format("YYYY-MM-DD"),
+        };
+  
+        // Send the event to the backend
+        await postEvent(formattedEvent);
+        setIsUploaded(true);
+  
+        // Update the events state with the new event
+        setEvents((prevEvents) => [...prevEvents, newEvent as Event]);
+        setNewEvent({});
+      }
+    } catch (error) {
+      setIsUploaded(false);
+      console.error("Error saving event:", error);
     }
+   
   };
   const handleDeleteEvent = async () => {
     if (selectedEvent) {
       try {
-        await axios.delete(`http://localhost:5000/api/calendar/${selectedEvent.id}`, {
-          withCredentials: true,
-        });
-        
+        const evenId = Number(selectedEvent.id);
+        await deleteEvent(evenId);
         // Setelah delete berhasil, fetch ulang data event
         featchAllEvent();
         setSelectedEvent(null);
@@ -129,13 +96,12 @@ export default function MyCalendar() {
     const sameDayEvents = events.filter((e) =>
       moment(e.start).isSame(event.start, "day"),
     );
-    const index = sameDayEvents.indexOf(event) % colors.length;
-    return colors[index];
+    const index = sameDayEvents.indexOf(event) % colorsBarCalendar.length;
+    return colorsBarCalendar[index];
   };
 
   useEffect(() => {
     featchAllEvent();
-
   }, []);
   return (
     <div className="relative h-screen bg-gray-100 p-5">
@@ -219,99 +185,13 @@ export default function MyCalendar() {
       )}
 
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
-            <h3 className="mb-4 text-lg font-semibold">Tambahkan Event Baru</h3>
-            <input
-              type="text"
-              placeholder="Judul Event"
-              value={newEvent.title || ""}
-              onChange={(e) =>
-                setNewEvent({ ...newEvent, title: e.target.value })
-              }
-              className="mb-4 w-full rounded border border-gray-300 p-2"
-            />
-            <textarea
-              placeholder="Deskripsi"
-              value={newEvent.description || ""}
-              onChange={(e) =>
-                setNewEvent({ ...newEvent, description: e.target.value })
-              }
-              className="mb-4 w-full rounded border border-gray-300 p-2"
-            />
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">
-                Tanggal Mulai
-              </label>
-              <input
-                type="text"
-                value={
-                  newEvent.start
-                    ? moment(newEvent.start).format("YYYY-MM-DD HH:mm")
-                    : ""
-                }
-                readOnly
-                className="w-full rounded border border-gray-300 bg-gray-100 p-2 text-gray-600"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">
-                Tanggal Akhir
-              </label>
-              <input
-                type="text"
-                value={
-                  newEvent.end
-                    ? moment(newEvent.end).format("YYYY-MM-DD HH:mm")
-                    : ""
-                }
-                readOnly
-                className="w-full rounded border border-gray-300 bg-gray-100 p-2 text-gray-600"
-              />
-            </div>
-            <div className="flex justify-between space-x-2">
-              {IsUploaded ? (
-                <div>
-                  <p className="mb-4 text-lg font-semibold text-green-500 ">
-                    Event berhasil ditambahkan
-                  </p>
-                  <button
-                    onClick={() => setShowModal(false)}
-                    className="rounded bg-gray-300 px-4 py-2"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={handleSaveEvent}
-                    className="rounded bg-blue-600 px-4 py-2 text-white"
-                  >
-                    Save
-                  </button>
-                </div>
-              ) : (
-                <>
-                  <div>
-                    <p>{""}</p>
-                  </div>
-                  <div>
-                    <button
-                      onClick={() => setShowModal(false)}
-                      className="rounded bg-gray-300 px-4 py-2"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      onClick={handleSaveEvent}
-                      className="rounded bg-blue-600 px-4 py-2 text-white"
-                    >
-                      Save
-                    </button>
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
+       <EventPostPopover
+       newEvent={newEvent}
+       onChange={(updatedEvent) => setNewEvent(updatedEvent)}
+       onSave={handleSaveEvent}
+       onClose={() => setShowModal(false)}
+       isUploaded={IsUploaded}
+     />
       )}
     </div>
   );

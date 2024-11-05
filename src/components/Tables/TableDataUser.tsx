@@ -25,6 +25,7 @@ const TableDataUser: React.FC<TableDataUserProps> = ({ selectedUnitKerja }) => {
         `http://localhost:5000/api/user?unit_kerja=${selectedUnitKerja}`,
         { withCredentials: true }
       )
+      console.log("ini featch data",response.data)
       setUsers(response.data)
     } catch (error) {
       console.error("Error fetching user data:", error)
@@ -32,10 +33,11 @@ const TableDataUser: React.FC<TableDataUserProps> = ({ selectedUnitKerja }) => {
   }
 
   useEffect(() => {
+    console.log("Selected Unit Kerja:", selectedUnitKerja);
     if (selectedUnitKerja) {
       fetchAllUserByUnitKerja()
     }
-  },[])
+  },[selectedUnitKerja])
 
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">

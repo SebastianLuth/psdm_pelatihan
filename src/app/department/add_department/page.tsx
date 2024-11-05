@@ -1,6 +1,7 @@
 'use client';
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import axios from "axios";
+import { addUnitKerja } from "@/service/department";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const AddDepartmentPage = () => {
@@ -8,24 +9,18 @@ const AddDepartmentPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
 
-
   const handleAddUnitKerja = async (e: React.FormEvent) => {
     e.preventDefault(); 
     setError(null);     
     setSuccess(false); 
-    
     try { 
-      await axios.post('http://localhost:5000/api/unitkerja', 
-        { unit_kerja: unitKerja },
-        {
-          withCredentials: true, 
-        }
-      );
-      
+      await addUnitKerja(unitKerja);
       setSuccess(true);  
     } catch (error) {
       setError("Gagal menambahkan unit kerja. Silakan coba lagi.");
       console.error(error);
+    }finally{
+      setUnitKerja([]);
     }
   }
 
@@ -54,7 +49,9 @@ const AddDepartmentPage = () => {
             Simpan
           </button>
         </form>
-        {success && <p className="mt-4 text-green-500">Unit kerja berhasil ditambahkan!</p>}
+        {success && <p className="mt-4 text-green-500">Unit kerja berhasil ditambahkan! cek di 
+          <Link href="/department/department_data" className="text-blue-500"> daftar unit kerja</Link>
+          </p>}
         {error && <p className="mt-4 text-red-500">{error}</p>}
       </div>
     </DefaultLayout>

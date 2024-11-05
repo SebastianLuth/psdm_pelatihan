@@ -1,12 +1,7 @@
 "use client";
-import axios from "axios";
+import { getUnitKerja } from "@/service/department";
+import { UnitKerja } from "@/types/department-type";
 import { useEffect, useState } from "react";
-
-// Definisikan tipe untuk data unit kerja
-interface UnitKerja {
-  id: number;
-  unit_kerja: string;
-}
 
 const TableDataUnitKerja = () => {
   const [dataAllUnitKerja, setDataAllUnitKerja] = useState<UnitKerja[]>([]);
@@ -14,24 +9,17 @@ const TableDataUnitKerja = () => {
   // Fungsi untuk mengambil data unit kerja dari API
   const fetchUnitKerjaData = async () => {
     try {
-      const response = await axios.get<UnitKerja[]>(
-        "http://localhost:5000/api/unitkerja",
-        {
-          withCredentials: true,
-        },
-      );
-      setDataAllUnitKerja(response.data);
+      const response = await getUnitKerja();
+      setDataAllUnitKerja(response);
     } catch (error) {
       console.error("Error fetching unit kerja data:", error);
     }
   };
 
-
-  // Memuat data pada saat komponen pertama kali dirender
+  // Memuat data 
   useEffect(() => {
     fetchUnitKerjaData(); 
   }, [dataAllUnitKerja]);
-
 
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
