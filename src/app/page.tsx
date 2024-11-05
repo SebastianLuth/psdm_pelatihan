@@ -1,9 +1,7 @@
-import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import dynamic from "next/dynamic";
 import ScrollableCards from "@/components/CardScrollers";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import Calendar from "@/app/calendar/page";
+import MyCalendar from "@/app/calendar/page";
 
 export const metadata = {
   title: "PTPN4 | Dashboard PSDM Pelatihan",
@@ -18,7 +16,7 @@ export default function Home() {
           <div className="mb-4 block">
             <ScrollableCards />
           </div>
-          <Calendar />
+        <MyCalendar /> 
         </DefaultLayout>
       </ProtectedRoute>
     </>

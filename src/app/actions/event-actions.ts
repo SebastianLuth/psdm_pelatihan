@@ -1,29 +1,20 @@
 import axios from "axios";
 
 export async function createEvent(formData: FormData): Promise<{ error: string } | { success: boolean }> {
-  const title = formData.get('title') as string;
-  const description = formData.get('description') as string;
-  const date = formData.get('date') as string;
-  const time = formData.get('time') as string;
-
-  if (!title || !description || !date || !time) {
-    return { error: 'All fields are required' };
-  }
-  const dateTime = `${date}T${time}:00`;
-
   try {
-    // Send data to your Express API
-    await axios.post("http://localhost:5000/api/calendar", 
-      {
+    const title = formData.get("title") as string;
+    const description = formData.get("description") as string;
+    const dateStart = formData.get("dateStart") as string;
+    const dateEnd = formData.get("dateEnd") as string;
+
+    await axios.post("http://localhost:5000/api/calendar", {
       title,
       description,
-      dateStart: dateTime,
-      dateEnd: dateTime,
-      },
-      {
-        withCredentials: true,
-      }
-    );
+      dateStart,
+      dateEnd,
+    }, {
+      withCredentials: true,
+    });
 
     return { success: true };
   } catch (error) {

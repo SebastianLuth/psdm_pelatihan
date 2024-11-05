@@ -1,65 +1,34 @@
-'use client'
+import React from 'react';
+import moment from 'moment';
 
-import React, { useRef, useEffect } from 'react'
-import dayjs from 'dayjs'
-import { IoCloseSharp } from "react-icons/io5"
-import { CalendarEventType } from '@/lib/store'
-import { ButtonCalendar } from '@/app/ui/button'
-
-interface EventSummaryPopoverProps {
-  isOpen: boolean
-  onClose: () => void
-  event: CalendarEventType
+interface Event {
+  start: Date;
+  end: Date;
+  title: string;
+  description?: string;
 }
 
-export function EventSummaryPopover({ isOpen, onClose, event }: EventSummaryPopoverProps) {
+interface EventSummaryPopoverProps {
+  event: Event;
+  onClose: () => void;
+}
 
-    
-    
-  const popoverRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (popoverRef.current && !popoverRef.current.contains(e.target as Node)) {
-        onClose()
-      }
-    }
-
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside)
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [isOpen, onClose])
-
-  if (!isOpen) return null
-
+export default function EventSummaryPopover({ event, onClose }: EventSummaryPopoverProps) {
   return (
-    <div
-      className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50"
-      onClick={onClose}
-    >
-      <div
-        ref={popoverRef}
-        className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-xl font-semibold">Event Summary</h2>
-          <ButtonCalendar variant="ghost" size="icon" onClick={onClose}>
-            <IoCloseSharp className="h-4 w-4" />
-          </ButtonCalendar>
-        </div>
-        <div className="space-y-2">
-          <p><strong>Title:</strong> {event.title}</p>
-          {/* Format the date before displaying it */}
-          <p><strong> Tanggal Mulai:</strong> {dayjs(event.dateStart).format("dddd, MMMM D, YYYY h:mm A")}</p>
-          <p><strong> Tanggal Berakhir:</strong> {dayjs(event.dateEnd).format("dddd, MMMM D, YYYY h:mm A")}</p>
-          {/* Add more event details here */}
-        </div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+        <h2 className="text-2xl font-bold mb-4">{event.title}</h2>
+        <p className="text-gray-700 mb-2">
+          <strong>Deskripsi:</strong> {event.description || 'Tidak ada deskripsi'}
+        </p>
+        <p className="text-gray-700 mb-2">
+          <strong>Tanggal Mulai:</strong> {moment(event.start).format('YYYY-MM-DD HH:mm')}
+        </p>
+        <p className="text-gray-700 mb-4">
+          <strong>Tanggal Akhir:</strong> {moment(event.end).format('YYYY-MM-DD HH:mm')}
+        </p>
+        <button onClick={onClose} className="px-4 py-2 bg-blue-600 text-white rounded">Close</button>
       </div>
     </div>
-  )
+  );
 }

@@ -22,7 +22,6 @@ const AddDepartmentPage = () => {
         }
       );
       
-      console.log('Response:', response.data);
       setSuccess(true);  
     } catch (error) {
       setError("Gagal menambahkan unit kerja. Silakan coba lagi.");
