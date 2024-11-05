@@ -165,13 +165,13 @@ export default function MyCalendar() {
           onSelectEvent={handleSelectEvent}
           startAccessor="start"
           endAccessor="end"
-          style={{ height: "auto", minHeight: "70vh", border: "none" }}
+          style={{ height: "auto", minHeight: "70vh", border: "none", fontSize: "14px",  }}
           date={currentDate}
           onNavigate={setCurrentDate}
           dayPropGetter={dayPropGetter}
           eventPropGetter={(event) => ({
             className: `${getEventColor(event)} text-white rounded-md shadow-sm transition duration-300`,
-            style: { borderRadius: "5px", height: "20px" },
+            style: { borderRadius: "5px", height: "20px", fontSize: "12px" },
           })}
         />
       </div>
