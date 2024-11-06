@@ -1,6 +1,8 @@
 "use client";
 import { getUnitKerja } from "@/service/department";
 import { UnitKerja } from "@/types/department-type";
+import axios from "axios";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const TableDataUnitKerja = () => {
@@ -15,6 +17,18 @@ const TableDataUnitKerja = () => {
       console.error("Error fetching unit kerja data:", error);
     }
   };
+
+  //handle delete unit kerja
+  const handleDeleteUnitKerja = async (unitKerjaId : number) => {
+    try {
+      axios.delete(`http://localhost:5000/api/unitkerja/${unitKerjaId}`, {
+        withCredentials: true,
+      })
+
+    } catch (error) {
+      
+    }
+  }
 
   // Memuat data 
   useEffect(() => {
@@ -78,10 +92,16 @@ const TableDataUnitKerja = () => {
               <p className="text-black dark:text-white">{unit.unit_kerja}</p>
             </div>
             <div className="flex items-center justify-start gap-4 p-2.5 xl:p-5">
-              <button className="text-blue-500 hover:underline dark:text-blue-300">
+              <Link
+                href={`/department/department_data/${unit.id}`}
+                className="text-blue-500 hover:underline dark:text-blue-300"
+              >
                 Edit
-              </button>
-              <button className="text-red-500 hover:underline dark:text-red-300">
+              </Link>
+              <button 
+              className="text-red-500 hover:underline dark:text-red-300"
+              onClick={() => handleDeleteUnitKerja(unit.id)}
+              >
                 Delete
               </button>
             </div>

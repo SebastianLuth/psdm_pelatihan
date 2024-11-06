@@ -111,6 +111,20 @@ const UserDetailPage = () => {
     }
   };
 
+  const handleDeleteBawahan = async (bawahan_username: number) => {
+    try {
+        await axios.delete(`http://localhost:5000/api/atasan/`, {
+            data: {
+                atasan_username: user?.username,
+                bawahan_username: bawahan_username,
+            },
+            withCredentials: true,
+        });
+    } catch (error) {
+        console.error("Gagal menghapus bawahan:", error);
+    }
+};
+
   useEffect(() => {
     fetchDetailUser();
     console.log("ini user1", user);
@@ -126,7 +140,6 @@ const UserDetailPage = () => {
   useEffect(() => {
     if (user?.unit_kerja) {
       featchAllDataBahawan();
-      console.log("dataAllUserByUnitKerja", dataAllUserByUnitKerja);
     }
   }, [user?.unit_kerja]);
 
@@ -335,7 +348,10 @@ const UserDetailPage = () => {
                       </td>
                       <td className="px-4 py-3">{bawahan.nama}</td>
                       <td className="px-4 py-3 text-center">
-                        <button className="rounded-md bg-red-500 px-3 py-1 text-white transition hover:bg-red-600">
+                        <button 
+                        className="rounded-md bg-red-500 px-3 py-1 text-white transition hover:bg-red-600"
+                        onClick={() => handleDeleteBawahan(bawahan.bawahan_username)}
+                        >
                           Delete
                         </button>
                       </td>
