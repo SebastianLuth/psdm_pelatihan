@@ -1,8 +1,9 @@
 "use client";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import axios from "axios";
+import Image from "next/image";
 import { useParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 interface User {
   id: number;
@@ -43,19 +44,16 @@ const UserDetailPage = () => {
     return unitKerja ? unitKerja.id : null; // kembalikan null jika tidak ditemukan
   };
 
-  const fetchDetailUser = async () => {
+  const fetchDetailUser = useCallback(async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:5000/api/user/${userId}`,
-        {
-          withCredentials: true,
-        },
-      );
+      const response = await axios.get(`http://localhost:5000/api/user/${userId}`, {
+        withCredentials: true,
+      });
       setUser(response.data);
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
-  };
+  }, [userId]);
 
   const handleAddBawahan = async (username: number) => {
     try {
@@ -70,13 +68,12 @@ const UserDetailPage = () => {
         },
       );
       setShowModal(false);
-    } catch {
-      console.error("Error fetching user data:");
-      setShowModal(true);
+    } catch (error) {
+      console.error("Error adding bawahan:", error);
     }
   };
 
-  const featchAllDataBahawan = async () => {
+  const fetchAllDataBawahan = useCallback(async () => {
     const unitKerjaId = getUnitKerjaId(user?.unit_kerja ?? "");
     if (unitKerjaId) {
       try {
@@ -86,19 +83,17 @@ const UserDetailPage = () => {
             withCredentials: true,
           },
         );
-        const data = await response.data;
-        setDataAllUserByUnitKerja(data);
+        setDataAllUserByUnitKerja(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     } else {
-      console.error("ID unit kerja tidak ditemukan");
+      console.error("ID unit kerja not found");
     }
-  };
+  }, [user?.unit_kerja]);
 
-  const getBawahan = async () => {
+  const getBawahan = useCallback(async () => {
     try {
-      // console.log("ini username atasanyya wakkk",user?.username);
       const response = await axios.get(
         `http://localhost:5000/api/atasan?atasan_username=${user?.username}`,
         {
@@ -106,42 +101,41 @@ const UserDetailPage = () => {
         },
       );
       setAllBawahan(response.data);
-    } catch {
-      console.error("Error fetching user data:");
+    } catch (error) {
+      console.error("Error fetching bawahan data:", error);
     }
-  };
+  }, [user?.username]);
 
   const handleDeleteBawahan = async (bawahan_username: number) => {
     try {
-        await axios.delete(`http://localhost:5000/api/atasan/`, {
-            data: {
-                atasan_username: user?.username,
-                bawahan_username: bawahan_username,
-            },
-            withCredentials: true,
-        });
+      await axios.delete(`http://localhost:5000/api/atasan/`, {
+        data: {
+          atasan_username: user?.username,
+          bawahan_username,
+        },
+        withCredentials: true,
+      });
     } catch (error) {
-        console.error("Gagal menghapus bawahan:", error);
+      console.error("Failed to delete bawahan:", error);
     }
-};
+  };
 
   useEffect(() => {
     fetchDetailUser();
-    console.log("ini user1", user);
-  }, []);
+  }, [fetchDetailUser]);
 
   useEffect(() => {
-    // Call getBawahan only when user data is available
     if (user?.username) {
       getBawahan();
     }
-  }, [user, allBawahan]);
+  }, [user?.username, getBawahan, allBawahan]);
 
   useEffect(() => {
     if (user?.unit_kerja) {
-      featchAllDataBahawan();
+      fetchAllDataBawahan();
     }
-  }, [user?.unit_kerja]);
+  }, [user?.unit_kerja, fetchAllDataBawahan]);
+
 
   if (!user) {
     return (
@@ -169,7 +163,7 @@ const UserDetailPage = () => {
           <div className="col-span-1 w-full rounded-2xl bg-white p-6 shadow-lg">
             <div className="flex flex-col items-center">
               <span className="h-25 w-25 rounded-full">
-                <img
+                <Image
                   width={150}
                   height={150}
                   src={"/images/user/user-01.png"}

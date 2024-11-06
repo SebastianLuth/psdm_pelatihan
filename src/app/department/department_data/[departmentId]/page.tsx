@@ -4,7 +4,7 @@ import { UnitKerja } from "@/types/department-type";
 import axios from "axios";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export default function DepartmentDataId() {
     const [newUnitKerja, setUnitKerja] = useState<string>("");
@@ -13,18 +13,18 @@ export default function DepartmentDataId() {
     const [success, setSuccess] = useState<boolean>(false);
     
     const {departmentId} = useParams();
-    const featchDetailUnitKerja = async () => {
+    const featchDetailUnitKerja = useCallback(async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/api/unitkerja/${departmentId}`,{
+            const response = await axios.get(`http://localhost:5000/api/unitkerja/${departmentId}`, {
                 withCredentials: true
-            })
+            });
             const data = response.data;
             setDetailUnitKerja(data);
-        } catch (error) {
+        } catch (error) {   
             setError("Gagal memuat data unit kerja. Silakan coba lagi.");
             console.log(error);
-        } 
-    }
+        }
+    }, [departmentId])
     
     const handleUpdateUnitKerja = async (e: React.FormEvent) => {
       e.preventDefault(); 
@@ -47,7 +47,7 @@ export default function DepartmentDataId() {
     }
     useEffect(() => {
         featchDetailUnitKerja();
-    }, [])
+    }, [featchDetailUnitKerja])
 
     return (
         <DefaultLayout>
