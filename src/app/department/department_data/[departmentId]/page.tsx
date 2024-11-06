@@ -1,7 +1,7 @@
 'use client'
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import { getDetailUnitKerja, updateUnitKerja } from "@/service/department";
 import { UnitKerja } from "@/types/department-type";
-import axios from "axios";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
@@ -15,11 +15,8 @@ export default function DepartmentDataId() {
     const {departmentId} = useParams();
     const featchDetailUnitKerja = useCallback(async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/api/unitkerja/${departmentId}`, {
-                withCredentials: true
-            });
-            const data = response.data;
-            setDetailUnitKerja(data);
+            const response = await getDetailUnitKerja(Number(departmentId));
+            setDetailUnitKerja(response);
         } catch (error) {   
             setError("Gagal memuat data unit kerja. Silakan coba lagi.");
             console.log(error);
@@ -31,11 +28,7 @@ export default function DepartmentDataId() {
       setError(null);     
       setSuccess(false);
       try { 
-        await axios.put(`http://localhost:5000/api/unitkerja/${departmentId}`, {
-            unit_kerja : newUnitKerja
-        },{
-            withCredentials: true
-        })
+        await updateUnitKerja(Number(departmentId), newUnitKerja);
         setSuccess(true);
         featchDetailUnitKerja(); 
       } catch (error) {

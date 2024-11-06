@@ -1,33 +1,10 @@
 "use client";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import { BawahanUser, unitKerjaList, User } from "@/types/manajement-users-type";
 import axios from "axios";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useCallback, useEffect, useState } from "react";
-
-interface User {
-  id: number;
-  username: number;
-  nama: string;
-  jabatan: string;
-  nomor_hp: string;
-  level: number;
-  role: string;
-  unit_kerja: string;
-  biaya_pelatihan_user: number;
-}
-
-interface BawahanUser {
-  bawahan_username: number;
-  nama: string;
-}
-
-const unitKerjaList = [
-  { id: 1, name: "HR" },
-  { id: 2, name: "Finance" },
-  { id: 3, name: "Bagian Perencanaan & Sustainability" },
-  // tambahkan sesuai data yang ada
-];
 
 const UserDetailPage = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -41,7 +18,7 @@ const UserDetailPage = () => {
 
   const getUnitKerjaId = (unitKerjaName: string) => {
     const unitKerja = unitKerjaList.find((item) => item.name === unitKerjaName);
-    return unitKerja ? unitKerja.id : null; // kembalikan null jika tidak ditemukan
+    return unitKerja ? unitKerja.id : null; 
   };
 
   const fetchDetailUser = useCallback(async () => {

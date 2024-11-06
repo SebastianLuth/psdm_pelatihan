@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// Menambahkan Unit Kerja
 export const addUnitKerja = async (unitKerja: string[]) => {
     try {
         if (!unitKerja) {
@@ -17,6 +18,7 @@ export const addUnitKerja = async (unitKerja: string[]) => {
     }
 };
 
+// Mendapatkan Unit Kerja
 export const getUnitKerja = async () => {
     try {
         const response = await axios.get("http://localhost:5000/api/unitkerja", {
@@ -26,4 +28,40 @@ export const getUnitKerja = async () => {
     } catch (error) {
         console.error("Error fetching unit kerja:", error);
     }
+}
+
+// Delete Unit Kerja
+export const deleteUnitKerja = async (unitKerjaId: number) => {
+    try {
+        axios.delete(`http://localhost:5000/api/unitkerja/${unitKerjaId}`, {
+            withCredentials: true,
+          })
+    } catch (error) {
+        console.error("Error deleting unit kerja:", error);
+    }
+}
+
+// Featch Detail Unit Kerja
+export const getDetailUnitKerja = async (departmentId: number) => {
+    try {
+        const response = await axios.get(`http://localhost:5000/api/unitkerja/${departmentId}`, {
+            withCredentials: true
+        });
+        const data = response.data;
+        return data;
+    } catch (error) {   
+        console.error("Error fetching detail unit kerja:", error);
+    }
+}
+
+export const updateUnitKerja = async (departmentId: number, newUnitKerja: string) => {
+    try { 
+        await axios.put(`http://localhost:5000/api/unitkerja/${departmentId}`, {
+            unit_kerja : newUnitKerja
+        },{
+            withCredentials: true
+        })
+      } catch (error) {
+        console.error(error);
+      }
 }

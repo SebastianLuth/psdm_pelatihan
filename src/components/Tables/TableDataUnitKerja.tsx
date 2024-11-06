@@ -1,7 +1,7 @@
 "use client";
-import { getUnitKerja } from "@/service/department";
+import { deleteUnitKerja, getUnitKerja } from "@/service/department";
 import { UnitKerja } from "@/types/department-type";
-import axios from "axios";
+import Swal from 'sweetalert2';
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -19,16 +19,39 @@ const TableDataUnitKerja = () => {
   };
 
   //handle delete unit kerja
-  const handleDeleteUnitKerja = async (unitKerjaId : number) => {
-    try {
-      axios.delete(`http://localhost:5000/api/unitkerja/${unitKerjaId}`, {
-        withCredentials: true,
-      })
 
-    } catch (error) {
-      
+
+const handleDeleteUnitKerja = async (unitKerjaId : number) => {
+  try {
+    const result = await Swal.fire({
+      title: 'Apakah Anda yakin?',
+      text: "Unit kerja ini akan dihapus secara permanen!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ya, hapus!',
+      cancelButtonText: 'Batal'
+    });
+
+    if (result.isConfirmed) {
+      await deleteUnitKerja(unitKerjaId);
+      await Swal.fire(
+        'Terhapus!',
+        'Unit kerja telah dihapus.',
+        'success'
+      );
     }
+  } catch (error) {
+    console.error("Gagal menghapus unit kerja:", error);
+    await Swal.fire(
+      'Gagal!',
+      'Terjadi kesalahan saat menghapus unit kerja.',
+      'error'
+    );
   }
+};
+
 
   // Memuat data 
   useEffect(() => {
