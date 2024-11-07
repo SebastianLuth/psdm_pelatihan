@@ -64,7 +64,7 @@ import {
   
     const fetchUserData = async () => {
       try {
-        await refreshAccessToken(); // Refresh token jika hampir kadaluarsa
+        await refreshAccessToken(); 
         const response = await fetch("http://localhost:5000/api/auth/me", {
           method: "GET",
           credentials: "include",
@@ -131,8 +131,7 @@ import {
       fetchUserData();
       const interval = setInterval(() => {
         fetchUserData();
-      }, 10 * 60 * 1000); // Perbarui setiap 10 menit
-    
+      }, 10 * 60 * 1000); 
       return () => clearInterval(interval);
     }, []);
   

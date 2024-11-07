@@ -12,12 +12,15 @@ const AddDepartmentPage = () => {
   const handleAddUnitKerja = async (e: React.FormEvent) => {
     e.preventDefault(); 
     setError(null);     
-    setSuccess(false); 
+    setSuccess(false);
     try { 
-      await addUnitKerja(unitKerja);
-      setSuccess(true);  
+      const result = await addUnitKerja(unitKerja); 
+      if(result.success){
+        setSuccess(true);  
+      } else {
+        setError(result.message);
+      }
     } catch (error) {
-      setError("Gagal menambahkan unit kerja. Silakan coba lagi.");
       console.error(error);
     }finally{
       setUnitKerja([]);

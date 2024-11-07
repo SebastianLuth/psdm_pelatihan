@@ -15,8 +15,15 @@ export const addUnitKerja = async (unitKerja: string[]) => {
               withCredentials: true,
             }
         );
+        return { success: true };
     } catch (error) {
-        console.error("Error adding unit kerja:", error);
+        if (axios.isAxiosError(error) && error.response) {
+            return { success: false, message: error.response.data.message };
+          }
+          return {
+            success: false,
+            message: "An unexpected error occurred. Please try again.",
+          };
     }
 };
 

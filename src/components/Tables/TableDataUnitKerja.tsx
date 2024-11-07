@@ -1,7 +1,7 @@
 "use client";
 import { deleteUnitKerja, getUnitKerja } from "@/service/department";
 import { UnitKerja } from "@/types/department-type";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -19,42 +19,37 @@ const TableDataUnitKerja = () => {
   };
 
   //handle delete unit kerja
-const handleDeleteUnitKerja = async (unitKerjaId : number) => {
-  try {
-    const result = await Swal.fire({
-      title: 'Apakah Anda yakin?',
-      text: "Unit kerja ini akan dihapus secara permanen!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Ya, hapus!',
-      cancelButtonText: 'Batal'
-    });
+  const handleDeleteUnitKerja = async (unitKerjaId: number) => {
+    try {
+      const result = await Swal.fire({
+        title: "Apakah Anda yakin?",
+        text: "Unit kerja ini akan dihapus secara permanen!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya, hapus!",
+        cancelButtonText: "Batal",
+      });
 
-    if (result.isConfirmed) {
-      await deleteUnitKerja(unitKerjaId);
+      if (result.isConfirmed) {
+        await deleteUnitKerja(unitKerjaId);
+        await Swal.fire("Terhapus!", "Unit kerja telah dihapus.", "success");
+      }
+      fetchUnitKerjaData();
+    } catch (error) {
+      console.error("Gagal menghapus unit kerja:", error);
       await Swal.fire(
-        'Terhapus!',
-        'Unit kerja telah dihapus.',
-        'success'
+        "Gagal!",
+        "Terjadi kesalahan saat menghapus unit kerja.",
+        "error",
       );
     }
-    fetchUnitKerjaData();
-  } catch (error) {
-    console.error("Gagal menghapus unit kerja:", error);
-    await Swal.fire(
-      'Gagal!',
-      'Terjadi kesalahan saat menghapus unit kerja.',
-      'error'
-    );
-  }
-};
+  };
 
-
-  // Memuat data 
+  // Memuat data
   useEffect(() => {
-    fetchUnitKerjaData(); 
+    fetchUnitKerjaData();
   }, []);
 
   return (
@@ -88,16 +83,16 @@ const handleDeleteUnitKerja = async (unitKerjaId : number) => {
 
       <div className="flex flex-col">
         {/* Header Table */}
-        <div className="grid grid-cols-3 rounded-sm bg-gray-200 dark:bg-meta-3">
-          <div className="p-2.5 text-start xl:p-5">
+        <div className="grid grid-cols-1 rounded-sm bg-gray-200 dark:bg-meta-3 sm:grid-cols-3 md:grid-cols-6">
+          <div className="col-span-1 p-2.5 text-start xl:p-5">
             <h5 className="text-sm font-medium uppercase xsm:text-base">No</h5>
           </div>
-          <div className="p-2.5 text-start xl:p-5">
+          <div className="col-span-1 p-2.5 text-start sm:col-span-2 md:col-span-3 xl:p-5">
             <h5 className="text-sm font-medium uppercase xsm:text-base">
               Nama
             </h5>
           </div>
-          <div className="p-2.5 text-start xl:p-5">
+          <div className="col-span-1 p-2.5 text-start sm:col-span-1 md:col-span-2 xl:p-5">
             <h5 className="text-sm font-medium uppercase xsm:text-base">
               Action
             </h5>
@@ -106,30 +101,32 @@ const handleDeleteUnitKerja = async (unitKerjaId : number) => {
 
         {/* Data Rows */}
         {dataAllUnitKerja.map((unit, index) => (
-          <div className="grid grid-cols-3" key={unit.id}>
-            <div className="flex items-center justify-start p-2.5 xl:p-5">
+          <div
+            className="grid grid-cols-1 border-b dark:border-meta-4 sm:grid-cols-3 md:grid-cols-6"
+            key={unit.id}
+          >
+            <div className="col-span-1 flex items-center justify-start p-2.5 xl:p-5">
               <p className="text-black dark:text-white">{index + 1}</p>
             </div>
-            <div className="flex items-center justify-start p-2.5 xl:p-5">
+            <div className="col-span-1 flex items-center justify-start p-2.5 sm:col-span-2 md:col-span-3 xl:p-5">
               <p className="text-black dark:text-white">{unit.unit_kerja}</p>
             </div>
-            <div className="flex items-center justify-start gap-4 p-2.5 xl:p-5">
+            <div className="col-span-1 flex items-center justify-start gap-4 p-2.5 sm:col-span-1 md:col-span-2 xl:p-5">
               <Link
                 href={`/department/department_data/${unit.id}`}
                 className="text-blue-500 hover:underline dark:text-blue-300"
               >
                 Edit
               </Link>
-              <button 
-              className="text-red-500 hover:underline dark:text-red-300"
-              onClick={() => handleDeleteUnitKerja(unit.id)}
+              <button
+                className="text-red-500 hover:underline dark:text-red-300"
+                onClick={() => handleDeleteUnitKerja(unit.id)}
               >
                 Delete
               </button>
             </div>
           </div>
         ))}
-
       </div>
     </div>
   );
