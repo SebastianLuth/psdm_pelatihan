@@ -19,8 +19,6 @@ const TableDataUnitKerja = () => {
   };
 
   //handle delete unit kerja
-
-
 const handleDeleteUnitKerja = async (unitKerjaId : number) => {
   try {
     const result = await Swal.fire({
@@ -42,6 +40,7 @@ const handleDeleteUnitKerja = async (unitKerjaId : number) => {
         'success'
       );
     }
+    fetchUnitKerjaData();
   } catch (error) {
     console.error("Gagal menghapus unit kerja:", error);
     await Swal.fire(
@@ -56,7 +55,7 @@ const handleDeleteUnitKerja = async (unitKerjaId : number) => {
   // Memuat data 
   useEffect(() => {
     fetchUnitKerjaData(); 
-  }, [dataAllUnitKerja]);
+  }, []);
 
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">

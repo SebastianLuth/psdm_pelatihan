@@ -1,49 +1,54 @@
 "use client";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import { BawahanUser, unitKerjaList, User } from "@/types/manajement-users-type";
-import axios from "axios";
+import { addBawahan, deleteBawahan, getAllDataBawahanInUnitKerja, getBawahanByAtasan, getDetailUser } from "@/service/management-users";
+import {
+  BawahanUser,
+  unitKerjaList,
+  User,
+} from "@/types/manajement-users-type";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 const UserDetailPage = () => {
   const [user, setUser] = useState<User | null>(null);
-  const [usernameBawahan, setUsernameBawahan] = useState<number>(0);
   const { userId } = useParams();
-  const [showModal, setShowModal] = React.useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [allBawahan, setAllBawahan] = useState<BawahanUser[]>([]);
   const [dataAllUserByUnitKerja, setDataAllUserByUnitKerja] = useState<User[]>(
     [],
   );
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<boolean>(false);
 
   const getUnitKerjaId = (unitKerjaName: string) => {
     const unitKerja = unitKerjaList.find((item) => item.name === unitKerjaName);
-    return unitKerja ? unitKerja.id : null; 
+    return unitKerja ? unitKerja.id : null;
   };
 
   const fetchDetailUser = useCallback(async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/user/${userId}`, {
-        withCredentials: true,
-      });
-      setUser(response.data);
+      const response = await getDetailUser(Number(userId));
+      setUser(response);
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
   }, [userId]);
 
-  const handleAddBawahan = async (username: number) => {
+  const handleAddBawahan = async (username: number, nama : string) => {
     try {
-      await axios.post(
-        `http://localhost:5000/api/atasan/`,
-        {
-          atasan_username: user?.username,
-          bawahan_username: username,
-        },
-        {
-          withCredentials: true,
-        },
-      );
+      setSuccess(false);
+      setError(null);
+      const atasan = user?.username;
+      const result = await addBawahan(atasan, username,  nama);
+      if (result.success) {
+        setSuccess(true);
+      } else {
+        setError(result.message);
+        return;
+      }
+      getBawahan();
       setShowModal(false);
     } catch (error) {
       console.error("Error adding bawahan:", error);
@@ -54,13 +59,8 @@ const UserDetailPage = () => {
     const unitKerjaId = getUnitKerjaId(user?.unit_kerja ?? "");
     if (unitKerjaId) {
       try {
-        const response = await axios.get(
-          `http://localhost:5000/api/user?unit_kerja=${unitKerjaId}`,
-          {
-            withCredentials: true,
-          },
-        );
-        setDataAllUserByUnitKerja(response.data);
+        const response = await getAllDataBawahanInUnitKerja(unitKerjaId);
+        setDataAllUserByUnitKerja(response);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -71,13 +71,8 @@ const UserDetailPage = () => {
 
   const getBawahan = useCallback(async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:5000/api/atasan?atasan_username=${user?.username}`,
-        {
-          withCredentials: true,
-        },
-      );
-      setAllBawahan(response.data);
+      const response = await getBawahanByAtasan(user?.username);
+      setAllBawahan(response);
     } catch (error) {
       console.error("Error fetching bawahan data:", error);
     }
@@ -85,17 +80,36 @@ const UserDetailPage = () => {
 
   const handleDeleteBawahan = async (bawahan_username: number) => {
     try {
-      await axios.delete(`http://localhost:5000/api/atasan/`, {
-        data: {
-          atasan_username: user?.username,
-          bawahan_username,
-        },
-        withCredentials: true,
+      const result = await Swal.fire({
+        title: 'Apakah Anda yakin?',
+        text: "Bawahan ini akan dihapus",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, hapus!',
+        cancelButtonText: 'Batal'
       });
+
+      if (result.isConfirmed) {
+        await deleteBawahan( user?.username , bawahan_username );
+        await Swal.fire(
+          'Terhapus!',
+          'Bawahan telah dihapus.',
+          'success'
+        );
+      }
+      getBawahan();
     } catch (error) {
       console.error("Failed to delete bawahan:", error);
     }
   };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSuccess(false);
+    setError(null);
+  }
 
   useEffect(() => {
     fetchDetailUser();
@@ -105,14 +119,13 @@ const UserDetailPage = () => {
     if (user?.username) {
       getBawahan();
     }
-  }, [user?.username, getBawahan, allBawahan]);
+  }, [user?.username, getBawahan]);
 
   useEffect(() => {
     if (user?.unit_kerja) {
       fetchAllDataBawahan();
     }
   }, [user?.unit_kerja, fetchAllDataBawahan]);
-
 
   if (!user) {
     return (
@@ -267,8 +280,8 @@ const UserDetailPage = () => {
                                         className="rounded bg-emerald-500 px-6 py-3 text-xs font-semibold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none active:bg-emerald-600"
                                         type="button"
                                         onClick={() =>
-                                          handleAddBawahan(user.username)
-                                        } // Kirim id pengguna sebagai argumen
+                                          handleAddBawahan(user.username, user.nama)
+                                        }
                                       >
                                         Tambah Bawahan
                                       </button>
@@ -277,6 +290,14 @@ const UserDetailPage = () => {
                                 ))}
                               </tbody>
                             </table>
+                            {success && (
+                              <p className="mt-2 p-4 text-green-500">
+                                Bawahan berhasil ditambahkan
+                              </p>
+                            )}
+                            {error && (
+                              <p className="mt-2 p-4 text-red-500">{error}</p>
+                            )}
                           </div>
                         </div>
                         {/*footer*/}
@@ -284,7 +305,7 @@ const UserDetailPage = () => {
                           <button
                             className="background-transparent mb-1 mr-1 px-6 py-2 text-sm font-bold uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
                             type="button"
-                            onClick={() => setShowModal(false)}
+                            onClick={() => handleCloseModal()}
                           >
                             Close
                           </button>
@@ -295,9 +316,7 @@ const UserDetailPage = () => {
                   <div className="fixed inset-0 z-40 bg-black opacity-25"></div>
                 </>
               ) : null}
-
               {/* Modal add bawahan End*/}
-
               <table className="w-full overflow-hidden rounded-lg border border-gray-200 text-left">
                 <thead>
                   <tr className="bg-gray-100 text-sm text-gray-700">
@@ -319,9 +338,11 @@ const UserDetailPage = () => {
                       </td>
                       <td className="px-4 py-3">{bawahan.nama}</td>
                       <td className="px-4 py-3 text-center">
-                        <button 
-                        className="rounded-md bg-red-500 px-3 py-1 text-white transition hover:bg-red-600"
-                        onClick={() => handleDeleteBawahan(bawahan.bawahan_username)}
+                        <button
+                          className="rounded-md bg-red-500 px-3 py-1 text-white transition hover:bg-red-600"
+                          onClick={() =>
+                            handleDeleteBawahan(bawahan.bawahan_username)
+                          }
                         >
                           Delete
                         </button>
