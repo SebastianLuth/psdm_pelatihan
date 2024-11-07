@@ -1,5 +1,7 @@
 import axios from "axios";
 
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 // Menambahkan Unit Kerja
 export const addUnitKerja = async (unitKerja: string[]) => {
     try {
@@ -21,7 +23,7 @@ export const addUnitKerja = async (unitKerja: string[]) => {
 // Mendapatkan Unit Kerja
 export const getUnitKerja = async () => {
     try {
-        const response = await axios.get("http://localhost:5000/api/unitkerja", {
+        const response = await axios.get(`${baseUrl}/api/unitkerja`, {
             withCredentials: true,
         });
         return response.data;
@@ -33,7 +35,7 @@ export const getUnitKerja = async () => {
 // Delete Unit Kerja
 export const deleteUnitKerja = async (unitKerjaId: number) => {
     try {
-        axios.delete(`http://localhost:5000/api/unitkerja/${unitKerjaId}`, {
+        axios.delete(`${baseUrl}/api/unitkerja/${unitKerjaId}`, {
             withCredentials: true,
           })
     } catch (error) {
@@ -44,7 +46,7 @@ export const deleteUnitKerja = async (unitKerjaId: number) => {
 // Featch Detail Unit Kerja
 export const getDetailUnitKerja = async (departmentId: number) => {
     try {
-        const response = await axios.get(`http://localhost:5000/api/unitkerja/${departmentId}`, {
+        const response = await axios.get(`${baseUrl}/api/unitkerja/${departmentId}`, {
             withCredentials: true
         });
         const data = response.data;
@@ -56,7 +58,7 @@ export const getDetailUnitKerja = async (departmentId: number) => {
 
 export const updateUnitKerja = async (departmentId: number, newUnitKerja: string) => {
     try { 
-        await axios.put(`http://localhost:5000/api/unitkerja/${departmentId}`, {
+        await axios.put(`${baseUrl}/api/unitkerja/${departmentId}`, {
             unit_kerja : newUnitKerja
         },{
             withCredentials: true

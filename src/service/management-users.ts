@@ -1,10 +1,12 @@
 import axios from "axios";
 import Swal from "sweetalert2";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 
 export const addUser = async (userData: any) => {
   try {
     await axios.post(
-      "http://localhost:5000/api/auth/signup",
+      `${baseUrl}/api/auth/signup`,
       { ...userData },
       { withCredentials: true }
     );
@@ -29,7 +31,7 @@ export const addUser = async (userData: any) => {
 export const getDetailUser = async (userId: number) => {
   try {
     const response = await axios.get(
-      `http://localhost:5000/api/user/${userId}`,
+      `${baseUrl}/api/user/${userId}`,
       {
         withCredentials: true,
       }
@@ -48,7 +50,7 @@ export const addBawahan = async (
 ) => {
   try {
     await axios.post(
-      `http://localhost:5000/api/atasan/`,
+      `${baseUrl}/api/atasan/`,
       {
         atasan_username,
         bawahan_username,
@@ -78,7 +80,7 @@ export const addBawahan = async (
 export const getAllDataBawahanInUnitKerja = async (unitKerjaId: number) => {
   try {
     const response = await axios.get(
-      `http://localhost:5000/api/user?unit_kerja=${unitKerjaId}`,
+      `${baseUrl}/api/user?unit_kerja=${unitKerjaId}`,
       {
         withCredentials: true,
       }
@@ -93,7 +95,7 @@ export const getBawahanByAtasan = async (
 ) => {
   try {
     const response = await axios.get(
-      `http://localhost:5000/api/atasan?atasan_username=${atasan_username}`,
+      `${baseUrl}/api/atasan?atasan_username=${atasan_username}`,
       {
         withCredentials: true,
       }
@@ -110,7 +112,7 @@ export const deleteBawahan = async (
   bawahan_username: number | undefined
 ) => {
   try {
-    await axios.delete(`http://localhost:5000/api/atasan/`, {
+    await axios.delete(`${baseUrl}/api/atasan/`, {
       data: {
         atasan_username,
         bawahan_username

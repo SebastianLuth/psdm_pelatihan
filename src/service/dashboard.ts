@@ -1,8 +1,10 @@
 import axios from "axios";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 
 export const getEventDataCalendar = async () => {
    try {
-    const response = await axios.get("http://localhost:5000/api/calendar", {
+    const response = await axios.get(`${baseUrl}/api/calendar`, {
         withCredentials: true,
     });
     console.log("ini response get Event1", response.data);
@@ -28,7 +30,7 @@ export const postEvent = async (eventData: {
     dateEnd: string;
   }) => {
     try {
-      await axios.post("http://localhost:5000/api/calendar", eventData, {
+      await axios.post(`${baseUrl}/api/calendar`, eventData, {
         withCredentials: true,
       });
     } catch (error) {
@@ -38,7 +40,7 @@ export const postEvent = async (eventData: {
 
 export const deleteEvent = async (eventId: number) => {
   try {
-    await axios.delete(`http://localhost:5000/api/calendar/${eventId}`, {
+    await axios.delete(`${baseUrl}/api/calendar/${eventId}`, {
       withCredentials: true,
     });
   } catch (error) {
