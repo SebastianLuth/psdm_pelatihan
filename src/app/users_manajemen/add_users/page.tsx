@@ -5,7 +5,7 @@ import ProtectedRoute from "@/components/ProtectedRoute"
 const AddUserPage = () => {
     return (
         <>
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={['admin']}>
             <DefaultLayout>
             <FormDataUser/>
             </DefaultLayout>

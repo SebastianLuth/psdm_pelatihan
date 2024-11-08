@@ -8,6 +8,7 @@ import { colorsBarCalendar, Event } from "@/types/dashboar-tipe";
 import { deleteEvent, getEventDataCalendar, postEvent } from "@/service/dashboard";
 import EventPostPopover from "@/components/event-post-popover";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import { useAuth } from "@/context/AuthContext";
 
 moment.locale("en-GB");
 const localizer = momentLocalizer(moment);
@@ -20,6 +21,8 @@ export default function MyCalendar() {
   const [newEvent, setNewEvent] = useState<Partial<Event>>({});
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [IsUploaded, setIsUploaded] = useState<boolean>(false);
+
+  const {userData} = useAuth();
 
   const featchAllEvent = async () => {
     try {
@@ -37,6 +40,7 @@ export default function MyCalendar() {
   };
 
   const handleSelectSlot = ({ start, end }: SlotInfo) => {
+    if(userData?.role !== "admin") return;
     setNewEvent({ start, end });
     setShowModal(true);
   };

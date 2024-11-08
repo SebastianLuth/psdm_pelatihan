@@ -5,7 +5,7 @@ import AssessmentReport from "@/components/Tables/AssesmentReport";
 const AssessmentReportPage = () => {
     return (
         <>
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={['admin']}>
             <DefaultLayout>
                 <AssessmentReport/>
             </DefaultLayout>

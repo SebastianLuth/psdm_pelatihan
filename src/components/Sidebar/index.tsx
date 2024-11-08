@@ -6,6 +6,7 @@ import Image from "next/image";
 import SidebarItem from "@/components/Sidebar/SidebarItem";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { menuGroups } from "@/types/sidebar";
+import { useAuth } from "@/context/AuthContext";
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -15,6 +16,7 @@ interface SidebarProps {
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const pathname = usePathname();
   const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
+  const {userData} = useAuth();
 
   return (
     <aside
@@ -65,7 +67,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 {group.name}
               </h3>
               <ul className="mb-6 flex flex-col gap-1.5">
-                {group.menuItems.map((menuItem, menuIndex) => (
+                {group.menuItems.filter((menuItem) => menuItem.role === "all" || menuItem.role === userData?.role).map((menuItem, menuIndex) => (
                   <SidebarItem
                     key={menuIndex}
                     item={menuItem}

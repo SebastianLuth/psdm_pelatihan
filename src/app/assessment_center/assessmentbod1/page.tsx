@@ -4,7 +4,7 @@ import TableAssessmentBod1 from "@/components/Tables/TableAssessmentBod1";
 
 const AssessmentBOD1Page = () => {
     return (
-        <ProtectedRoute>
+        <ProtectedRoute allowedRoles={['admin']}>
         <DefaultLayout>
             <TableAssessmentBod1/>
         </DefaultLayout>

@@ -4,7 +4,7 @@ import TableDataTraingin from "@/components/Tables/TableDataTraingin"
 
 const TrainingDataPage = () => {
     return (
-        <ProtectedRoute>
+        <ProtectedRoute allowedRoles={['admin']}>
         <DefaultLayout>
             <TableDataTraingin/>
         </DefaultLayout>

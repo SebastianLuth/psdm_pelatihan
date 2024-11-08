@@ -7,12 +7,12 @@ import TableDataUnitKerja from "@/components/Tables/TableDataUnitKerja"
 const DataDepartmentPage = () => {
   
     return (
-        <ProtectedRoute>
+        <ProtectedRoute allowedRoles={['admin']}>
         <DefaultLayout>
             <TableDataUnitKerja/>
         </DefaultLayout>
         </ProtectedRoute>
     )
-}
+}   
 
 export default DataDepartmentPage

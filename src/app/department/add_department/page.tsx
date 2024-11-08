@@ -33,7 +33,7 @@ const AddDepartmentPage = () => {
   }, [unitKerja]);  
 
   return (
-    <ProtectedRoute>
+    <ProtectedRoute allowedRoles={['admin']}>
     <DefaultLayout>
       <div className="p-8 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <form onSubmit={handleAddUnitKerja}>

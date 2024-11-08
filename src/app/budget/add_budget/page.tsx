@@ -5,7 +5,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 const AddBudgetPage = () => {
     return (
         <>
-        <ProtectedRoute>
+        <ProtectedRoute allowedRoles={['admin']}>
         <DefaultLayout>
             <FormAddBudget/>
         </DefaultLayout>

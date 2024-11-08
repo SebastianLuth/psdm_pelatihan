@@ -8,7 +8,7 @@ import { useState } from "react"
 const UsersDataPage = () => {
     const [selectedUnitKerja, setSelectedUnitKerja] = useState<string>("")
     return (
-        <ProtectedRoute>
+        <ProtectedRoute allowedRoles={['admin']}>
         <DefaultLayout>
             <div className="m-10">
                 <SelectUnitKerja onUnitKerjaChange={setSelectedUnitKerja} />

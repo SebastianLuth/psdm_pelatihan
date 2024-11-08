@@ -1,17 +1,35 @@
-'use client';
+"use client";
 import { useAuth } from "@/context/AuthContext";
 import { useEffect } from "react";
 
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+interface ProtectedRouteProps {
+  children: React.ReactNode;
+  allowedRoles?: string[] | undefined | null;
+}
+
+const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) => {
   const { userData, isLoading } = useAuth();
 
   useEffect(() => {
     if (!isLoading && !userData) {
-      window.location.href = "/auth/signin"; // Redirect to login page if not authenticated
+      window.location.href = "/auth/signin";
+    } else if (
+      allowedRoles &&
+      userData?.role &&
+      !allowedRoles.includes(userData.role)
+    ) {
+      // Jika ada userData tetapi role-nya tidak sesuai, arahkan ke dashboard
+      window.location.href = "/";
     }
-  }, [userData, isLoading, ]);
+  }, [userData, isLoading]);
 
-  if (isLoading || !userData) return <div>Loading...</div>;
+  if (
+    isLoading ||
+    !userData ||
+    (allowedRoles && userData.role && !allowedRoles.includes(userData.role))
+  ) {
+    return <div>Loading...</div>;
+  }
   return <>{children}</>;
 };
 

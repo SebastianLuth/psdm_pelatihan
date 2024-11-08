@@ -5,7 +5,7 @@ import TableEvaluationTraining1 from "@/components/Tables/TableEvaluationTrainin
 const Training1Page = () => {
     return (
         <>
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={['admin']}>
             <DefaultLayout>
                 <TableEvaluationTraining1/>
             </DefaultLayout>

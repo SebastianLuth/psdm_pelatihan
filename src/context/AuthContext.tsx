@@ -66,7 +66,6 @@ import {
   
     const fetchUserData = async () => {
       try {
-        await refreshAccessToken(); 
         const response = await fetch(`${baseUrl}/api/auth/me`, {
           method: "GET",
           credentials: "include",
@@ -132,7 +131,7 @@ import {
     useEffect(() => {
       fetchUserData();
       const interval = setInterval(() => {
-        fetchUserData();
+        refreshAccessToken();
       }, 10 * 60 * 1000); 
       return () => clearInterval(interval);
     }, []);

@@ -34,7 +34,6 @@ const SignIn = (): JSX.Element => {
   }, [errorMessage]);
 
   return (
-    <ProtectedRoute>
       <>
       <Head>
         <title>EV4- Login</title>
@@ -122,7 +121,6 @@ const SignIn = (): JSX.Element => {
         </div>
       </section>
       </>
-    </ProtectedRoute>
   );
 };
 

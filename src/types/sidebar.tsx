@@ -32,6 +32,7 @@ export const menuGroups = [
           ),
           label: "Dashboard",
           route: "/",
+          role : "all"
         },
         {
           icon: (
@@ -57,8 +58,9 @@ export const menuGroups = [
           route: "#",
           children: [
             { label: "Tambah User Baru", route: "/users_manajemen/add_users" },
-            { label: "Data User", route: "/users_manajemen/users_data" },
+            { label: "Data User", route: "/users_manajemen/users_data", role : "all" },
           ],
+          role : "admin"
         },
         {
           icon: (
@@ -85,6 +87,7 @@ export const menuGroups = [
             { label: "Tambah Unit Kerja", route: "/department/add_department" },
             { label: "Data Unit Kerja", route: "/department/department_data" },
           ],
+          role : "admin"
         },
         {
           icon: (
@@ -105,6 +108,7 @@ export const menuGroups = [
             { label: "Tambah Anggaran", route: "/budget/add_budget" },
             { label: "Data Anggaran", route: "/budget/budget_data" },
           ],
+          role : "admin"
         },
         {
           icon: (
@@ -127,6 +131,7 @@ export const menuGroups = [
             { label: "Evaluasi Level 1", route: "/training/evaluation_training1" },
             { label: "Evaluasi Level  3 & 4", route: "/training/evaluation_training2" },
           ],
+          role : "admin"
         },
         {
           icon: (
@@ -147,6 +152,7 @@ export const menuGroups = [
             { label: "Assessment BOD-1", route: "/assessment_center/assessmentbod1" },
             { label: "Assessment BOD-2 & 3 ", route: "/assessment_center/assessmentbod2" },
           ],
+          role : "admin"
         },
         {
           icon: (
@@ -168,6 +174,7 @@ export const menuGroups = [
             { label: "Evaluasi Level 3 & 4", route: "/report/evaluation2" },
             { label: "Assessment", route: "/report/assessment" },
           ],
+          role : "admin"
         },
         {
           icon: (
@@ -189,6 +196,7 @@ export const menuGroups = [
             { label: "Tambah RKAP", route: "/rkap/addrkap" },
             { label: "Data RKAP", route: "/rkap/rkapdata" },
           ],
+          role : "admin"
         },
       ],
     },

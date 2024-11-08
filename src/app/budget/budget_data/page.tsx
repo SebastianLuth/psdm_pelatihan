@@ -5,7 +5,7 @@ import TableDataAnggaran from "@/components/Tables/TableDataAnggaran"
 const DataBudgetPage = () => {
     return (
         <>
-        <ProtectedRoute>
+        <ProtectedRoute allowedRoles={['admin']}>
         <DefaultLayout>
             <TableDataAnggaran/>
         </DefaultLayout>

@@ -4,7 +4,7 @@ import ProtectedRoute from "@/components/ProtectedRoute"
 
 const AddTrainingPage = () => {
     return (
-        <ProtectedRoute>
+        <ProtectedRoute allowedRoles={['admin']}>
         <DefaultLayout>
             <FormAddTraining/>
         </DefaultLayout>

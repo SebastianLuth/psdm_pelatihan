@@ -4,7 +4,7 @@ import TableReportEvaluation2 from "@/components/Tables/TableReportEvaluation2"
 
 const Evaluation2Page = () => {
     return (
-        <ProtectedRoute>
+        <ProtectedRoute allowedRoles={['admin']}>
         <DefaultLayout>
             <TableReportEvaluation2/>
         </DefaultLayout>
