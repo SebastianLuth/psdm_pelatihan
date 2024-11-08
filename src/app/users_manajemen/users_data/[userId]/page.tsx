@@ -1,5 +1,6 @@
 "use client";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import { addBawahan, deleteBawahan, getAllDataBawahanInUnitKerja, getBawahanByAtasan, getDetailUser } from "@/service/management-users";
 import {
   BawahanUser,
@@ -138,6 +139,7 @@ const UserDetailPage = () => {
   }
 
   return (
+    <ProtectedRoute>
     <DefaultLayout>
       <div className="mx-auto flex min-h-screen flex-col items-center bg-gradient-to-r from-gray-50 to-gray-200 p-4">
         {/* Header Section */}
@@ -367,6 +369,7 @@ const UserDetailPage = () => {
         </div>
       </div>
     </DefaultLayout>
+    </ProtectedRoute>
   );
 };
 export default UserDetailPage;

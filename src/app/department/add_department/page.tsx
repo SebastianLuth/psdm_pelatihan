@@ -1,5 +1,6 @@
 'use client';
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import { addUnitKerja } from "@/service/department";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -32,6 +33,7 @@ const AddDepartmentPage = () => {
   }, [unitKerja]);  
 
   return (
+    <ProtectedRoute>
     <DefaultLayout>
       <div className="p-8 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <form onSubmit={handleAddUnitKerja}>
@@ -58,6 +60,7 @@ const AddDepartmentPage = () => {
         {error && <p className="mt-4 text-red-500">{error}</p>}
       </div>
     </DefaultLayout>
+    </ProtectedRoute>
   );
 };
 

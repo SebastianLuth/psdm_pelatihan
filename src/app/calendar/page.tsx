@@ -7,6 +7,7 @@ import EventSummaryPopover from "@/components/event-summary-popover";
 import { colorsBarCalendar, Event } from "@/types/dashboar-tipe";
 import { deleteEvent, getEventDataCalendar, postEvent } from "@/service/dashboard";
 import EventPostPopover from "@/components/event-post-popover";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 moment.locale("en-GB");
 const localizer = momentLocalizer(moment);
@@ -97,6 +98,7 @@ export default function MyCalendar() {
     featchAllEvent();
   }, []);
   return (
+    <ProtectedRoute>
     <div className="relative h-screen bg-gray-100 p-5">
       <div className="mb-5 rounded-lg border border-gray-200 bg-white p-5 shadow-md">
         <div className="mb-4 flex items-center justify-between">
@@ -193,5 +195,6 @@ export default function MyCalendar() {
      />
       )}
     </div>
+    </ProtectedRoute>
   );
 }

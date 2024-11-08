@@ -1,5 +1,6 @@
 'use client'
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import { getDetailUnitKerja, updateUnitKerja } from "@/service/department";
 import { UnitKerja } from "@/types/department-type";
 import Link from "next/link";
@@ -43,6 +44,7 @@ export default function DepartmentDataId() {
     }, [featchDetailUnitKerja])
 
     return (
+      <ProtectedRoute>
         <DefaultLayout>
             <div className="p-8 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <form onSubmit={handleUpdateUnitKerja}>
@@ -69,5 +71,6 @@ export default function DepartmentDataId() {
         {error && <p className="mt-4 text-red-500">{error}</p>}
       </div>
         </DefaultLayout>
+        </ProtectedRoute>
     )
 }
