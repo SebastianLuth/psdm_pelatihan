@@ -7,18 +7,16 @@ export const getEventDataCalendar = async () => {
     const response = await axios.get(`${baseUrl}/api/calendar`, {
         withCredentials: true,
     });
-    console.log("ini response get Event1", response.data);
     const mappedResponse = response.data.map((event: any) => ({
       id: event.id,
       title: event.title,
       start: new Date(event.date_start),
       end: new Date(event.date_end),
-      description : event.description
+      description : event.description,
+      color : event.color
     }))
-    console.log("ini response get Event2", mappedResponse);
     return mappedResponse
    } catch (error) {
-    console.error("Error fetching events:", error);
     return [];
    }
 };

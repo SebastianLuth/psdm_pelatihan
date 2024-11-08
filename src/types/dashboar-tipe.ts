@@ -4,6 +4,7 @@ export interface Event {
     end: Date;
     title: string;
     description?: string;
+    color?: string;
   }
   
  export const colorsBarCalendar = [

@@ -10,6 +10,8 @@ interface EventPostPopoverProps {
   isUploaded: boolean;
 }
 
+const colors = ["#FF5733", "#33FF57", "#87CEEB", "#FFC300", "#DAF7A6", "#FF1493"];
+
 export default function EventPostPopover({
   newEvent,
   onChange,
@@ -38,6 +40,29 @@ export default function EventPostPopover({
           }
           className="mb-4 w-full rounded border border-gray-300 p-2"
         />
+        {/* Pick Colors */}
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Pilih Warna
+          </label>
+          <div className="flex space-x-2">
+            {colors.map((color) => (
+              <button
+                key={color}
+                onClick={() => onChange({ ...newEvent, color })}
+                style={{
+                  backgroundColor: color,
+                  width: "24px",
+                  height: "24px",
+                  borderRadius: "50%",
+                  border: newEvent.color === color ? "2px solid black" : "none",
+                }}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Date Start */}
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
             Tanggal Mulai
@@ -53,6 +78,8 @@ export default function EventPostPopover({
             className="w-full rounded border border-gray-300 bg-gray-100 p-2 text-gray-600"
           />
         </div>
+
+        {/* Date End */}
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
             Tanggal Akhir

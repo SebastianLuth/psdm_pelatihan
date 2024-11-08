@@ -46,9 +46,11 @@ import {
     const [isError, setIsError] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
     const refreshAccessToken = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/auth/refreshToken", {
+        const response = await fetch(`${baseUrl}/api/auth/refreshToken`, {
           method: "POST",
           credentials: "include",
         });
@@ -65,7 +67,7 @@ import {
     const fetchUserData = async () => {
       try {
         await refreshAccessToken(); 
-        const response = await fetch("http://localhost:5000/api/auth/me", {
+        const response = await fetch(`${baseUrl}/api/auth/me`, {
           method: "GET",
           credentials: "include",
         });
@@ -87,7 +89,7 @@ import {
     const login = async (username: number, password: string) => {
       setIsLoading(true);
       try {
-        const response = await fetch("http://localhost:5000/api/auth/signin", {
+        const response = await fetch(`${baseUrl}/api/auth/signin`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -115,7 +117,7 @@ import {
     const logout = async () => {
       setIsLoading(true);
       try {
-        await fetch("http://localhost:5000/api/auth/signout", { method: "POST", credentials: "include" });
+        await fetch(`${baseUrl}/api/auth/signout`, { method: "POST", credentials: "include" });
         cookie.remove("accessToken");
         cookie.remove("refreshToken");
         setUserData(null);

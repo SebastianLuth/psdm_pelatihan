@@ -48,6 +48,7 @@ export default function MyCalendar() {
           description: newEvent.description,
           dateStart: moment(newEvent.start).format("YYYY-MM-DD"),
           dateEnd: moment(newEvent.end).format("YYYY-MM-DD"),
+          color : newEvent.color
         };
   
         // Send the event to the backend
@@ -91,14 +92,6 @@ export default function MyCalendar() {
       minHeight: "100px",
     },
   });
-
-  const getEventColor = (event: Event) => {
-    const sameDayEvents = events.filter((e) =>
-      moment(e.start).isSame(event.start, "day"),
-    );
-    const index = sameDayEvents.indexOf(event) % colorsBarCalendar.length;
-    return colorsBarCalendar[index];
-  };
 
   useEffect(() => {
     featchAllEvent();
@@ -170,8 +163,14 @@ export default function MyCalendar() {
           onNavigate={setCurrentDate}
           dayPropGetter={dayPropGetter}
           eventPropGetter={(event) => ({
-            className: `${getEventColor(event)} text-white rounded-md shadow-sm transition duration-300`,
-            style: { borderRadius: "5px", height: "20px", fontSize: "12px" },
+            style: {
+              backgroundColor: event.color || "#87CEEB  ",
+              color: "white",
+              borderRadius: "5px",
+              height: "20px",
+              fontSize: "12px",
+              padding: "2px",
+            },
           })}
         />
       </div>
