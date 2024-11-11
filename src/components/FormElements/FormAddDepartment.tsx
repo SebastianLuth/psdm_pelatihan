@@ -54,7 +54,7 @@ export function FormAddDepartment({
             onChange={(e) => setInputValue(e.target.value)}
             placeholder= {
                 mode === "add"
-                  ? "Contoh: Staff Sub Bagian Persona"
+                  ? "Contoh: Bagian Sumber Daya Manusia"
                   : `Masukkan nama baru unit kerja untuk ${detailUnitKerja[0]?.unit_kerja}`
               }
             className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-100"

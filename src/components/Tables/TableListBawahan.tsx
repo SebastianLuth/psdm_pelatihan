@@ -5,6 +5,8 @@ type TableListBawahanProps = {
     onDeleteBawahan : (bawahan_username : number) => void
 }
 
+
+
 export function TableListBawahan({allBawahan, onDeleteBawahan}: TableListBawahanProps) {
   return (
     <table className="w-full overflow-hidden rounded-lg border border-gray-200 text-left">

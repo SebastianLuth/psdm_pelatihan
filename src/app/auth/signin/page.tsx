@@ -34,19 +34,18 @@ const SignIn = (): JSX.Element => {
   }, [errorMessage]);
 
   return (
-      <>
+    <>
       <Head>
         <title>EV4- Login</title>
       </Head>
       <section className="relative min-h-screen overflow-hidden bg-gray-50">
-      
-            <Image
-              src="/assets/bg-website2.png"
-              alt="background"
-              layout="fill"
-              objectFit="cover"
-              className="opacity-60" // Tambahkan opacity jika ingin transparan
-            />
+        <Image
+          src="/assets/bg-website2.webp"
+          alt="background"
+          layout="fill"
+          objectFit="cover"
+          className="opacity-60"
+        />
         <div className="mx-auto flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
           <div className="relative z-50 w-full rounded-lg bg-white shadow sm:max-w-md md:mt-0 xl:p-0">
             <div className="mt-10 flex justify-center text-2xl font-semibold text-gray-900 ">
@@ -120,7 +119,7 @@ const SignIn = (): JSX.Element => {
           </div>
         </div>
       </section>
-      </>
+    </>
   );
 };
 

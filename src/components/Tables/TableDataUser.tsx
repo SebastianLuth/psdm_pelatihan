@@ -1,6 +1,5 @@
-// src/components/Tables/TableDataUser.tsx
 "use client"
-import axios from "axios"
+import { getAllDataBawahanInUnitKerja } from "@/service/management-users"
 import Link from "next/link"
 import React, { useEffect, useState } from "react"
 
@@ -21,12 +20,8 @@ const TableDataUser: React.FC<TableDataUserProps> = ({ selectedUnitKerja }) => {
   // Get all user by unit kerja
   const fetchAllUserByUnitKerja = async () => {
     try {
-      const response = await axios.get<User[]>(
-        `http://localhost:5000/api/user?unit_kerja=${selectedUnitKerja}`,
-        { withCredentials: true }
-      )
-      console.log("ini featch data",response.data)
-      setUsers(response.data)
+      const response = await getAllDataBawahanInUnitKerja(Number(selectedUnitKerja))
+      setUsers(response)
     } catch (error) {
       console.error("Error fetching user data:", error)
     }

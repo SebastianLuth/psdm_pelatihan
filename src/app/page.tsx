@@ -13,10 +13,10 @@ export default function Home() {
     <>
       <ProtectedRoute>
         <DefaultLayout>
-          <div className="mb-4 block">
+          <div className="grid gap-6">
             <ScrollableCards />
           </div>
-        <MyCalendar /> 
+          <MyCalendar />
         </DefaultLayout>
       </ProtectedRoute>
     </>

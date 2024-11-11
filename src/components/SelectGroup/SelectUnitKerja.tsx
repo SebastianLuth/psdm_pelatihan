@@ -1,5 +1,6 @@
 // src/components/SelectGroup/SelectUnitKerja.tsx
 "use client"
+import { getUnitKerja } from "@/service/department"
 import axios from "axios"
 import React, { useEffect, useState } from "react"
 
@@ -23,10 +24,8 @@ const SelectUnitKerja: React.FC<SelectUnitKerjaProps> = ({ onUnitKerjaChange }) 
 
   const fetchUnitKerjaData = async () => {
     try {
-      const response = await axios.get<UnitKerja[]>("http://localhost:5000/api/unitkerja", {
-        withCredentials: true,
-      })
-      setDataAllUnitKerja(response.data)
+      const response = await getUnitKerja();
+      setDataAllUnitKerja(response)
     } catch (error) {
       console.error("Error fetching unit kerja data:", error)
     }

@@ -6,6 +6,7 @@ import {
     useState,
   } from "react";
   import cookie from "js-cookie";
+import axios from "axios";
   
   export type UserData = {
     id: number;
@@ -66,14 +67,11 @@ import {
   
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`${baseUrl}/api/auth/me`, {
-          method: "GET",
-          credentials: "include",
-        });
-    
-        if (response.ok) {
-          const data = await response.json();
-          setUserData(data);
+        const {data} = await axios.get(`${baseUrl}/api/auth/me`, { withCredentials: true});
+        
+        if (data.status === "success") {
+          await data.data
+          setUserData(data.data);
         } else {
           setUserData(null);
         }

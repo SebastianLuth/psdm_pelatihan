@@ -4,10 +4,10 @@ const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export const getEventDataCalendar = async () => {
    try {
-    const response = await axios.get(`${baseUrl}/api/calendar`, {
+    const {data} = await axios.get(`${baseUrl}/api/calendar`, {
         withCredentials: true,
     });
-    const mappedResponse = response.data.map((event: any) => ({
+    const mappedResponse = data.data.map((event: any) => ({
       id: event.id,
       title: event.title,
       start: new Date(event.date_start),
