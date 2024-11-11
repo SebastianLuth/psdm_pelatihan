@@ -100,7 +100,10 @@ export const getBawahanByAtasan = async (
         withCredentials: true,
       }
     );
-    const data = response.data;
+    if(response.status === 204){
+      return [];
+    }
+    const data = response.data.data;
     return data;
   } catch (error) {
     console.error(error);

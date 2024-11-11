@@ -11,17 +11,16 @@ const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) => {
   const { userData, isLoading } = useAuth();
 
   useEffect(() => {
-    if (!isLoading && !userData) {
+    if (!isLoading && !userData && userData === null) {
       window.location.href = "/auth/signin";
     } else if (
       allowedRoles &&
       userData?.role &&
       !allowedRoles.includes(userData.role)
     ) {
-      // Jika ada userData tetapi role-nya tidak sesuai, arahkan ke dashboard
       window.location.href = "/";
     }
-  }, [userData, isLoading]);
+  }, [userData, isLoading, allowedRoles]);
 
   if (
     isLoading ||
