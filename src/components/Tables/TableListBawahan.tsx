@@ -9,6 +9,7 @@ type TableListBawahanProps = {
 
 export function TableListBawahan({allBawahan, onDeleteBawahan}: TableListBawahanProps) {
   return (
+    <>
     <table className="w-full overflow-hidden rounded-lg border border-gray-200 text-left">
       <thead>
         <tr className="bg-gray-100 text-sm text-gray-700">
@@ -38,5 +39,17 @@ export function TableListBawahan({allBawahan, onDeleteBawahan}: TableListBawahan
         ))}
       </tbody>
     </table>
+    <div className="mt-4 flex items-center justify-between text-sm text-gray-500">
+    <span>Showing 1 to 4 of 4 entries</span>
+    <div className="space-x-2">
+      <button className="rounded-lg bg-gray-200 px-3 py-1 transition hover:bg-gray-300">
+        Previous
+      </button>
+      <button className="rounded-lg bg-gray-200 px-3 py-1 transition hover:bg-gray-300">
+        Next
+      </button>
+    </div>
+  </div>
+  </>
   );
 }

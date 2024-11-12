@@ -155,7 +155,7 @@ const UserDetailPage = () => {
           </div>
           <div className="grid w-full grid-cols-1 gap-6 lg:grid-cols-3">
             {/* Profile Section */}
-           <DetailedProfileCard user= {user}/>
+            <DetailedProfileCard user={user} />
             {/* Profile Section End */}
             <div className="col-span-2 space-y-6">
               {/* List Bawahan */}
@@ -184,18 +184,10 @@ const UserDetailPage = () => {
                   </>
                 ) : null}
                 {/* Modal add bawahan End*/}
-                <TableListBawahan allBawahan={allBawahan} onDeleteBawahan = {handleDeleteBawahan}/>
-                <div className="mt-4 flex items-center justify-between text-sm text-gray-500">
-                  <span>Showing 1 to 4 of 4 entries</span>
-                  <div className="space-x-2">
-                    <button className="rounded-lg bg-gray-200 px-3 py-1 transition hover:bg-gray-300">
-                      Previous
-                    </button>
-                    <button className="rounded-lg bg-gray-200 px-3 py-1 transition hover:bg-gray-300">
-                      Next
-                    </button>
-                  </div>
-                </div>
+                <TableListBawahan
+                  allBawahan={allBawahan}
+                  onDeleteBawahan={handleDeleteBawahan}
+                />
               </div>
               {/* List Bawahan End */}
             </div>

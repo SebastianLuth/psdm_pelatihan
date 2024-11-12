@@ -6,7 +6,6 @@ import { AiOutlineWarning } from "react-icons/ai";
 import ButtonLoading from "@/components/buttons/ButtonLoading";
 import { useAuth } from "@/context/AuthContext";
 import ParticlesJsBackground from "@/components/ParticlesJsBackground";
-import ProtectedRoute from "@/components/ProtectedRoute";
 
 const SignIn = (): JSX.Element => {
   const [username, setUsername] = useState<number>(0);

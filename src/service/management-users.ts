@@ -36,7 +36,6 @@ export const getDetailUser = async (userId: number) => {
         withCredentials: true,
       }
     );
-    console.log("ini data dari fungsi getDetailUser", data)
     return data.data;
   } catch (error) {
     console.error("Error fetching user data:", error);

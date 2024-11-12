@@ -1,24 +1,30 @@
 "use client";
+import useSWR from 'swr';
 import { deleteUnitKerja, getUnitKerja } from "@/service/department";
 import { UnitKerja } from "@/types/department-type";
 import Swal from "sweetalert2";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+
+// Fungsi fetcher untuk SWR
+const fetcher = async () => {
+  return await getUnitKerja();
+};
 
 const TableDataUnitKerja = () => {
-  const [dataAllUnitKerja, setDataAllUnitKerja] = useState<UnitKerja[]>([]);
+  const [limit, setLimit] = useState<number>(100);
 
-  // Fungsi untuk mengambil data unit kerja dari API
-  const fetchUnitKerjaData = async () => {
-    try {
-      const response = await getUnitKerja();
-      setDataAllUnitKerja(response);
-    } catch (error) {
-      console.error("Error fetching unit kerja data:", error);
-    }
-  };
+  const { data, error, mutate } = useSWR<UnitKerja[]>('/unitKerja', fetcher,{
+     refreshInterval: 10800000
+  });
 
-  //handle delete unit kerja
+  if (error) return <div>Error loading data...</div>;
+  if (!data) return <div>Loading...</div>;
+
+  // Data yang akan ditampilkan 
+  const dataToDisplay = data.slice(0, limit);
+
+  // Fungsi Hapusan unit kerja
   const handleDeleteUnitKerja = async (unitKerjaId: number) => {
     try {
       const result = await Swal.fire({
@@ -35,33 +41,30 @@ const TableDataUnitKerja = () => {
       if (result.isConfirmed) {
         await deleteUnitKerja(unitKerjaId);
         await Swal.fire("Terhapus!", "Unit kerja telah dihapus.", "success");
+
+        // Memperbarui cache SWR setelah penghapusan
+        mutate();
       }
-      fetchUnitKerjaData();
     } catch (error) {
       console.error("Gagal menghapus unit kerja:", error);
-      await Swal.fire(
-        "Gagal!",
-        "Terjadi kesalahan saat menghapus unit kerja.",
-        "error",
-      );
+      await Swal.fire("Gagal!", "Terjadi kesalahan saat menghapus unit kerja.", "error");
     }
   };
 
-  // Memuat data
-  useEffect(() => {
-    fetchUnitKerjaData();
-  }, []);
+  const selectTotalDataToView = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedLimit = Number(e.target.value);
+    setLimit(selectedLimit);
+  };
 
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-      <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
-        Data Unit Kerja
-      </h4>
+      <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">Data Unit Kerja</h4>
       <div className="flex items-center justify-between py-4">
         {/* Dropdown */}
         <div className="flex items-center space-x-2">
           <span className="text-gray-700">Show</span>
-          <select className="rounded-md border border-gray-300 p-1 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <select className="rounded-md border border-gray-300 p-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={selectTotalDataToView} defaultValue={100}>
             <option value="10">10</option>
             <option value="25">25</option>
             <option value="50">50</option>
@@ -73,11 +76,8 @@ const TableDataUnitKerja = () => {
         {/* Search */}
         <div className="flex items-center">
           <span className="mr-2 text-gray-700">Search:</span>
-          <input
-            type="text"
-            className="rounded-md border border-gray-300 p-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Search..."
-          />
+          <input type="text" className="rounded-md border border-gray-300 p-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Search..." />
         </div>
       </div>
 
@@ -88,23 +88,16 @@ const TableDataUnitKerja = () => {
             <h5 className="text-sm font-medium uppercase xsm:text-base">No</h5>
           </div>
           <div className="col-span-1 p-2.5 text-start sm:col-span-2 md:col-span-3 xl:p-5">
-            <h5 className="text-sm font-medium uppercase xsm:text-base">
-              Nama
-            </h5>
+            <h5 className="text-sm font-medium uppercase xsm:text-base">Nama</h5>
           </div>
           <div className="col-span-1 p-2.5 text-start sm:col-span-1 md:col-span-2 xl:p-5">
-            <h5 className="text-sm font-medium uppercase xsm:text-base">
-              Action
-            </h5>
+            <h5 className="text-sm font-medium uppercase xsm:text-base">Action</h5>
           </div>
         </div>
 
         {/* Data Rows */}
-        {dataAllUnitKerja.map((unit, index) => (
-          <div
-            className="grid grid-cols-1 border-b dark:border-meta-4 sm:grid-cols-3 md:grid-cols-6"
-            key={unit.id}
-          >
+        {dataToDisplay.map((unit, index) => (
+          <div className="grid grid-cols-1 border-b dark:border-meta-4 sm:grid-cols-3 md:grid-cols-6" key={unit.id}>
             <div className="col-span-1 flex items-center justify-start p-2.5 xl:p-5">
               <p className="text-black dark:text-white">{index + 1}</p>
             </div>
@@ -112,18 +105,8 @@ const TableDataUnitKerja = () => {
               <p className="text-black dark:text-white">{unit.unit_kerja}</p>
             </div>
             <div className="col-span-1 flex items-center justify-start gap-4 p-2.5 sm:col-span-1 md:col-span-2 xl:p-5">
-              <Link
-                href={`/department/department_data/${unit.id}`}
-                className="text-blue-500 hover:underline dark:text-blue-300"
-              >
-                Edit
-              </Link>
-              <button
-                className="text-red-500 hover:underline dark:text-red-300"
-                onClick={() => handleDeleteUnitKerja(unit.id)}
-              >
-                Delete
-              </button>
+              <Link href={`/department/department_data/${unit.id}`} className="text-blue-500 hover:underline dark:text-blue-300">Edit</Link>
+              <button className="text-red-500 hover:underline dark:text-red-300" onClick={() => handleDeleteUnitKerja(unit.id)}>Delete</button>
             </div>
           </div>
         ))}
