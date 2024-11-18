@@ -1,157 +1,126 @@
 import {
-    createContext,
-    ReactNode,
-    useContext,
-    useEffect,
-    useState,
-  } from "react";
-  import cookie from "js-cookie";
-import axios from "axios";
-  
-  export type UserData = {
-    id: number;
-    username: number;
-    nama: string;
-    nomor_hp: string;
-    unit_kerja: string;
-    jabatan: string;
-    level: number;
-    role: string;
-    biaya_pelatihan_user: number;
-    refreshToken: string;
-  };
-  
-  type AuthContextType = {
-    userData: UserData | null;
-    setUserData: (userData: UserData | null) => void;
-    login: (username: number, password: string) => void;
-    logout: () => void;
-    errorMessage: string | null;
-    isError: boolean;
-    isLoading: boolean;
-  };
-  
-  const AuthContext = createContext<AuthContextType>({
-    userData: null,
-    setUserData: () => {},
-    login: () => {},
-    logout: () => {},
-    errorMessage: null,
-    isError: false,
-    isLoading: false,
-  });
-  
-  const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [userData, setUserData] = useState<UserData | null>(null);
-    const [errorMessage, setErrorMessage] = useState<string | null>(null);
-    const [isError, setIsError] = useState<boolean>(false);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { getDataUserAuth, loginAuth, logoutAuth, refreshTokenAuth } from "@/service/auth";
+import { AuthContextType, UserData } from "@/types/auth-type";
+const AuthContext = createContext<AuthContextType>({
+  userData: null,
+  setUserData: () => {},
+  login: () => {},
+  logout: () => {},
+  errorMessage: null,
+  isError: false,
+  isLoading: false,
+});
 
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    const refreshAccessToken = async () => {
-      try {
-        const response = await fetch(`${baseUrl}/api/auth/refreshToken`, {
-          method: "POST",
-          credentials: "include",
-        });
-        if (response.ok) {
-          console.log("Access token refreshed successfully");
-        } else {
-          console.error("Failed to refresh access token");
-        }
-      } catch (error) {
-        console.error("Error refreshing access token:", error);
-      }
-    };
-  
-    const fetchUserData = async () => {
-      try {
-        const {data} = await axios.get(`${baseUrl}/api/auth/me`, { withCredentials: true});
-        
-        if (data.status === "success") {
-          await data.data
-          setUserData(data.data);
-        } else {
-          setUserData(null);
-        }
-      } catch (error) {
-        console.error("Failed to fetch user data:", error);
+  const refreshAccessToken = async () => {
+    setIsLoading(true);
+    setErrorMessage(null);
+    setIsError(false);
+    try {
+      await refreshTokenAuth();
+    } catch (error) {
+      console.error("Failed to refresh access token:", error);
+      setErrorMessage("Failed to refresh access token");
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchUserData = async () => {
+    setIsLoading(true);
+    setErrorMessage(null);
+    setIsError(false);
+    try {
+      const result = await getDataUserAuth();
+      if (!result) {
         setUserData(null);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-  
-    const login = async (username: number, password: string) => {
-      setIsLoading(true);
-      try {
-        const response = await fetch(`${baseUrl}/api/auth/signin`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ username, password }),
-          credentials: "include",
-        });
-  
-        if (response.ok) {
-          fetchUserData();
-          window.location.href = "/";
-        } else {
-          const data = await response.json();
-          setErrorMessage(data.message || "Failed to login");
-          setIsError(true);
-        }
-      } catch (error) {
-        setErrorMessage("Failed to login");
+        setErrorMessage("No user data found");
         setIsError(true);
-      } finally {
-        setIsLoading(false);
+        return;      
       }
-    };
-  
-    const logout = async () => {
-      setIsLoading(true);
-      try {
-        await fetch(`${baseUrl}/api/auth/signout`, { method: "POST", credentials: "include" });
-        cookie.remove("accessToken");
-        cookie.remove("refreshToken");
-        setUserData(null);
-        window.location.href = "/auth/signin";
-      } catch (error) {
-        console.error("Logout failed:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-  
-    useEffect(() => {
-      fetchUserData();
-      const interval = setInterval(() => {
-        refreshAccessToken();
-      }, 10 * 60 * 1000); 
-      return () => clearInterval(interval);
-    }, []);
-  
-    return (
-      <AuthContext.Provider
-        value={{
-          userData,
-          setUserData,
-          login,
-          logout,
-          errorMessage,
-          isError,
-          isLoading,
-        }}
-      >
-        {children}
-      </AuthContext.Provider>
-    );
+      setUserData(result);
+    } catch (error) {
+      console.error("Failed to fetch user data:", error);
+      setUserData(null);
+      setErrorMessage("Failed to fetch user data");
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
+    }
   };
-  
-  const useAuth = () => useContext(AuthContext);
-  
-  export { AuthProvider, useAuth };
-  
+
+  const login = async (username: number, password: string) => {
+    setIsLoading(true);
+    setErrorMessage(null);
+    setIsError(false);
+    try {
+      await loginAuth(username, password);
+      await fetchUserData();
+      window.location.href = "/";  
+    } catch (error) {
+      console.error("Failed to login:", error);
+      setErrorMessage("Failed to login");
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const logout = async () => {
+    setIsLoading(true);
+    setErrorMessage(null);
+    setIsError(false);
+    try {
+      await logoutAuth();
+      setUserData(null);
+      window.location.href = "/auth/signin";
+    } catch (error) {
+      console.error("Failed to logout:", error);
+      setErrorMessage("Failed to logout");
+      setIsError(true);    
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData();
+    const interval = setInterval(
+      () => {
+        refreshAccessToken();
+      }, 10 * 60 * 1000,); // Refresh every 10 minutes
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <AuthContext.Provider
+      value={{
+        userData,
+        setUserData,
+        login,
+        logout,
+        errorMessage,
+        isError,
+        isLoading,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+const useAuth = () => useContext(AuthContext);
+
+export { AuthProvider, useAuth };
