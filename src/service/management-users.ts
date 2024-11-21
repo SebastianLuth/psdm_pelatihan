@@ -1,9 +1,10 @@
+import { FinalData, UserDataToAdd } from "@/types/manajement-users-type";
 import axios from "axios";
 import Swal from "sweetalert2";
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 
-export const addUser = async (userData: any) => {
+export const addUser = async (userData: UserDataToAdd) => {
   try {
     await axios.post(
       `${baseUrl}/api/auth/signup`,
@@ -123,3 +124,30 @@ export const deleteBawahan = async (
     console.error(error);
   }
 };
+
+export const updateUser = async (userId: number, finalData: FinalData, foto_profil: File | null) => {
+  try {
+    const response = await axios.put(
+      `http://localhost:5000/api/user/${userId}`,
+      {
+        finalData, foto_profil
+
+      },
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    if (response.status !== 200) {
+      throw new Error("Gagal memperbarui data pengguna");
+    }
+    console.log("Response API:", response.status);
+
+    Swal.fire("Berhasil", "Data pengguna berhasil diperbarui!", "success");
+  } catch (error) {
+    
+  }
+}

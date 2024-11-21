@@ -11,13 +11,14 @@ import {
   getAllDataBawahanInUnitKerja,
   getBawahanByAtasan,
   getDetailUser,
+  updateUser,
 } from "@/service/management-users";
 import {
   BawahanUser,
+  FinalData,
   unitKerjaList,
   User,
 } from "@/types/manajement-users-type";
-import axios from "axios";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import Swal from "sweetalert2";
@@ -33,7 +34,7 @@ const UserDetailPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
   const [editingStatus, setEditingStatus] = useState(false);
-
+  
   const getUnitKerjaId = (unitKerjaName: string) => {
     const unitKerja = unitKerjaList.find((item) => item.name === unitKerjaName);
     return unitKerja ? unitKerja.id : null;
@@ -69,7 +70,7 @@ const UserDetailPage = () => {
   };
 
   const fetchAllDataBawahan = useCallback(async () => {
-    const unitKerjaId = getUnitKerjaId(user?.unit_kerja ?? "");
+    const unitKerjaId = getUnitKerjaId((user?.unit_kerja ?? ""));
     if (unitKerjaId) {
       try {
         const response = await getAllDataBawahanInUnitKerja(unitKerjaId);
@@ -124,39 +125,21 @@ const UserDetailPage = () => {
     setEditingStatus(true);
   };
   const handleSubmit = async (updatedUser: Partial<User>, foto_profil: File | null) => {
+    const unitKerjaId = getUnitKerjaId(user?.unit_kerja ?? "");
     try {
-      const finalData = {
+      const finalData : FinalData = {
         nama: updatedUser.nama || user?.nama,
         jabatan: updatedUser.jabatan || user?.jabatan,
         nomor_hp: updatedUser.nomor_hp || user?.nomor_hp,
         level: updatedUser.level || user?.level,
         role: updatedUser.role || user?.role,
-        unit_kerja: updatedUser.unit_kerja || user?.unit_kerja,
+        unit_kerja: updatedUser.unit_kerja || unitKerjaId,
       };
       
       console.log("Mengirim data ke API:", finalData, foto_profil);
   
       // Kirim data ke API menggunakan FormData
-      const response = await axios.put(
-        `http://localhost:5000/api/user/${userId}`,
-        {
-          finalData, foto_profil
-
-        },
-        {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "multipart/form-data", // Header khusus untuk FormData
-          },
-        }
-      );
-  
-      if (response.status !== 200) {
-        throw new Error("Gagal memperbarui data pengguna");
-      }
-      console.log("Response API:", response.status);
-  
-      Swal.fire("Berhasil", "Data pengguna berhasil diperbarui!", "success");
+      await updateUser(Number(userId), finalData, foto_profil);
   
       // Nonaktifkan mode edit
       setEditingStatus(false);
@@ -168,8 +151,6 @@ const UserDetailPage = () => {
       Swal.fire("Gagal", "Terjadi kesalahan saat memperbarui data.", "error");
     }
   };
-  
-  
 
   useEffect(() => {
     fetchDetailUser();

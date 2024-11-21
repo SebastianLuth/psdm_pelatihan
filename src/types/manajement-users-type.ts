@@ -70,6 +70,18 @@ export interface User {
   refresh_token: string;
   }
 
+  export interface UserDataToAdd{
+    nama: string
+    username: number,
+    nomor_hp: string,
+    jabatan: string,
+    unit_kerja: number,
+    level: number,
+    role: string,
+    password: string,
+    biaya_pelatihan_user: 0,
+  }
+
 export interface BawahanUser {
     bawahan_username: number;
     nama: string;
@@ -103,3 +115,12 @@ export const LevelJabatanOptions: LevelJabatan[] = [
   { value: 5, label: "BOD-5" },
   { value: 6, label: "BOD-6" },
 ];
+
+export type FinalData = {
+  nama: string | undefined;
+  jabatan: string | undefined;
+  nomor_hp: string | undefined ;
+  level: number | undefined;
+  role: string | undefined ;
+  unit_kerja: string | number | null;
+};

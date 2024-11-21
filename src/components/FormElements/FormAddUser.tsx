@@ -1,14 +1,14 @@
 'use client';
 import { getUnitKerja } from "@/service/department";
 import { addUser } from "@/service/management-users";
-import { LevelJabatanOptions, RoleOptions, UnitKerja } from "@/types/manajement-users-type";
+import { LevelJabatanOptions, RoleOptions, UnitKerja, UserDataToAdd } from "@/types/manajement-users-type";
 import { useEffect, useState, ChangeEvent, FormEvent } from "react";
 import Swal from 'sweetalert2';
 
 const FormDataUser = () => {
-  const [userData, setUserData] = useState({
+  const [userData, setUserData] = useState<UserDataToAdd>({
     nama: "",
-    username: "",
+    username: 0,
     nomor_hp: "",
     jabatan: "",
     unit_kerja: 1,
