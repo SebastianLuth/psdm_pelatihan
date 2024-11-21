@@ -56,15 +56,18 @@ export const unitKerjaList = [
   ];
 
 export interface User {
-    id: number;
-    username: number;
-    nama: string;
-    jabatan: string;
-    nomor_hp: string;
-    level: number;
-    role: string;
-    unit_kerja: string;
-    biaya_pelatihan_user: number;
+  id: number;
+  username: number;
+  nama: string;
+  nomor_hp: string;
+  unit_kerja: string;
+  jabatan: string;
+  level: number;
+  role: string;
+  biaya_pelatihan_user: number;
+  foto_profil: string;
+  token : string;
+  refresh_token: string;
   }
 
 export interface BawahanUser {

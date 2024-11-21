@@ -33,6 +33,7 @@ export const getUnitKerja = async () => {
         const response = await axios.get(`${baseUrl}/api/unitkerja`, {
             withCredentials: true,
         });
+        console.log(response.data.data);
         return response.data.data;
     } catch (error) {
         console.error("Error fetching unit kerja:", error);

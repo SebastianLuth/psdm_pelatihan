@@ -1,5 +1,6 @@
 "use client";
 import DetailedProfileCard from "@/components/Card/DetailedProfileCard";
+import DropdownSettingProfile from "@/components/Dropdowns/DropdownSettingProfile";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import CreateBawahanModal from "@/components/Modal/CreateBawahan";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -16,6 +17,7 @@ import {
   unitKerjaList,
   User,
 } from "@/types/manajement-users-type";
+import axios from "axios";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import Swal from "sweetalert2";
@@ -30,6 +32,7 @@ const UserDetailPage = () => {
   );
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
+  const [editingStatus, setEditingStatus] = useState(false);
 
   const getUnitKerjaId = (unitKerjaName: string) => {
     const unitKerja = unitKerjaList.find((item) => item.name === unitKerjaName);
@@ -39,6 +42,7 @@ const UserDetailPage = () => {
   const fetchDetailUser = useCallback(async () => {
     try {
       const response = await getDetailUser(Number(userId));
+      console.log(response);
       setUser(response);
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -116,6 +120,57 @@ const UserDetailPage = () => {
     setError(null);
   };
 
+  const handleStatusUpdate = () => {
+    setEditingStatus(true);
+  };
+  const handleSubmit = async (updatedUser: Partial<User>, foto_profil: File | null) => {
+    try {
+      const finalData = {
+        nama: updatedUser.nama || user?.nama,
+        jabatan: updatedUser.jabatan || user?.jabatan,
+        nomor_hp: updatedUser.nomor_hp || user?.nomor_hp,
+        level: updatedUser.level || user?.level,
+        role: updatedUser.role || user?.role,
+        unit_kerja: updatedUser.unit_kerja || user?.unit_kerja,
+      };
+      
+      console.log("Mengirim data ke API:", finalData, foto_profil);
+  
+      // Kirim data ke API menggunakan FormData
+      const response = await axios.put(
+        `http://localhost:5000/api/user/${userId}`,
+        {
+          finalData, foto_profil
+
+        },
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "multipart/form-data", // Header khusus untuk FormData
+          },
+        }
+      );
+  
+      if (response.status !== 200) {
+        throw new Error("Gagal memperbarui data pengguna");
+      }
+      console.log("Response API:", response.status);
+  
+      Swal.fire("Berhasil", "Data pengguna berhasil diperbarui!", "success");
+  
+      // Nonaktifkan mode edit
+      setEditingStatus(false);
+  
+      // Perbarui data pengguna
+      fetchDetailUser();
+    } catch (error) {
+      console.error("Gagal memperbarui data pengguna:", error);
+      Swal.fire("Gagal", "Terjadi kesalahan saat memperbarui data.", "error");
+    }
+  };
+  
+  
+
   useEffect(() => {
     fetchDetailUser();
   }, [fetchDetailUser]);
@@ -147,15 +202,24 @@ const UserDetailPage = () => {
       <DefaultLayout>
         <div className="mx-auto flex min-h-screen flex-col items-center bg-gradient-to-r from-gray-50 to-gray-200 p-4">
           {/* Header Section */}
-          <div className="mb-8 w-full">
+          <div className="flex items-center justify-between mb-8 w-full">
+            <div>
             <h2 className="text-4xl font-bold text-gray-900">User Profile</h2>
             <p className="text-base text-gray-500">
               Detail informasi user @{user.username}
             </p>
+            </div>
+            <div>
+              <DropdownSettingProfile handleStatusUpdate={handleStatusUpdate}/>
+            </div>
           </div>
           <div className="grid w-full grid-cols-1 gap-6 lg:grid-cols-3">
             {/* Profile Section */}
-            <DetailedProfileCard user={user} />
+            <DetailedProfileCard
+            user={user}
+            editingStatus={editingStatus}
+            handleSubmit={handleSubmit}
+            />            
             {/* Profile Section End */}
             <div className="col-span-2 space-y-6">
               {/* List Bawahan */}

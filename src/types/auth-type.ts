@@ -9,6 +9,7 @@ export type UserData = {
     level: number;
     role: string;
     biaya_pelatihan_user: number;
+    foto_profil: string;
     token : string;
     refresh_token: string;
   };

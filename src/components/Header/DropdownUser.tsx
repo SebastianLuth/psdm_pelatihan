@@ -7,7 +7,8 @@ import { useAuth } from "@/context/AuthContext";
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { logout, userData } = useAuth();
-  
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const imageUrl = `${baseUrl}/images/${userData?.foto_profil}`
 
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
@@ -25,18 +26,14 @@ const DropdownUser = () => {
         </span>
 
         {/* User Image */}
-        <span className="h-12 w-12 rounded-full">
-          <Image
+        <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-200 flex justify-center items-center">
+        <Image
             width={112}
             height={112}
-            src={"/images/user/user-01.png"}
-            style={{
-              width: "auto",
-              height: "auto",
-            }}
+            src={imageUrl || "/images/user/user-01.png"}
             alt="User"
           />
-        </span>
+        </div>
 
         <svg
           className="hidden fill-current sm:block"
