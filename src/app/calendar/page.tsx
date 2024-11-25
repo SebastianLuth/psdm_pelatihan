@@ -67,6 +67,9 @@ export default function MyCalendar() {
     } catch (error) {
       setIsUploaded(false);
       console.error("Error saving event:", error);
+    } finally {
+      setShowModal(false);
+      setIsUploaded(false);
     }
    
   };
@@ -97,6 +100,11 @@ export default function MyCalendar() {
       minHeight: "100px",
     },
   });
+
+  const handleCloseEvenSummaryPopover = () => {
+    setIsUploaded(false);
+    setShowModal(false);
+  }
 
   useEffect(() => {
     featchAllEvent();
@@ -184,7 +192,7 @@ export default function MyCalendar() {
       {showPopover && selectedEvent && (
         <EventSummaryPopover
           event={selectedEvent}
-          onClose={() => setShowPopover(false)}
+          onClose={()=> setShowPopover(false)}
           onDelete={handleDeleteEvent}
         />
       )}
@@ -194,7 +202,7 @@ export default function MyCalendar() {
        newEvent={newEvent}
        onChange={(updatedEvent) => setNewEvent(updatedEvent)}
        onSave={handleSaveEvent}
-       onClose={() => setShowModal(false)}
+       onClose={handleCloseEvenSummaryPopover}
        isUploaded={IsUploaded}
      />
       )}

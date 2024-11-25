@@ -17,7 +17,7 @@ export type UserData = {
   export type AuthContextType = {
     userData: UserData | null;
     setUserData: (userData: UserData | null) => void;
-    login: (username: number, password: string) => void;
+    login: (username: number | undefined, password: string) => void;
     logout: () => void;
     errorMessage: string | null;
     isError: boolean;

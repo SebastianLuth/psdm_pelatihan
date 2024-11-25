@@ -8,7 +8,7 @@ import { useAuth } from "@/context/AuthContext";
 import ParticlesJsBackground from "@/components/ParticlesJsBackground";
 
 const SignIn = (): JSX.Element => {
-  const [username, setUsername] = useState<number>(0);
+  const [username, setUsername] = useState<number>();
   const [password, setPassword] = useState<string>("");
   const { login, errorMessage, isLoading } = useAuth();
   const [isError, setIsError] = useState(false);
@@ -65,12 +65,13 @@ const SignIn = (): JSX.Element => {
                     Username
                   </label>
                   <input
+                    type="number"
                     value={username}
                     onChange={(event) =>
                       setUsername(Number(event.target.value))
                     }
                     className="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-green-600 focus:ring-green-600 sm:text-sm "
-                    placeholder="Masukkan Username"
+                    placeholder="Masukkan NIKSAP Contoh 4002142"
                   />
                 </div>
                 <div>

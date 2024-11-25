@@ -52,23 +52,14 @@ const AddTraining = () => {
                     </select>
                 </div>
 
-                {/* RKAP PTPN 4 */}
+                {/* Jumlah Anggaran */}
                 <div>
-                    <label className="text-gray-700">RKAP PTPN 4</label>
-                    <select className="w-full mt-1 p-2 border rounded-md">
-                        <option>Pilih RKAP</option>
-                        {/* Options here */}
-                    </select>
+                    <label className="text-gray-700">Jumlah Anggaran</label>
+                    <input className="w-full mt-1 p-2 border rounded-md" type='text'>
+                    </input>
                 </div>
 
-                {/* RKAP Holding */}
-                <div>
-                    <label className="text-gray-700">RKAP Holding</label>
-                    <select className="w-full mt-1 p-2 border rounded-md">
-                        <option>Pilih RKAP</option>
-                        {/* Options here */}
-                    </select>
-                </div>
+              
 
                 {/* RKAP Type */}
                 <div>

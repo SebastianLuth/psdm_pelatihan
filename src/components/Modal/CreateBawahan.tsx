@@ -15,52 +15,52 @@ export default function CreateBawahanModal({
   success,
   error,
 }: CreateBawahanModalProps) {
+
+  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   return (
     <>
-      <div className="fixed inset-0 z-50 flex items-center overflow-y-auto overflow-x-hidden outline-none focus:outline-none">
-        <div className="relative mx-auto my-6 w-auto max-w-3xl">
-          <div className="relative flex w-full flex-col rounded-lg border-0 bg-white shadow-lg outline-none focus:outline-none">
+
+      {/* Modal */}
+      <div className="fixed inset-0 z-50 flex items-center justify-center mt-2 mb-2"  onClick={handleOverlayClick}>
+        {/* Kontainer untuk menjaga modal tetap di tengah dan scrollable */}
+        <div className="relative max-h-full w-full overflow-y-auto sm:max-w-sm md:max-w-md lg:max-w-3xl">
+          <div className="relative flex flex-col rounded-lg bg-white shadow-lg">
             {/* Header */}
-            <div className="border-blueGray-200 flex items-start justify-between rounded-t border-b border-solid p-5">
-              <h3 className="text-3xl font-semibold">Tambah Bawahan</h3>
+            <div className="flex items-center justify-between border-b p-5">
+              <h3 className="text-xl font-bold">Tambah Bawahan</h3>
               <button
-                className="float-right ml-auto border-0 bg-transparent p-1 text-3xl font-semibold leading-none text-black opacity-5 outline-none focus:outline-none"
+                className="text-gray-500 hover:text-gray-700"
                 onClick={onClose}
               >
-                <span className="block h-6 w-6 bg-transparent text-2xl text-black opacity-5 outline-none focus:outline-none">
-                  ×
-                </span>
+                ×
               </button>
             </div>
             {/* Body */}
-            <div>
+            <div className="p-6">
               <div className="relative overflow-x-auto">
-                <table className="w-full text-left text-sm text-gray-500 rtl:text-right">
+                <table className="min-w-full table-auto text-left text-sm">
                   <thead className="bg-gray-50 text-xs uppercase text-gray-700">
                     <tr>
-                      <th className="px-6 py-3">Nama Karyawan</th>
-                      <th className="px-6 py-3">NIKSAP</th>
-                      <th className="px-6 py-3">Unit Kerja</th>
-                      <th className="px-6 py-3">Action</th>
+                      <th className="px-4 py-2">Nama Karyawan</th>
+                      <th className="px-4 py-2">NIKSAP</th>
+                      <th className="px-4 py-2">Unit Kerja</th>
+                      <th className="px-4 py-2">Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     {dataAllUserByUnitKerja.map((user) => (
-                      <tr
-                        className="border-b bg-white hover:bg-gray-50"
-                        key={user.id}
-                      >
-                        <th
-                          scope="row"
-                          className="whitespace-nowrap px-6 py-4 font-medium text-gray-900"
-                        >
-                          {user.nama}
-                        </th>
-                        <td className="px-6 py-4">{user.username}</td>
-                        <td className="px-6 py-4">{user.unit_kerja}</td>
-                        <td className="px-6 py-4">
+                      <tr key={user.id} className="border-b hover:bg-gray-50">
+                        <td className="px-4 py-2">{user.nama}</td>
+                        <td className="px-4 py-2">{user.username}</td>
+                        <td className="px-4 py-2">{user.unit_kerja}</td>
+                        <td className="px-4 py-2">
                           <button
-                            className="rounded bg-emerald-500 px-6 py-3 text-xs font-semibold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none active:bg-emerald-600"
+                            className="rounded bg-emerald-500 px-4 py-2 text-xs font-semibold text-white hover:bg-emerald-600"
                             onClick={() => onAddBawahan(user.username, user.nama)}
                           >
                             Tambah
@@ -71,17 +71,19 @@ export default function CreateBawahanModal({
                   </tbody>
                 </table>
                 {success && (
-                  <p className="mt-2 p-4 text-green-500">
+                  <p className="mt-4 text-sm text-green-500">
                     Bawahan berhasil ditambahkan.
                   </p>
                 )}
-                {error && <p className="mt-2 p-4 text-red-500">{error}</p>}
+                {error && (
+                  <p className="mt-4 text-sm text-red-500">{error}</p>
+                )}
               </div>
             </div>
             {/* Footer */}
-            <div className="border-blueGray-200 flex items-center justify-end rounded-b border-t border-solid p-6">
+            <div className="flex justify-end border-t p-4">
               <button
-                className="background-transparent mb-1 mr-1 px-6 py-2 text-sm font-bold uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
+                className="text-red-500 hover:text-red-700"
                 onClick={onClose}
               >
                 Tutup
@@ -90,6 +92,7 @@ export default function CreateBawahanModal({
           </div>
         </div>
       </div>
+      {/* Background overlay */}
       <div className="fixed inset-0 z-40 bg-black opacity-25"></div>
     </>
   );

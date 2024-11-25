@@ -31,7 +31,7 @@ export const refreshTokenAuth = async () => {
   }
 };
 
-export const loginAuth = async (username: number, password: string) => {
+export const loginAuth = async (username: number | undefined, password: string) => {
   try {
     const response = await fetch(`${baseUrl}/api/auth/signin`, {
       method: "POST",
@@ -44,8 +44,10 @@ export const loginAuth = async (username: number, password: string) => {
 
     if (response.ok) {
       console.log("Login successful");
+      return true;
     } else {
       console.error("Login failed");
+      return false;
     }
   } catch (error) {
     console.error("Error Login user data:", error);

@@ -46,7 +46,6 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       const result = await getDataUserAuth();
       if (!result) {
         setUserData(null);
-        setErrorMessage("No user data found");
         setIsError(true);
         return;      
       }
@@ -61,12 +60,18 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     }
   };
 
-  const login = async (username: number, password: string) => {
+  const login = async (username: number | undefined, password: string) => {
     setIsLoading(true);
     setErrorMessage(null);
     setIsError(false);
     try {
-      await loginAuth(username, password);
+      const result = await loginAuth(username , password);
+      if (!result) {
+        setUserData(null);
+        setErrorMessage("Failed to login check your username and password");
+        setIsError(true);
+        return;
+      }
       await fetchUserData();
       window.location.href = "/";  
     } catch (error) {
