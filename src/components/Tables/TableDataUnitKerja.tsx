@@ -1,5 +1,5 @@
 "use client";
-import useSWR from 'swr';
+import useSWR from "swr";
 import { deleteUnitKerja, getUnitKerja } from "@/service/department";
 import { UnitKerja } from "@/types/department-type";
 import Swal from "sweetalert2";
@@ -14,14 +14,14 @@ const fetcher = async () => {
 const TableDataUnitKerja = () => {
   const [limit, setLimit] = useState<number>(100);
 
-  const { data, error, mutate } = useSWR<UnitKerja[]>('/unitKerja', fetcher,{
-     refreshInterval: 10800000
+  const { data, error, mutate } = useSWR<UnitKerja[]>("/unitKerja", fetcher, {
+    refreshInterval: 10800000,
   });
 
   if (error) return <div>Error loading data...</div>;
   if (!data) return <div>Loading...</div>;
 
-  // Data yang akan ditampilkan 
+  // Data yang akan ditampilkan
   const dataToDisplay = data.slice(0, limit);
 
   // Fungsi Hapusan unit kerja
@@ -47,7 +47,11 @@ const TableDataUnitKerja = () => {
       }
     } catch (error) {
       console.error("Gagal menghapus unit kerja:", error);
-      await Swal.fire("Gagal!", "Terjadi kesalahan saat menghapus unit kerja.", "error");
+      await Swal.fire(
+        "Gagal!",
+        "Terjadi kesalahan saat menghapus unit kerja.",
+        "error",
+      );
     }
   };
 
@@ -57,59 +61,107 @@ const TableDataUnitKerja = () => {
   };
 
   return (
-    <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-      <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">Data Unit Kerja</h4>
-      <div className="flex items-center justify-between py-4">
-        {/* Dropdown */}
-        <div className="flex items-center space-x-2">
-          <span className="text-gray-700">Show</span>
-          <select className="rounded-md border border-gray-300 p-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            onChange={selectTotalDataToView} defaultValue={100}>
-            <option value="10">10</option>
-            <option value="25">25</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-          </select>
-          <span className="text-gray-700">entries</span>
-        </div>
-
-        {/* Search */}
-        <div className="flex items-center">
-          <span className="mr-2 text-gray-700">Search:</span>
-          <input type="text" className="rounded-md border border-gray-300 p-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Search..." />
+    <div className="relative overflow-hidden rounded-xl border border-gray-300 bg-white/70 shadow-xl backdrop-blur-lg dark:border-gray-700 dark:bg-gray-900/70">
+      <div className="px-6 py-5">
+        <h4 className="text-2xl font-semibold text-gray-800 dark:text-gray-100">
+          Data Unit Kerja
+        </h4>
+        <div className="flex items-center justify-between py-4">
+          {/* Dropdown */}
+          <div className="flex items-center space-x-3">
+            <span className="text-gray-700 dark:text-gray-300">Show</span>
+            <select
+              className="rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+              onChange={selectTotalDataToView}
+              defaultValue={100}
+            >
+              <option value="10">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+            <span className="text-gray-700 dark:text-gray-300">entries</span>
+          </div>
+          {/* Search */}
+          <div className="flex items-center">
+            <span className="mr-2 text-gray-700 dark:text-gray-300">
+              Search:
+            </span>
+            <input
+              type="text"
+              className="rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+              placeholder="Search..."
+            />
+          </div>
         </div>
       </div>
 
-      <div className="flex flex-col">
-        {/* Header Table */}
-        <div className="grid grid-cols-1 rounded-sm bg-gray-200 dark:bg-meta-3 sm:grid-cols-3 md:grid-cols-6">
-          <div className="col-span-1 p-2.5 text-start xl:p-5">
-            <h5 className="text-sm font-medium uppercase xsm:text-base">No</h5>
-          </div>
-          <div className="col-span-1 p-2.5 text-start sm:col-span-2 md:col-span-3 xl:p-5">
-            <h5 className="text-sm font-medium uppercase xsm:text-base">Nama</h5>
-          </div>
-          <div className="col-span-1 p-2.5 text-start sm:col-span-1 md:col-span-2 xl:p-5">
-            <h5 className="text-sm font-medium uppercase xsm:text-base">Action</h5>
-          </div>
-        </div>
-
-        {/* Data Rows */}
-        {dataToDisplay.map((unit, index) => (
-          <div className="grid grid-cols-1 border-b dark:border-meta-4 sm:grid-cols-3 md:grid-cols-6" key={unit.id}>
-            <div className="col-span-1 flex items-center justify-start p-2.5 xl:p-5">
-              <p className="text-black dark:text-white">{index + 1}</p>
-            </div>
-            <div className="col-span-1 flex items-center justify-start p-2.5 sm:col-span-2 md:col-span-3 xl:p-5">
-              <p className="text-black dark:text-white">{unit.unit_kerja}</p>
-            </div>
-            <div className="col-span-1 flex items-center justify-start gap-4 p-2.5 sm:col-span-1 md:col-span-2 xl:p-5">
-              <Link href={`/department/department_data/${unit.id}`} className="text-blue-500 hover:underline dark:text-blue-300">Edit</Link>
-              <button className="text-red-500 hover:underline dark:text-red-300" onClick={() => handleDeleteUnitKerja(unit.id)}>Delete</button>
-            </div>
-          </div>
-        ))}
+      <div className="overflow-x-auto">
+        <table className="min-w-full border-collapse text-left text-sm text-gray-700 dark:text-gray-300">
+          <thead>
+            <tr className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white">
+              <th className="px-6 py-4">No</th>
+              <th className="px-6 py-4">Nama</th>
+              <th className="px-6 py-4 text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+            {dataToDisplay.map((unit, index) => (
+              <tr
+                key={unit.id}
+                className="group transform transition-transform duration-200 hover:scale-[1.02] hover:bg-gray-50 dark:hover:bg-gray-800"
+              >
+                <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                  {index + 1}
+                </td>
+                <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                  {unit.unit_kerja}
+                </td>
+                <td className="px-6 py-4 text-right">
+                  
+                  <button className="mr-2 inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-green-400 to-green-600 px-4 py-2 text-sm font-medium text-white shadow-md hover:from-green-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-green-400">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M11 5h2m-1 14V5m9 4H4m5 0a1 1 0 000 2h6a1 1 0 000-2H9z"
+                      />
+                    </svg>
+                    
+                    <Link href={`/department/department_data/${unit.id}`} >Edit</Link>
+                  </button>
+                  <button
+                    onClick={() => handleDeleteUnitKerja(unit.id)}
+                    className="inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-red-400 to-red-600 px-4 py-2 text-sm font-medium text-white shadow-md hover:from-red-500 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-red-400"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                    <span>Delete</span>
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

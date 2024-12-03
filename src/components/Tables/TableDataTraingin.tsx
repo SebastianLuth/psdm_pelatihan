@@ -1,50 +1,28 @@
 "use client";
-import { BRAND } from "@/types/brand";
 
-const brandData: BRAND[] = [
-  {
-    logo: "/images/brand/brand-01.svg",
-    name: "Google",
-    visitors: 3.5,
-    revenues: "5,768",
-    sales: 590,
-    conversion: 4.8,
-  },
-  {
-    logo: "/images/brand/brand-02.svg",
-    name: "Twitter",
-    visitors: 2.2,
-    revenues: "4,635",
-    sales: 467,
-    conversion: 4.3,
-  },
-  {
-    logo: "/images/brand/brand-03.svg",
-    name: "Github",
-    visitors: 2.1,
-    revenues: "4,290",
-    sales: 420,
-    conversion: 3.7,
-  },
-  {
-    logo: "/images/brand/brand-04.svg",
-    name: "Vimeo",
-    visitors: 1.5,
-    revenues: "3,580",
-    sales: 389,
-    conversion: 2.5,
-  },
-  {
-    logo: "/images/brand/brand-05.svg",
-    name: "Facebook",
-    visitors: 3.5,
-    revenues: "6,768",
-    sales: 390,
-    conversion: 4.2,
-  },
-];
+import { TrainingType } from "@/types/training-types";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { format } from "date-fns";
 
 const TableDataTraingin = () => {
+  const [allTraining, setAllTraining] = useState<TrainingType[]>([]);
+  const fetchAllTraining = async () => {
+    try {
+      const result = await axios.get(`http://localhost:5000/api/training`);
+      const formattedData = result.data.data.map((training: TrainingType) => ({
+        ...training,
+        tgl_mulai: format(new Date(training.tgl_mulai), "dd MMMM yyyy"),
+        tgl_selesai: format(new Date(training.tgl_selesai), "dd MMMM yyyy"),
+      }));
+      setAllTraining(formattedData);
+    } catch (error) {
+      console.log(error || "Data tidak ditemukan" );
+    }
+  }
+  useEffect(() => {
+    fetchAllTraining();
+  }, []);
   return (
     <>
       <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -117,7 +95,7 @@ const TableDataTraingin = () => {
             </div>
             <div className="p-2.5 text-start xl:p-5">
               <h5 className="text-sm font-medium uppercase xsm:text-base">
-               Tahun Anggaran
+               Metode Pelatihan
               </h5>
             </div>
             <div className="p-2.5 text-start xl:p-5">
@@ -128,38 +106,38 @@ const TableDataTraingin = () => {
           </div>
 
           {/* Data Rows */}
-          {brandData.map((brand, key) => (
+          {allTraining.map((brand, key) => (
             <div
               className={`grid grid-cols-9 ${
-                key === brandData.length - 1
+                key === allTraining.length - 1
                   ? ""
                   : "border-b border-stroke dark:border-strokedark"
               }`}
               key={key}
             >
               <div className="flex items-center justify-start p-2.5 xl:p-5">
-                <p className="text-black dark:text-white">{brand.visitors}K</p>
+                <p className="text-black dark:text-white">{key + 1}</p>
               </div><div className="flex items-center justify-start p-2.5 xl:p-5">
-                <p className="text-black dark:text-white">{brand.name}</p>
+                <p className="text-black dark:text-white">{brand.judul}</p>
               </div><div className="flex items-center justify-start p-2.5 xl:p-5">
-                <p className="text-black dark:text-white">{brand.name}</p>
+                <p className="text-black dark:text-white">{brand.jenis}</p>
               </div><div className="flex items-center justify-start p-2.5 xl:p-5">
-                <p className="text-black dark:text-white">{brand.name}</p>
+                <p className="text-black dark:text-white">{brand.lembaga}</p>
               </div>
               <div className="flex items-center justify-start p-2.5 xl:p-5">
-                <p className="text-black dark:text-white">{brand.name}</p>
+                <p className="text-black dark:text-white">{brand.lokasi}</p>
               </div>
               <div className="flex items-center justify-start p-2.5 xl:p-5">
-                <p className="text-black dark:text-white">{brand.name}</p>
+                <p className="text-black dark:text-white">{brand.tgl_mulai}</p>
               </div>
               <div className="flex items-center justify-start p-2.5 xl:p-5">
-                <p className="text-black dark:text-white">{brand.name}</p>
+                <p className="text-black dark:text-white">{brand.tgl_selesai}</p>
               </div>
               <div className="flex items-center justify-start p-2.5 xl:p-5">
-                <p className="text-black dark:text-white">{brand.name}</p>
+                <p className="text-black dark:text-white">{brand.metode}</p>
               </div>
               <div className="flex items-center justify-start gap-4 p-2.5 xl:p-5">
-                <button className="text-black dark:text-white">Edit</button>
+                <button className="text-black dark:text-white">Detail</button>
                 <button className="text-black dark:text-white">Delete</button>
               </div>
             </div>
