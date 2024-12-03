@@ -53,7 +53,7 @@ const TableDataAnggaran = () => {
       <div className="relative overflow-hidden rounded-xl border border-gray-300 bg-white/70 shadow-xl backdrop-blur-lg dark:border-gray-700 dark:bg-gray-900/70">
         <div className="px-6 py-5">
           <h4 className="text-2xl font-semibold text-gray-800 dark:text-gray-100">
-            Data User
+            Semua Data Anggaran
           </h4>
           <div className="flex items-center justify-between py-4">
             <div className="flex items-center space-x-3">
