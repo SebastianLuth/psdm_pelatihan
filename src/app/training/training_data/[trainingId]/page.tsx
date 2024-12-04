@@ -5,13 +5,72 @@ import Image from "next/image";
 import Link from "next/link";
 import ReactECharts from "echarts-for-react";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import { useCallback, useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import axios from "axios";
 
-export default function TrainingDataId({
-  sidebarOpen,
-}: {
-  sidebarOpen: boolean;
-}) {
-  const containerClasses = sidebarOpen ? "ml-72" : "ml-0 lg:ml-72";
+type ParticipantType = {
+  peserta_id: number;
+  pelatihan_id: number;
+  user_id: number;
+  username: number;
+  nama: string;
+  nomor_hp: string;
+  unit_kerja: number;
+  jabatan: string;
+  level: number;
+};
+
+type TrainingType = {
+  id: number;
+  judul: string;
+  jenis: string;
+  metode: string;
+  lokasi: string;
+  lembaga: string;
+  kompetensi: string;
+  jumlah_anggaran: string;
+  rkap_type: string;
+  jumlah_peserta: number;
+  tgl_mulai: string;
+  tgl_selesai: string;
+  peserta: ParticipantType[];
+};
+
+export default function TrainingDataId() {
+  const [trainingData, setTrainingData] = useState<TrainingType>();
+  const [loading, setLoading] = useState(false);
+  const {trainingId} = useParams();
+
+  const fetchTrainingData = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/training/${trainingId}`
+      )
+      const {training, peserta} = response.data.data
+      setTrainingData({
+        id: training?.id || 0,
+        judul: training?.judul || "",
+        jenis: training?.jenis || "",
+        metode: training?.metode || "",
+        lokasi: training?.lokasi || "",
+        lembaga: training?.lembaga || "",
+        kompetensi: training?.kompetensi || "",
+        jumlah_anggaran: training?.jumlah_anggaran || "0",
+        rkap_type: training?.rkap_type || "",
+        jumlah_peserta: training?.jumlah_peserta || 0,
+        tgl_mulai: training?.tgl_mulai || "",
+        tgl_selesai: training?.tgl_selesai || "",
+        peserta: peserta || [],
+      });
+    } catch (error) {
+      console.error("Failed to fetch training data:", error);
+    } finally {
+      setLoading(false);
+    }
+    
+  }, [trainingId])
 
   // Data untuk chart
   const biayaData = [
@@ -55,6 +114,37 @@ export default function TrainingDataId({
       },
     ],
   };
+
+  useEffect(() => {
+    fetchTrainingData();
+  }, [fetchTrainingData]);
+
+
+  if (!trainingData) {
+    return <p>Loading...</p>;
+  }
+
+  const formatTanggalPelatihan = (startDate: string, endDate: string) => {
+    const bulan = [
+      "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+      "Juli", "Agustus", "September", "Oktober", "November", "Desember",
+    ];
+
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    const startDay = start.getDate();
+    const endDay = end.getDate();
+    const monthName = bulan[start.getMonth()];
+    const year = start.getFullYear();
+
+    return `${startDay} - ${endDay} ${monthName} ${year}`;
+  };
+
+  const tanggalPelatihan = formatTanggalPelatihan(
+    trainingData.tgl_mulai,
+    trainingData.tgl_selesai
+  );
   return (
     <ProtectedRoute>
       <DefaultLayout>
@@ -64,18 +154,17 @@ export default function TrainingDataId({
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             <div className="rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 p-6 text-white shadow-lg">
               <h3 className="text-lg font-semibold">Total Biaya</h3>
-              <p className="text-2xl font-bold">Rp 55.131.923,00</p>
-              <p className="mt-2 text-sm">Tahun Anggaran: 2023</p>
+              <p className="text-2xl font-bold">Rp {trainingData?.jumlah_anggaran || 0}</p>
             </div>
             <div className="rounded-lg bg-gradient-to-r from-green-500 to-green-600 p-6 text-white shadow-lg">
               <h3 className="text-lg font-semibold">Tanggal Pelatihan</h3>
-              <p className="text-2xl font-bold">16 - 17 Januari 2023</p>
-              <p className="mt-2 text-sm">Lokasi: PABATU - IHT</p>
+              <p className="text-2xl font-bold">{tanggalPelatihan} </p>
+              <p className="mt-2 text-sm">Lokasi : {trainingData?.lokasi}</p>
             </div>
             <div className="rounded-lg bg-gradient-to-r from-purple-500 to-purple-600 p-6 text-white shadow-lg">
               <h3 className="text-lg font-semibold">Jenis & Metode</h3>
-              <p className="text-2xl font-bold">In House Training</p>
-              <p className="mt-2 text-sm">Metode: Offline</p>
+              <p className="text-2xl font-bold">Jenis : {trainingData?.jenis}</p>
+              <p className="mt-2 text-sm">Metode: {trainingData?.metode}</p>
             </div>
           </div>
 
@@ -148,12 +237,15 @@ export default function TrainingDataId({
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                <tr className="group transform transition-transform duration-200 hover:scale-[1.02] hover:bg-gray-50 dark:hover:bg-gray-800">
+                {trainingData?.peserta.map((peserta, index) => (
+                  <tr 
+                  key={peserta.peserta_id}
+                  className="group transform transition-transform duration-200 hover:scale-[1.02] hover:bg-gray-50 dark:hover:bg-gray-800">
                   <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                    1
+                    {index + 1}
                   </td>
                   <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                    judul
+                    {peserta.username}
                   </td>
                   <td className="flex items-center px-6 py-4 align-middle text-gray-800 dark:text-gray-100">
                     <div className="mr-2 flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-gray-200">
@@ -165,14 +257,14 @@ export default function TrainingDataId({
                       />
                     </div>
                     <p className="text-sm font-medium text-gray-800 group-hover:text-blue-600 dark:text-gray-100 dark:group-hover:text-blue-500">
-                      Nama
+                      {peserta.nama}
                     </p>
                   </td>
                   <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                    lembaga
+                    {peserta.nomor_hp}
                   </td>
                   <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                    lokasi
+                    {peserta.unit_kerja}
                   </td>
                   <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
                     <div className="relative grid select-none items-center whitespace-nowrap rounded-md bg-green-500/20 px-2 py-1 font-sans text-xs font-bold uppercase text-green-900">
@@ -219,6 +311,8 @@ export default function TrainingDataId({
                     </button>
                   </td>
                 </tr>
+                ))}
+                
               </tbody>
             </table>
           </div>
