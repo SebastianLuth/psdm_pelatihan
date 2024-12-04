@@ -149,7 +149,7 @@ export default function TrainingDataId() {
     <ProtectedRoute>
       <DefaultLayout>
         <div className="mx-auto space-y-8 p-6">
-          <Breadcrumb pageName="Web Developer"></Breadcrumb>
+          <Breadcrumb pageName={trainingData.judul || ""}></Breadcrumb>
           {/* Section: Cards */}
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             <div className="rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 p-6 text-white shadow-lg">
