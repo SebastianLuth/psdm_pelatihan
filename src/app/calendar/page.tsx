@@ -6,9 +6,9 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import EventSummaryPopover from "@/components/event-summary-popover";
 import { colorsBarCalendar, Event } from "@/types/dashboar-tipe";
 import { deleteEvent, getEventDataCalendar, postEvent } from "@/service/dashboard";
-import EventPostPopover from "@/components/event-post-popover";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { useAuth } from "@/context/AuthContext";
+import axios from "axios";
 
 moment.locale("en-GB");
 const localizer = momentLocalizer(moment);
@@ -16,19 +16,26 @@ const localizer = momentLocalizer(moment);
 export default function MyCalendar() {
   const [events, setEvents] = useState<Event[]>([]);
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [showModal, setShowModal] = useState(false);
-  const [showPopover, setShowPopover] = useState(false);
-  const [newEvent, setNewEvent] = useState<Partial<Event>>({});
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
-  const [IsUploaded, setIsUploaded] = useState<boolean>(false);
+  const [showPopover, setShowPopover] = useState(false);
+  // const [showModal, setShowModal] = useState(false);
+  // const [newEvent, setNewEvent] = useState<Partial<Event>>({});
+  // const [IsUploaded, setIsUploaded] = useState<boolean>(false);
 
   const {userData} = useAuth();
 
   const featchAllEvent = async () => {
     try {
-      // get data event from API
-      const response = await getEventDataCalendar();
-      setEvents(response);
+      const response = await axios.get(`http://localhost:5000/api/training`);
+      const events = response.data.data.map((event: any, index: number) => ({
+        id: event.id,
+        title: event.judul,
+        start: new Date(event.tgl_mulai),
+        end: new Date(event.tgl_selesai),
+        description : event.rkap_type,
+        color: colorsBarCalendar[index % colorsBarCalendar.length]
+      }))
+      setEvents(events);
     } catch (error) {
       console.error("Error fetching events:", error);
     }
@@ -39,40 +46,39 @@ export default function MyCalendar() {
     setShowPopover(true);
   };
 
-  const handleSelectSlot = ({ start, end }: SlotInfo) => {
-    if(userData?.role !== "admin") return;
-    setNewEvent({ start, end });
-    setShowModal(true);
-  };
+  // const handleSelectSlot = ({ start, end }: SlotInfo) => {
+  //   if(userData?.role !== "admin") return;
+  //   setNewEvent({ start, end });
+  //   setShowModal(true);
+  // };
 
-  const handleSaveEvent = async () => {
-    try {
-      if (newEvent.title) {
-        const formattedEvent = {
-          title: newEvent.title,
-          description: newEvent.description,
-          dateStart: moment(newEvent.start).format("YYYY-MM-DD"),
-          dateEnd: moment(newEvent.end).format("YYYY-MM-DD"),
-          color : newEvent.color
-        };
+  // const handleSaveEvent = async () => {
+  //   try {
+  //     if (newEvent.title) {
+  //       const formattedEvent = {
+  //         title: newEvent.title,
+  //         description: newEvent.description,
+  //         dateStart: moment(newEvent.start).format("YYYY-MM-DD"),
+  //         dateEnd: moment(newEvent.end).format("YYYY-MM-DD"),
+  //       };
   
-        // Send the event to the backend
-        await postEvent(formattedEvent);
-        setIsUploaded(true);
+  //       // Send the event to the backend
+  //       await postEvent(formattedEvent);
+  //       setIsUploaded(true);
   
-        // Update the events state with the new event
-        setEvents((prevEvents) => [...prevEvents, newEvent as Event]);
-        setNewEvent({});
-      }
-    } catch (error) {
-      setIsUploaded(false);
-      console.error("Error saving event:", error);
-    } finally {
-      setShowModal(false);
-      setIsUploaded(false);
-    }
+  //       // Update the events state with the new event
+  //       setEvents((prevEvents) => [...prevEvents, newEvent as Event]);
+  //       setNewEvent({});
+  //     }
+  //   } catch (error) {
+  //     setIsUploaded(false);
+  //     console.error("Error saving event:", error);
+  //   } finally {
+  //     setShowModal(false);
+  //     setIsUploaded(false);
+  //   }
    
-  };
+  // };
   const handleDeleteEvent = async () => {
     if (selectedEvent) {
       try {
@@ -101,10 +107,14 @@ export default function MyCalendar() {
     },
   });
 
-  const handleCloseEvenSummaryPopover = () => {
-    setIsUploaded(false);
-    setShowModal(false);
+  const handleRandomCalor = () => {
+    
   }
+
+  // const handleCloseEvenSummaryPopover = () => {
+  //   setIsUploaded(false);
+  //   setShowModal(false);
+  // }
 
   useEffect(() => {
     featchAllEvent();
@@ -168,7 +178,6 @@ export default function MyCalendar() {
           events={events}
           defaultView="month"
           selectable
-          onSelectSlot={handleSelectSlot}
           onSelectEvent={handleSelectEvent}
           startAccessor="start"
           endAccessor="end"
@@ -197,15 +206,7 @@ export default function MyCalendar() {
         />
       )}
 
-      {showModal && (
-       <EventPostPopover
-       newEvent={newEvent}
-       onChange={(updatedEvent) => setNewEvent(updatedEvent)}
-       onSave={handleSaveEvent}
-       onClose={handleCloseEvenSummaryPopover}
-       isUploaded={IsUploaded}
-     />
-      )}
+      
     </div>
     </ProtectedRoute>
   );

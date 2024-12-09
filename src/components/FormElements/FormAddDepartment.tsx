@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import { UnitKerja } from "@/types/department-type";
 
@@ -29,7 +29,7 @@ export function FormAddDepartment({
     }
   }, [mode, defaultValue]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (mode === "add" && onAddUnitKerja) {
       const unitKerjaInput = inputValue.split(",").map((item) => item.trim());

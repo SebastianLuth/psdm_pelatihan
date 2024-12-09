@@ -39,3 +39,27 @@ export interface PelatihanResponseType {
   rkap_type_pelatihan : string;
   tanggal_selesai_pelatihan: string;
 }
+
+interface UserTrainingResponse {
+  status: string;
+  message: string;
+  data: UserTraining[];
+}
+
+export interface UserTraining {
+  user_id: number;
+  name: string;
+  username: number;
+  phone_number: string;
+  unit_kerja: number;
+  jabatan: string;
+  level: number;
+  training_id: number;
+  training_title: string;
+  training_type: string;
+  training_method: string;
+  training_location: string;
+  start_date: string; // ISO date format
+  end_date: string;   // ISO date format
+  has_completed_evaluation: boolean | number; // 0 or 1 from the backend
+}

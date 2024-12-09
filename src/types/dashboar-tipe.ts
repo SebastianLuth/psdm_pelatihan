@@ -8,9 +8,14 @@ export interface Event {
   }
   
  export const colorsBarCalendar = [
-    "bg-blue-400",
-    "bg-green-400",
-    "bg-red-400",
-    "bg-yellow-400",
-    "bg-purple-400",
+    "#FF5733", 
+  "#33FF57", 
+  "#3357FF",
+  "#FF33A8", 
+  "#FF8F33", 
+  "#8D33FF", 
+  "#33FFF3", 
+  "#FF3333", 
+  "#33FF8F", 
+  "#3380FF",
   ];

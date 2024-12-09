@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
-import { TrainingType } from "@/types/training-types";
+import { TrainingType, UserTraining } from "@/types/training-types";
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -10,6 +10,9 @@ import { format } from "date-fns";
 const TableEvaluationTraining1 = () => {
   const { userData } = useAuth();
   const [trainingData, setTrainingData] = useState<TrainingType[]>([]);
+  const [trainingDataAdmin, setTrainingDataAdmin] = useState<UserTraining[]>(
+    [],
+  );
 
   const fetchAllTraining = async () => {
     try {
@@ -25,15 +28,39 @@ const TableEvaluationTraining1 = () => {
     }
   };
 
+  const fetchAllUserAndTheirTrainings = async () => {
+    try {
+      const result = await axios.get(`http://localhost:5000/api/evaluation`);
+
+      const formattedData = result.data.data.map((training: UserTraining) => ({
+        ...training,
+        start_date: format(new Date(training.start_date), "dd MMMM yyyy"),
+        end_date: format(new Date(training.end_date), "dd MMMM yyyy"),
+      }));
+
+      setTrainingDataAdmin(formattedData);
+    } catch (error) {
+      console.log(error || "Data tidak ditemukan");
+    }
+  };
   useEffect(() => {
     fetchAllTraining();
   }, []);
 
+  useEffect(() => {
+    fetchAllUserAndTheirTrainings();
+  }, []);
+
   const userTraining = trainingData.filter((training) =>
-    training.peserta.some((participant) => participant.user_id === userData?.id),
+    training.peserta.some(
+      (participant) => participant.user_id === userData?.id,
+    ),
   );
 
-  const handleEvaluationClick = (tglSelesai: string, trainingId: number | undefined) => {
+  const handleEvaluationClick = (
+    tglSelesai: string,
+    trainingId: number | undefined,
+  ) => {
     const trainingEndDate = new Date(tglSelesai);
     const currentDate = new Date();
 
@@ -56,96 +83,154 @@ const TableEvaluationTraining1 = () => {
         </p>
 
         <div className="flex flex-col">
-          {/* Header Table */}
-          <div className="grid grid-cols-6 rounded-sm bg-gray-2 dark:bg-meta-6">
-            <div className="p-2.5 text-start xl:p-5">
-              <h5 className="text-sm font-medium uppercase xsm:text-base">No</h5>
-            </div>
-            <div className="p-2.5 text-start xl:p-5">
-              <h5 className="text-sm font-medium uppercase xsm:text-base">NIK SAP</h5>
-            </div>
-            <div className="p-2.5 text-start xl:p-5">
-              <h5 className="text-sm font-medium uppercase xsm:text-base">Nama</h5>
-            </div>
-            <div className="p-2.5 text-start xl:p-5">
-              <h5 className="text-sm font-medium uppercase xsm:text-base">Pelatihan</h5>
-            </div>
-            <div className="p-2.5 text-start xl:p-5">
-              <h5 className="text-sm font-medium uppercase xsm:text-base">Status</h5>
-            </div>
-            <div className="p-2.5 text-start xl:p-5">
-              <h5 className="text-sm font-medium uppercase xsm:text-base">Action</h5>
-            </div>
-          </div>
-
-          {userData?.role === "admin" &&
-            trainingData.map((training, key) => (
-              <div
-                className={`grid grid-cols-6 ${
-                  key === trainingData.length - 1
-                    ? ""
-                    : "border-b border-stroke dark:border-strokedark"
-                }`}
-                key={key}
-              >
-                <div className="flex items-center justify-start p-2.5 xl:p-5">
-                  <p className="text-black dark:text-white">{training.judul}</p>
-                </div>
-                <div className="flex items-center justify-start p-2.5 xl:p-5">
-                  <p className="text-black dark:text-white">{training.jenis}</p>
-                </div>
-                <div className="flex items-center justify-start p-2.5 xl:p-5">
-                  <p className="text-black dark:text-white">{training.jumlah_anggaran}</p>
-                </div>
-                <div className="flex items-center justify-start p-2.5 xl:p-5">
-                  <p className="text-black dark:text-white">{training.tgl_mulai}</p>
-                </div>
-                <div className="flex items-center justify-start p-2.5 xl:p-5">
-                  <p className="text-black dark:text-white">{training.tgl_selesai}</p>
-                </div>
-                <div className="flex items-center justify-start gap-4 p-2.5 xl:p-5">
-                  <Link
-                    className="text-black dark:text-white"
-                    href={`/training/evaluation_training1/${training.id}/edit`}
+          {userData?.role === "admin" && (
+            <table className="min-w-full border-collapse text-left text-sm text-gray-700 dark:text-gray-300">
+              <thead>
+                <tr className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white">
+                  <th className="px-6 py-4">No</th>
+                  <th className="px-6 py-4">NIKSAP</th>
+                  <th className="px-6 py-4">Jenis Anggaran</th>
+                  <th className="px-6 py-4">Tanggal Acara</th>
+                  <th className="px-6 py-4">Status Evaluasi</th>
+                  <th className="px-6 py-4">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {trainingDataAdmin.map((training, key) => (
+                  <tr
+                    key={training.user_id}
+                    className="group transform transition-transform duration-200 hover:scale-[1.02] hover:bg-gray-50 dark:hover:bg-gray-800"
                   >
-                    Detail
-                  </Link>
-                </div>
-              </div>
-            ))}
+                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                      {key + 1}
+                    </td>
+                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                      {training.username}
+                    </td>
+                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                      {training.training_type}
+                    </td>
+                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                      {training.start_date} - {training.end_date}
+                    </td>
+                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                      {training.has_completed_evaluation
+                        ? "Selesai"
+                        : "Belum Selesai"}
+                    </td>
+                    <td className="flex px-6 py-4 text-right">
+                      <button className="mr-2 inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-green-400 to-green-600 px-4 py-2 text-sm font-medium text-white shadow-md hover:from-green-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-green-400">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M11 5h2m-1 14V5m9 4H4m5 0a1 1 0 000 2h6a1 1 0 000-2H9z"
+                          />
+                        </svg>
+                        <Link
+                          key={training.training_id}
+                          href={`/training/evaluation_training1/${training.user_id}/${training.training_id}`}
+                        >
+                          {" "}
+                          <span>Detail</span>
+                        </Link>
+                      </button>
+                      <button className="inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-red-400 to-red-600 px-4 py-2 text-sm font-medium text-white shadow-md hover:from-red-500 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-red-400">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                        <span>Delete</span>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
 
-          {userData?.role === "user" &&
-            userTraining.map((training, key) => (
-              <div
-                key={key}
-                className={`grid grid-cols-6 ${
-                  key === userTraining.length - 1
-                    ? ""
-                    : "border-b border-stroke dark:border-strokedark"
-                }`}
-              >
-                <div className="flex items-center justify-start p-2.5 xl:p-5">
-                  <p className="text-black dark:text-white">{training.judul}</p>
-                </div>
-                <div className="flex items-center justify-start p-2.5 xl:p-5">
-                  <p className="text-black dark:text-white">{training.jenis}</p>
-                </div>
-                <div className="flex items-center justify-start p-2.5 xl:p-5">
-                  <p className="text-black dark:text-white">{training.tgl_mulai}</p>
-                </div>
-                <div className="flex items-center justify-start p-2.5 xl:p-5">
-                  <p className="text-black dark:text-white">{training.tgl_selesai}</p>
-                </div>
-                <div className="flex items-center justify-start gap-4 p-2.5 xl:p-5">
-                  <button
-                    className="text-black dark:text-white"
-                    onClick={() => handleEvaluationClick(training.tgl_selesai, training.id)}
+          {userData?.role === "user" && (
+            <table className="dark: min-w-full border-collapse text-left text-sm text-gray-300 text-gray-700">
+              <thead>
+                <tr className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white">
+                  <th className="px-6 py-4">No</th>
+                  <th className="px-6 py-4">judul</th>
+                  <th className="px-6 py-4">Jenis</th>
+                  <th className="px-6 py-4">Tanggal Pelatihan</th>
+                  <th className="px-6 py-4">Lembaga</th>
+                  <th className="px-6 py-4">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {userTraining.map((training, key) => (
+                  <tr
+                    key={training.id}
+                    className="group transform transition-transform duration-200 hover:scale-[1.02] hover:bg-gray-50 dark:hover:bg-gray-800"
                   >
-                    Jawab Evaluasi
-                  </button>
-                </div>
-              </div>
-            ))}
+                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                      {key + 1}
+                    </td>
+                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                      {training.judul}
+                    </td>
+                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                      {training.jenis}
+                    </td>
+                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                      {training.tgl_mulai} - {training.tgl_selesai}
+                    </td>
+                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                      {training.lembaga || "Tidak ada lembaga"}
+                    </td>
+                    <td className="flex px-6 py-4 text-right">
+                      <button
+                        onClick={() =>
+                          handleEvaluationClick(
+                            training.tgl_selesai,
+                            training.id,
+                          )
+                        }
+                        className="mr-2 inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-green-400 to-green-600 px-4 py-2 text-sm font-medium text-white shadow-md hover:from-green-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-green-400"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M11 5h2m-1 14V5m9 4H4m5 0a1 1 0 000 2h6a1 1 0 000-2H9z"
+                          />
+                        </svg>
+                        <span>Jawab Evaluasi</span>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
     </>
