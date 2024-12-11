@@ -71,11 +71,11 @@ const AddTraining = () => {
     e.preventDefault();
 
     try {
-      const payload: TrainingType = {
+      const payload = {
         ...trainingData,
         jumlah_peserta: selectedParticipants.length,
         peserta: selectedParticipants.map((id) => ({ id })),
-      } as TrainingType;
+      };
       const result = await axios.post(
         `http://localhost:5000/api/training`,
         payload,

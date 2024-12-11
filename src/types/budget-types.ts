@@ -3,7 +3,7 @@ export interface budgetType {
   niksap_anggaran: number;
   jenis_anggaran: string;
   total_anggaran: number;
-  sisa_anggaran: number;
+  sisa_anggaran?: number;
   tahun_anggaran: number;
 }
 
