@@ -1,6 +1,7 @@
 "use client";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import { QuestionType } from "@/types/question-type";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -13,7 +14,6 @@ const Question = () => {
 
   const toggleDropdown = (id: number) => {
     setOpenDropdownId((prevId) => (prevId === id ? null : id));
-    console.log("ini dropdown id ", openDropdownId);
   };
 
   const handleEdit = (id: number) => {

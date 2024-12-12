@@ -37,9 +37,9 @@ const ScrollableCards: React.FC = () => {
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeaveOrUp}
         onMouseUp={handleMouseLeaveOrUp}
-        style={{ maxHeight: '200px', maxWidth: '1280px',  overflow: 'hidden'}} // Set height according to your need
+        style={{ maxHeight: '200px', maxWidth: '1420px',  overflow: 'hidden', marginLeft: 'auto', marginRight: 'auto'}} // Set height according to your need
       >
-        <div className="flex space-x-4 min-w-fit"> {/* Prevent wrapping */}
+        <div className="flex space-x-4 min-w-fit">
           <CardDataStats title="Total Users" total="3.456K" rate="0.43%" levelUp>
             <svg className="fill-primary dark:fill-white" width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               {/* SVG Path */}
@@ -85,8 +85,6 @@ const ScrollableCards: React.FC = () => {
               {/* SVG Path */}
             </svg>
           </CardDataStats>
-          
-          
           {/* Add other cards here */}
         </div>
       </div>

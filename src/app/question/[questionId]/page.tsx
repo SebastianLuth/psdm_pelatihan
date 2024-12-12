@@ -1,8 +1,8 @@
 "use client";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import { QuestionType } from "@/types/question-type";
 import axios from "axios";
-import { set } from "date-fns";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { FormEvent, useCallback, useEffect, useState } from "react";
