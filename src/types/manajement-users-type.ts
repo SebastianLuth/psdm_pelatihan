@@ -53,7 +53,7 @@ export const unitKerjaList = [
     { id: 52, name: "UNIT GROUP I"},
     { id: 53, name: "UNIT GROUP II"},
     { id: 54, name: "UNIT GROUP III"},
-  ];
+];
 
 export interface User {
   id: number;

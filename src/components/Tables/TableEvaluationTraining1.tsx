@@ -1,5 +1,4 @@
 "use client";
-
 import { useAuth } from "@/context/AuthContext";
 import { TrainingType, UserTraining } from "@/types/training-types";
 import axios from "axios";
@@ -43,6 +42,7 @@ const TableEvaluationTraining1 = () => {
       console.log(error || "Data tidak ditemukan");
     }
   };
+  
   useEffect(() => {
     fetchAllTraining();
   }, []);

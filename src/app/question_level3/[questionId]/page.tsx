@@ -81,7 +81,7 @@ const QuestionEvaluationLevel3DetailPage = () => {
                 <option value="teknis">Teknik</option>
                 <option value="non teknis">Non Teknis</option>
                 <option value="personality">Personality</option>
-                <option value="learship">Leadership</option>
+                <option value="leadership">Leadership</option>
               </select>
               <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
                 Pertanyaan
