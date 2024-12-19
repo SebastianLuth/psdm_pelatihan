@@ -3,8 +3,8 @@ import useSWR from "swr";
 import { deleteUnitKerja, getUnitKerja } from "@/service/department";
 import { UnitKerja } from "@/types/department-type";
 import Swal from "sweetalert2";
-import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from 'next/navigation';
 
 // Fungsi fetcher untuk SWR
 const fetcher = async () => {
@@ -17,6 +17,9 @@ const TableDataUnitKerja = () => {
   const { data, error, mutate } = useSWR<UnitKerja[]>("/unitKerja", fetcher, {
     refreshInterval: 10800000,
   });
+
+  const router = useRouter();
+
 
   if (error) return <div>Error loading data...</div>;
   if (!data) return <div>Loading...</div>;
@@ -53,6 +56,10 @@ const TableDataUnitKerja = () => {
         "error",
       );
     }
+  };
+
+  const handleEditUnitKerja = (unitKerjaId: number) => {
+    router.push(`/department/department_data/${unitKerjaId}`);
   };
 
   const selectTotalDataToView = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -119,7 +126,9 @@ const TableDataUnitKerja = () => {
                 </td>
                 <td className="px-6 py-4 text-right">
                   
-                  <button className="mr-2 inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-green-400 to-green-600 px-4 py-2 text-sm font-medium text-white shadow-md hover:from-green-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-green-400">
+                  <button 
+                  onClick={() => handleEditUnitKerja(unit.id)}
+                  className="mr-2 inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-green-400 to-green-600 px-4 py-2 text-sm font-medium text-white shadow-md hover:from-green-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-green-400">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-5 w-5"
@@ -134,8 +143,7 @@ const TableDataUnitKerja = () => {
                         d="M11 5h2m-1 14V5m9 4H4m5 0a1 1 0 000 2h6a1 1 0 000-2H9z"
                       />
                     </svg>
-                    
-                    <Link href={`/department/department_data/${unit.id}`} >Edit</Link>
+                    Edit
                   </button>
                   <button
                     onClick={() => handleDeleteUnitKerja(unit.id)}

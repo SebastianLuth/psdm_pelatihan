@@ -1,39 +1,18 @@
-"use client";
-import { FormAddDepartment } from "@/components/FormElements/FormAddDepartment";
+import AddDepartmentComponent from "@/components/Layouts/AddDepartmentComponent";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import { addUnitKerja } from "@/service/department";
-import { useState } from "react";
+
+export const metadata = {
+  title: "N4TALENT | Tambah Unit Kerja",
+  description: "Tambah Unit Kerja RKAP",
+  keywords: "PTPN4, anggaran RKAP, detail data anggaran, manajemen keuangan, pelatihan karyawan, pengembangan kompetensi",
+}
 
 const AddDepartmentPage = () => {
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<boolean>(false);
-
-  const handleAddUnitKerja = async (unitKerjaInput: string[]) => {
-    setError(null);
-    setSuccess(false);
-    try {
-      const result = await addUnitKerja(unitKerjaInput);
-      if (result.success) {
-        setSuccess(true);
-      } else {
-        setError(result.message);
-      }
-    } catch (error) {
-      console.error(error);
-      setError("Terjadi kesalahan saat menambahkan unit kerja.");
-    }
-  };
-
   return (
     <ProtectedRoute allowedRoles={["admin"]}>
       <DefaultLayout>
-        <FormAddDepartment
-          mode="add"
-          onAddUnitKerja={handleAddUnitKerja}
-          success={success}
-          error={error}
-        />
+        <AddDepartmentComponent />
       </DefaultLayout>
     </ProtectedRoute>
   );
