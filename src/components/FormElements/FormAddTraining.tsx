@@ -14,7 +14,6 @@ import { getAllDataBawahanInUnitKerja } from "@/service/management-users";
 import { TrainingType } from "@/types/training-types";
 import Swal from "sweetalert2";
 
-// app/components/FormElements/FormAddTraining.tsx
 const AddTraining = () => {
   const [trainingData, setTrainingData] = useState<Partial<TrainingType>>({});
   const [jenisPelatihan, setJenisPelatihan] = useState<budgetType[]>([]);
@@ -22,13 +21,13 @@ const AddTraining = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedParticipants, setSelectedParticipants] = useState<number[]>(
     [],
-  ); // Peserta yang dipilih
+  ); 
   const [participants, setParticipants] = useState<User[]>([]);
 
   // Get all user by unit kerja
   const fetchAllUserByUnitKerja = useCallback(async () => {
     try {
-      if (!selectedUnitKerja) return; // Cegah pemanggilan API jika kosong
+      if (!selectedUnitKerja) return; // Check if selectedUnitKerja is not empty
       const response = await getAllDataBawahanInUnitKerja(
         Number(selectedUnitKerja),
       );

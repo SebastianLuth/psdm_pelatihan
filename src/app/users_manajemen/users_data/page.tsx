@@ -1,21 +1,18 @@
-"use client";
+import UsersDataComponent from "@/components/Layouts/UsersData";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import SelectUnitKerja from "@/components/SelectGroup/SelectUnitKerja";
-import TableDataUser from "@/components/Tables/TableDataUser";
-import { useState } from "react";
+
+export const metadata = {
+  title: "N4TALENT | Data User",
+  description: "Lihat data user RKAP PTPN4 terkini. Informasi lengkap mengenai anggaran karyawan pimpinan, pelatihan, dan pengembangan kompetensi karyawan di PTPN4.",
+  keywords: "PTPN4, anggaran RKAP, data anggaran, manajemen keuangan, pelatihan karyawan, pengembangan kompetensi",
+}
 
 const UsersDataPage = () => {
-  const [selectedUnitKerja, setSelectedUnitKerja] = useState<string>("");
   return (
     <ProtectedRoute allowedRoles={["admin"]}>
       <DefaultLayout>
-        <div className="m-10">
-          <SelectUnitKerja onUnitKerjaChange={setSelectedUnitKerja} />
-        </div>
-        <div className="m-10">
-          <TableDataUser selectedUnitKerja={selectedUnitKerja} />
-        </div>
+        <UsersDataComponent/>
       </DefaultLayout>
     </ProtectedRoute>
   );

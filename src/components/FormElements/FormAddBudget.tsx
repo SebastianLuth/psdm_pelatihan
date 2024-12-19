@@ -1,7 +1,6 @@
 "use client";
 import { addBudget } from "@/service/budget";
 import { budgetType, rkapTypeOptions } from "@/types/budget-types";
-import axios from "axios";
 import { ChangeEvent, FormEvent, useState } from "react";
 import Swal from "sweetalert2";
 
