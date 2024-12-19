@@ -1,16 +1,16 @@
 "use client";
-import { budgetType } from "@/types/budget-types";
+import { addBudget } from "@/service/budget";
+import { budgetType, rkapTypeOptions } from "@/types/budget-types";
 import axios from "axios";
 import { ChangeEvent, FormEvent, useState } from "react";
 import Swal from "sweetalert2";
 
 const FormAddBudget = () => {
-  // Initialize with an empty object matching budgetType
   const [budgetData, setBudgetData] = useState<budgetType>({
-    niksap_anggaran: 0,
+    niksap_anggaran: null,
     jenis_anggaran: "",
-    total_anggaran: 0,
-    tahun_anggaran: 0,
+    total_anggaran: null,
+    tahun_anggaran: 2024,
   });
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
@@ -36,26 +36,8 @@ const FormAddBudget = () => {
     setSuccess(false);
 
     try {
-      const result = await axios.post(
-        `http://localhost:5000/api/budget`,
-        budgetData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        },
-      );
-      if (result.status === 201) {
-        setSuccess(true);
-        await Swal.fire({
-          title: "Success!",
-          text: "Berhasil Menambahkan Anggaran",
-          icon: "success",
-          confirmButtonText: "OK",
-        });
-        window.location.reload();
-      }
+      await addBudget(budgetData);
+      setSuccess(true);
       setBudgetData({
         niksap_anggaran: 0,
         jenis_anggaran: "",
@@ -93,24 +75,33 @@ const FormAddBudget = () => {
             type="text"
             name="niksap_anggaran"
             placeholder="Contoh : 499999"
-            value={budgetData.niksap_anggaran}
+            value={budgetData.niksap_anggaran ?? ""}
             onChange={handleInputChange}
             className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-100"
           />
         </div>
         <div className="mb-5">
           <label className="mb-1 block font-medium text-gray-600">
-            Jenis Anggaran
+            Jenis RKAP Anggaran
           </label>
-          <input
-            type="text"
+          <select
             name="jenis_anggaran"
-            placeholder="Contoh : DIKLAT"
-            value={budgetData.jenis_anggaran}
             onChange={handleInputChange}
-            className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-100"
-          />
+            className="mt-1 w-full rounded-md border p-2"
+            defaultValue=""
+          >
+            <option value="" disabled>
+              Pilih Type
+            </option>
+            {/* Options here */}
+            {rkapTypeOptions.map((item, index) => (
+              <option key={index} value={item.label}>
+                {item.label}
+              </option>
+            ))}
+          </select>
         </div>
+
         <div className="mb-5">
           <label className="mb-1 block font-medium text-gray-600">
             Total Anggaran
@@ -119,7 +110,7 @@ const FormAddBudget = () => {
             type="number"
             name="total_anggaran"
             placeholder="Contoh : 20000000"
-            value={budgetData.total_anggaran}
+            value={budgetData.total_anggaran ?? ""}
             onChange={handleInputChange}
             className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-100"
           />
