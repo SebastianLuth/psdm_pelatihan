@@ -3,8 +3,8 @@ import QuestionEvaluationLevel3Component from "@/components/Layouts/Question3Com
 import ProtectedRoute from "@/components/ProtectedRoute";
 
 export const metadata = {
-  title: "N4TALENT |Update Pertanyaan Evaluasi level 1",
-  description: "Update Pertanyaan Evaluasi level 1",
+  title: "N4TALENT |Kumpulan Pertanyaan Evaluasi level 1",
+  description: "Kumpulan Pertanyaan Evaluasi level 1",
   keywords:
     "PTPN4, anggaran RKAP, detail data anggaran, manajemen keuangan, pelatihan karyawan, pengembangan kompetensi",
 };

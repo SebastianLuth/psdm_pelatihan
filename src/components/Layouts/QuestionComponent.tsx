@@ -2,7 +2,7 @@
 import {
   deleteQuestionLevel1,
   getQuestionLevel1,
-  submitQuestionLevel1,
+  addQuestionLevel1,
 } from "@/service/question";
 import { QuestionType } from "@/types/question-type";
 import { useEffect, useState } from "react";
@@ -57,7 +57,7 @@ const QuestionComponent = () => {
   const submitQuestion = async () => {
     setLoading(true);
     try {
-      await submitQuestionLevel1(pertanyaan);
+      await addQuestionLevel1(pertanyaan);
       setOpen(false);
       fetchQuestion();
     } catch (error) {

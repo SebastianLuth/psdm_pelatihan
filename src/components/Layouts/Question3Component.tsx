@@ -1,8 +1,12 @@
 "use client";
 import { QuestionType, QuestionTypeLevel3Form } from "@/types/question-type";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import CreateQuestionLevel3 from "../Modal/CreateQuestionLevel3";
+import {
+  addQuestionLevel3,
+  deleteQuestionLevel3,
+  getQuestionLevel3,
+} from "@/service/question";
 
 const QuestionEvaluationLevel3Component = () => {
   const [questionData, setQuestionData] = useState<QuestionType[]>([]);
@@ -12,15 +16,18 @@ const QuestionEvaluationLevel3Component = () => {
     pertanyaan: "",
     kategori: "",
   });
+  const [error, setError] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const fetchQuestionLevel3 = async () => {
+    setLoading(true);
     try {
-      const response = await axios.get(
-        `http://localhost:5000/api/evaluation3/question`,
-      );
-      setQuestionData(response.data.data);
+      const result = await getQuestionLevel3();
+      setQuestionData(result);
     } catch (error) {
-      console.error("Error fetching question level 3:", error);
+      setError(true);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -38,12 +45,10 @@ const QuestionEvaluationLevel3Component = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post(`http://localhost:5000/api/evaluation3/question`, {
-        pertanyaan: formData.pertanyaan,
-        kategori: formData?.kategori,
-      });
+      await addQuestionLevel3(formData.pertanyaan, formData.kategori);
       fetchQuestionLevel3();
       setFormData({ pertanyaan: "", kategori: "" });
+      setOpen(false);
     } catch (error) {
       console.error("Error adding question level 3:", error);
     }
@@ -51,9 +56,7 @@ const QuestionEvaluationLevel3Component = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await axios.delete(
-        `http://localhost:5000/api/evaluation3/question/${id}`,
-      );
+      await deleteQuestionLevel3(id);
       fetchQuestionLevel3();
     } catch (error) {
       console.error("Error deleting question level 3:", error);
