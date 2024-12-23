@@ -59,7 +59,7 @@ export interface UserTraining {
   training_type: string;
   training_method: string;
   training_location: string;
-  start_date: string; // ISO date format
-  end_date: string;   // ISO date format
+  start_date: string; 
+  end_date: string;   
   has_completed_evaluation: boolean | number; // 0 or 1 from the backend
 }

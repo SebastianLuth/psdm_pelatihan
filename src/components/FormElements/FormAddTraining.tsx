@@ -3,8 +3,7 @@ import {
   budgetType,
   kompetensiOptions,
   metodePelatihanOptions,
-  rkapTypeOptions,
-  tahunOptions,
+  jenisPelatihanOptions,
 } from "@/types/budget-types";
 import { User } from "@/types/manajement-users-type";
 import axios from "axios";
@@ -16,7 +15,7 @@ import Swal from "sweetalert2";
 
 const AddTraining = () => {
   const [trainingData, setTrainingData] = useState<Partial<TrainingType>>({});
-  const [jenisPelatihan, setJenisPelatihan] = useState<budgetType[]>([]);
+  const [jenisPelatihanRKAP, setJenisPelatihanRKAP] = useState<budgetType[]>([]);
   const [selectedUnitKerja, setSelectedUnitKerja] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedParticipants, setSelectedParticipants] = useState<number[]>(
@@ -42,7 +41,7 @@ const AddTraining = () => {
       const result = await axios.get(`http://localhost:5000/api/budget`, {
         withCredentials: true,
       });
-      setJenisPelatihan(result.data.data);
+      setJenisPelatihanRKAP(result.data.data);
     } catch (error) {
       console.error("Error fetching jenis pelatihan data:", error);
     }
@@ -136,7 +135,7 @@ const AddTraining = () => {
 
         {/* Jenis Pelatihan */}
         <div>
-          <label className="text-gray-700">Jenis Pelatihan</label>
+          <label className="text-gray-700">RKAP Type</label>
           <select
             name="jenis"
             value={trainingData.jenis}
@@ -147,7 +146,7 @@ const AddTraining = () => {
               Pilih Jenis Pelatihan
             </option>
             {/* Options here */}
-            {jenisPelatihan.map((item, index) => (
+            {jenisPelatihanRKAP.map((item, index) => (
               <option key={index} value={item.jenis_anggaran}>
                 {item.jenis_anggaran}
               </option>
@@ -234,7 +233,7 @@ const AddTraining = () => {
 
         {/* RKAP Type */}
         <div>
-          <label className="text-gray-700">RKAP Type</label>
+          <label className="text-gray-700">Jenis Pelatihan</label>
           <select
             name="rkap_type"
             onChange={handleInputChange}
@@ -242,7 +241,7 @@ const AddTraining = () => {
           >
             <option disabled>Pilih Type</option>
             {/* Options here */}
-            {rkapTypeOptions.map((item, index) => (
+            {jenisPelatihanOptions.map((item, index) => (
               <option key={index} value={item.label}>
                 {item.label}
               </option>

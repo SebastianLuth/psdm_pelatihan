@@ -164,58 +164,15 @@ export const menuGroups = [
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <path d="M9 11L6.5 8.5L5.08 9.92L9 13.84L19 3.84L17.58 2.42L9 11ZM3 20V18H21V20H3Z" />
-            </svg>
-          ),
-          label: "Assessment Center",
-          route: "#",
-          children: [
-            { label: "Assessment BOD-1", route: "/assessment_center/assessmentbod1" },
-            { label: "Assessment BOD-2 & 3 ", route: "/assessment_center/assessmentbod2" },
-          ],
-          role : "admin"
-        },
-        {
-          icon: (
-            <svg
-              className="fill-current"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
               <path d="M6 2H14L20 8V20C20 21.1 19.1 22 18 22H6C4.9 22 4 21.1 4 20V4C4 2.9 4.9 2 6 2ZM13 9V3.5L18.5 9H13ZM6 13H18V15H6V13ZM6 17H18V19H6V17ZM6 9H11V11H6V9Z" />
             </svg>
           ),
           label: "Laporan",
           route: "#",
           children: [
-            { label: "Evaluasi Level 1", route: "/report/evaluation1" },
-            { label: "Evaluasi Level 3 & 4", route: "/report/evaluation2" },
-            { label: "Assessment", route: "/report/assessment" },
-          ],
-          role : "admin"
-        },
-        {
-          icon: (
-            <svg
-            className="fill-current"
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M19 3H18V1H16V3H8V1H6V3H5C3.9 3 3 3.9 3 5V21C3 22.1 3.9 23 5 23H19C20.1 23 21 22.1 21 21V5C21 3.9 20.1 3 19 3ZM10 17L6.5 13.5L7.91 12.09L10 14.17L16.59 7.59L18 9L10 17Z" />
-          </svg>
-          
-          ),
-          label: "RKAP",
-          route: "#",
-          children: [
-            { label: "Tambah RKAP", route: "/rkap/addrkap" },
-            { label: "Data RKAP", route: "/rkap/rkapdata" },
+            { label: "Laporan Anggaran RKAP", route: "/report/evaluation1" },
+            { label: "Laporan Anggaran Pelatihan", route: "/report/evaluation2" },
+            { label: "Laporan Evaluasi 1 & 3", route: "/report/assessment" },
           ],
           role : "admin"
         },

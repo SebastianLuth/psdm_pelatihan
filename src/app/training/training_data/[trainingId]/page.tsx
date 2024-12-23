@@ -19,6 +19,7 @@ type ParticipantType = {
   unit_kerja: number;
   jabatan: string;
   level: number;
+  has_completed_evaluation: boolean | number;
 };
 
 type TrainingType = {
@@ -557,7 +558,9 @@ export default function TrainingDataId() {
                     </td>
                     <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
                       <div className="relative grid select-none items-center whitespace-nowrap rounded-md bg-green-500/20 px-2 py-1 font-sans text-xs font-bold uppercase text-green-900">
-                        <span className="">Telah dinilai</span>
+                        <span className="">{peserta.has_completed_evaluation
+                        ? "Telah Melakukan Evaluasi"
+                        : "Belum Melakukan Evaluasi"}</span>
                       </div>
                     </td>
                     <td className="flex justify-end px-6 py-4">

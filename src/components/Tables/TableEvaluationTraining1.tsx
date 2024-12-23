@@ -89,6 +89,8 @@ const TableEvaluationTraining1 = () => {
                 <tr className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white">
                   <th className="px-6 py-4">No</th>
                   <th className="px-6 py-4">NIKSAP</th>
+                  <th className="px-6 py-4">Nama</th>
+                  <th className="px-6 py-4">Judul Pelatihan</th>
                   <th className="px-6 py-4">Jenis Anggaran</th>
                   <th className="px-6 py-4">Tanggal Acara</th>
                   <th className="px-6 py-4">Status Evaluasi</th>
@@ -106,6 +108,12 @@ const TableEvaluationTraining1 = () => {
                     </td>
                     <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
                       {training.username}
+                    </td>
+                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                      {training.name}
+                    </td>
+                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                      {training.training_title}
                     </td>
                     <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
                       {training.training_type}
@@ -141,23 +149,6 @@ const TableEvaluationTraining1 = () => {
                           {" "}
                           <span>Detail</span>
                         </Link>
-                      </button>
-                      <button className="inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-red-400 to-red-600 px-4 py-2 text-sm font-medium text-white shadow-md hover:from-red-500 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-red-400">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M6 18L18 6M6 6l12 12"
-                          />
-                        </svg>
-                        <span>Delete</span>
                       </button>
                     </td>
                   </tr>
