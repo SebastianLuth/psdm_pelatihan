@@ -43,7 +43,6 @@ const UserDetailComponent = () => {
   const fetchDetailUser = useCallback(async () => {
     try {
       const response = await getDetailUser(Number(userId));
-      console.log(response);
       setUser(response);
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -139,7 +138,6 @@ const UserDetailComponent = () => {
         unit_kerja: updatedUser.unit_kerja || unitKerjaId,
       };
 
-      console.log("Mengirim data ke API:", finalData, foto_profil);
 
       // Kirim data ke API menggunakan FormData
       await updateUser(Number(userId), finalData, foto_profil);

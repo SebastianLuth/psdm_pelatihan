@@ -43,7 +43,7 @@ const TableDataAnggaran: React.FC = () => {
       await deleteBudget(id);
       fetchAllBudget();
     } catch (error) {
-      console.log(error || "Data tidak ditemukan");
+      setError(true);
     } finally {
       setLoading(false);
     }

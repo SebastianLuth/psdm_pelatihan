@@ -1,19 +1,16 @@
 import { budgetType } from "@/types/budget-types";
 import axios from "axios";
 import Swal from "sweetalert2";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export const addBudget = async (budgetData: budgetType) => {
   try {
-    const result = await axios.post(
-      `http://localhost:5000/api/budget`,
-      budgetData,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      }
-    );
+    const result = await axios.post(`${baseUrl}/api/budget`, budgetData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    });
     if (result.status === 201) {
       await Swal.fire({
         title: "Success!",
@@ -30,7 +27,7 @@ export const addBudget = async (budgetData: budgetType) => {
 
 export const getAllBudget = async () => {
   try {
-    const result = await axios.get(`http://localhost:5000/api/budget`, {
+    const result = await axios.get(`${baseUrl}/api/budget`, {
       withCredentials: true,
     });
     return result.data.data;
@@ -54,7 +51,7 @@ export const deleteBudget = async (id: number | undefined) => {
     });
 
     if (result.isConfirmed) {
-      await axios.delete(`http://localhost:5000/api/budget/${id}`, {
+      await axios.delete(`${baseUrl}/api/budget/${id}`, {
         withCredentials: true,
       });
     }
@@ -65,9 +62,7 @@ export const deleteBudget = async (id: number | undefined) => {
 
 export const getDetailBudget = async (budgetId: number) => {
   try {
-    const response = await axios.get(
-      `http://localhost:5000/api/budget/${budgetId}`
-    );
+    const response = await axios.get(`${baseUrl}/api/budget/${budgetId}`);
     return response.data;
   } catch (error) {
     throw error;

@@ -9,7 +9,7 @@ export const addUnitKerja = async (unitKerja: string[]) => {
             throw new Error("Unit kerja tidak boleh kosong");
         }
         await axios.post(
-            "http://localhost:5000/api/unitkerja",
+            `${baseUrl}/api/unitkerja`,
             { unit_kerja: unitKerja },
             {
               withCredentials: true,

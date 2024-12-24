@@ -2,6 +2,7 @@ import { UserTrainingEvaluation3 } from "@/types/evaluasi3";
 import { unitKerjaList } from "@/types/manajement-users-type";
 import axios from "axios";
 import { format } from "date-fns";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const getUnitKerjaIdByName = (name: string): number | undefined => {
   const unit = unitKerjaList.find((unit) => unit.name === name);
@@ -11,7 +12,7 @@ const getUnitKerjaIdByName = (name: string): number | undefined => {
 export const getQuestions3 = async (trainingId: number) => {
   try {
     const response = await axios.get(
-      `http://localhost:5000/api/evaluation3/question/start/${trainingId}`,
+      `${baseUrl}/api/evaluation3/question/start/${trainingId}`,
       {
         withCredentials: true,
       }
@@ -33,7 +34,7 @@ export const submitAnswerEvaluation3 = async (
       jawaban,
     }));
     await axios.post(
-      `http://localhost:5000/api/evaluation3/question/submit/${trainingId}/${participantId}`,
+      `${baseUrl}/api/evaluation3/question/submit/${trainingId}/${participantId}`,
       { answers: answerArray },
       {
         withCredentials: true,
@@ -55,7 +56,7 @@ export const getAllUserAndTheirTrainingsEvaluation3 = async (
     }
 
     const result = await axios.get(
-      `http://localhost:5000/api/evaluation3?unit_kerja=${unitKerjaId}`
+      `${baseUrl}/api/evaluation3?unit_kerja=${unitKerjaId}`
     );
 
     // Hapus duplikat berdasarkan kombinasi user_id dan training_id
@@ -92,7 +93,7 @@ export const getAllEvaluationData = async (
 ) => {
   try {
     const response = await axios.get(
-      `http://localhost:5000/api/evaluation3/${training_id}/${participan_id}`
+      `${baseUrl}/api/evaluation3/${training_id}/${participan_id}`
     );
     return response.data.data;
   } catch (error) {

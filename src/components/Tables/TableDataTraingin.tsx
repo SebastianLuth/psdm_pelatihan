@@ -8,6 +8,7 @@ import Link from "next/link";
 
 const TableDataTraingin = () => {
   const [allTraining, setAllTraining] = useState<TrainingType[]>([]);
+  const [error, setError] = useState(false);
   const fetchAllTraining = async () => {
     try {
       const result = await axios.get(`http://localhost:5000/api/training`);
@@ -16,10 +17,9 @@ const TableDataTraingin = () => {
         tgl_mulai: format(new Date(training.tgl_mulai), "dd MMMM yyyy"),
         tgl_selesai: format(new Date(training.tgl_selesai), "dd MMMM yyyy"),
       }));
-      console.log(result.data.data)
       setAllTraining(formattedData);
     } catch (error) {
-      console.log(error || "Data tidak ditemukan");
+      setError(true);
     }
   };
 

@@ -18,7 +18,6 @@ export default function DepartmentDataIdComponent() {
       setDetailUnitKerja(response);
     } catch (error) {
       setError("Gagal memuat data unit kerja. Silakan coba lagi.");
-      console.log(error);
     }
   }, [departmentId]);
 

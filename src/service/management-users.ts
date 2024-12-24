@@ -3,7 +3,6 @@ import axios from "axios";
 import Swal from "sweetalert2";
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
-
 export const addUser = async (userData: UserDataToAdd) => {
   try {
     await axios.post(
@@ -31,12 +30,9 @@ export const addUser = async (userData: UserDataToAdd) => {
 
 export const getDetailUser = async (userId: number) => {
   try {
-    const {data} = await axios.get(
-      `${baseUrl}/api/user/${userId}`,
-      {
-        withCredentials: true,
-      }
-    );
+    const { data } = await axios.get(`${baseUrl}/api/user/${userId}`, {
+      withCredentials: true,
+    });
     return data.data;
   } catch (error) {
     console.error("Error fetching user data:", error);
@@ -46,7 +42,7 @@ export const getDetailUser = async (userId: number) => {
 export const addBawahan = async (
   atasan_username: number | undefined,
   bawahan_username: number | undefined,
-  nama : string | undefined
+  nama: string | undefined
 ) => {
   try {
     await axios.post(
@@ -79,7 +75,7 @@ export const addBawahan = async (
 
 export const getAllDataBawahanInUnitKerja = async (unitKerjaId: number) => {
   try {
-    const {data} = await axios.get(
+    const { data } = await axios.get(
       `${baseUrl}/api/user?unit_kerja=${unitKerjaId}`,
       {
         withCredentials: true,
@@ -99,8 +95,8 @@ export const getBawahanByAtasan = async (
         withCredentials: true,
       }
     );
-    if(response.status === 204){
-      return []
+    if (response.status === 204) {
+      return [];
     }
     return response.data.data;
   } catch (error) {
@@ -116,7 +112,7 @@ export const deleteBawahan = async (
     await axios.delete(`${baseUrl}/api/atasan/`, {
       data: {
         atasan_username,
-        bawahan_username
+        bawahan_username,
       },
       withCredentials: true,
     });
@@ -125,13 +121,17 @@ export const deleteBawahan = async (
   }
 };
 
-export const updateUser = async (userId: number, finalData: FinalData, foto_profil: File | null) => {
+export const updateUser = async (
+  userId: number,
+  finalData: FinalData,
+  foto_profil: File | null
+) => {
   try {
     const response = await axios.put(
-      `http://localhost:5000/api/user/${userId}`,
+      `${baseUrl}/api/user/${userId}`,
       {
-        finalData, foto_profil
-
+        finalData,
+        foto_profil,
       },
       {
         withCredentials: true,
@@ -144,10 +144,6 @@ export const updateUser = async (userId: number, finalData: FinalData, foto_prof
     if (response.status !== 200) {
       throw new Error("Gagal memperbarui data pengguna");
     }
-    console.log("Response API:", response.status);
-
     Swal.fire("Berhasil", "Data pengguna berhasil diperbarui!", "success");
-  } catch (error) {
-    
-  }
-}
+  } catch (error) {}
+};

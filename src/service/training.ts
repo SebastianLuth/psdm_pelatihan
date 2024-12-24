@@ -1,10 +1,11 @@
 import { DetailCostTypeUpload } from "@/types/training-types";
 import axios from "axios";
 import Swal from "sweetalert2";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export const getJenisPelatihanData = async () => {
   try {
-    const response = await axios.get(`http://localhost:5000/api/budget`, {
+    const response = await axios.get(`${baseUrl}/api/budget`, {
       withCredentials: true,
     });
     return response.data.data;
@@ -24,10 +25,7 @@ export const addTraining = async (
       jumlah_peserta: jumlah_peserta,
       peserta: peserta,
     };
-    const result = await axios.post(
-      `http://localhost:5000/api/training`,
-      payload
-    );
+    const result = await axios.post(`${baseUrl}/api/training`, payload);
     if (result.status === 201) {
       await Swal.fire({
         title: "Success!",
@@ -43,9 +41,7 @@ export const addTraining = async (
 
 export const getTrainingData = async (trainingId: number) => {
   try {
-    const response = await axios.get(
-      `http://localhost:5000/api/training/${trainingId}`
-    );
+    const response = await axios.get(`${baseUrl}/api/training/${trainingId}`);
     return response.data.data;
   } catch (error) {
     throw error;
@@ -55,7 +51,7 @@ export const getTrainingData = async (trainingId: number) => {
 export const getDetailTrainingCost = async (trainingId: number) => {
   try {
     const response = await axios.get(
-      `http://localhost:5000/api/training/${trainingId}/cost-details`
+      `${baseUrl}/api/training/${trainingId}/cost-details`
     );
     return response.data.data;
   } catch (error) {
@@ -69,7 +65,7 @@ export const uploadFileTrainingCost = async (
 ) => {
   try {
     await axios.post(
-      `http://localhost:5000/api/training/${trainingId}/cost-details`,
+      `${baseUrl}/api/training/${trainingId}/cost-details`,
       formData,
       {
         headers: {
@@ -88,7 +84,7 @@ export const updateDetailCostTraining = async (
 ) => {
   try {
     await axios.put(
-      `http://localhost:5000/api/training/${trainingId}/cost-details`,
+      `${baseUrl}/api/training/${trainingId}/cost-details`,
       payload
     );
   } catch (error) {
@@ -99,7 +95,7 @@ export const updateDetailCostTraining = async (
 export const deleteDetailCostTraining = async (trainingId: number) => {
   try {
     const response = await axios.delete(
-      `http://localhost:5000/api/training/${trainingId}/cost-details`
+      `${baseUrl}/api/training/${trainingId}/cost-details`
     );
     if (response.status === 200) {
       await Swal.fire({

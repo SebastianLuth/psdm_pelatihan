@@ -2,11 +2,12 @@ import { EvaluationItem } from "@/types/evaluation1";
 import { TrainingType, UserTraining } from "@/types/training-types";
 import axios from "axios";
 import { format } from "date-fns";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export const getAllQuestionEvaluation1 = async (trainingId: number) => {
   try {
     const response = await axios.get(
-      `http://localhost:5000/api/evaluation/start/${trainingId}`,
+      `${baseUrl}/api/evaluation/start/${trainingId}`,
       {
         withCredentials: true,
       }
@@ -27,7 +28,7 @@ export const submitAnswerEvaluation1 = async (
       jawaban,
     }));
     await axios.post(
-      `http://localhost:5000/api/evaluation/submit/${trainingId}`,
+      `${baseUrl}/api/evaluation/submit/${trainingId}`,
       { answers: answerArray },
       {
         withCredentials: true,
@@ -41,7 +42,7 @@ export const submitAnswerEvaluation1 = async (
 
 export const getAllTrainingEvaluation1 = async () => {
   try {
-    const response = await axios.get(`http://localhost:5000/api/training`);
+    const response = await axios.get(`${baseUrl}/api/training`);
     const formattedData = response.data.data.map((training: TrainingType) => ({
       ...training,
       tgl_mulai: format(new Date(training.tgl_mulai), "dd MMMM yyyy"),
@@ -56,7 +57,7 @@ export const getAllTrainingEvaluation1 = async () => {
 
 export const getAllUserAndTheirTrainings = async () => {
   try {
-    const response = await axios.get(`http://localhost:5000/api/evaluation`);
+    const response = await axios.get(`${baseUrl}/api/evaluation`);
 
     const formattedData = response.data.data.map((training: UserTraining) => ({
       ...training,
@@ -73,7 +74,7 @@ export const getAllUserAndTheirTrainings = async () => {
 export const getEvaluationData = async (userId: number, trainingId: number) => {
   try {
     const response = await axios.get<{ data: EvaluationItem[] }>(
-      `http://localhost:5000/api/evaluation/${userId}/${trainingId}`
+      `${baseUrl}/api/evaluation/${userId}/${trainingId}`
     );
     return response.data.data;
   } catch (error) {
