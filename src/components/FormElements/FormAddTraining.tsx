@@ -105,7 +105,7 @@ const AddTraining = () => {
     fetchJenisPelatihanData();
   }, []);
   useEffect(() => {
-    fetchAllUserByUnitKerja(); // Dipanggil ulang saat selectedUnitKerja berubah
+    fetchAllUserByUnitKerja();
   }, [fetchAllUserByUnitKerja]);
 
   return (

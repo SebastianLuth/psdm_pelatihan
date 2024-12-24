@@ -40,12 +40,6 @@ export interface PelatihanResponseType {
   tanggal_selesai_pelatihan: string;
 }
 
-interface UserTrainingResponse {
-  status: string;
-  message: string;
-  data: UserTraining[];
-}
-
 export interface UserTraining {
   user_id: number;
   name: string;
@@ -63,3 +57,51 @@ export interface UserTraining {
   end_date: string;   
   has_completed_evaluation: boolean | number; // 0 or 1 from the backend
 }
+
+
+export type ParticipantTypeDetail = {
+  peserta_id: number;
+  pelatihan_id: number;
+  user_id: number;
+  username: number;
+  nama: string;
+  nomor_hp: string;
+  unit_kerja: number;
+  jabatan: string;
+  level: number;
+  has_completed_evaluation: boolean | number;
+};
+
+
+export type TrainingTypeDetail = {
+  id: number;
+  judul: string;
+  jenis: string;
+  metode: string;
+  lokasi: string;
+  lembaga: string;
+  kompetensi: string;
+  jumlah_anggaran: string;
+  rkap_type: string;
+  jumlah_peserta: number;
+  tgl_mulai: string;
+  tgl_selesai: string;
+  peserta: ParticipantTypeDetail[];
+};
+
+export type DetailCostType = {
+  pelatihan_id: number;
+  akomodasi: number;
+  fasilitator_ex: number;
+  perdiem: number;
+  sekretariat: number;
+  name: string;
+  value: number;
+};
+
+export type DetailCostTypeUpload = {
+  akomodasi: number;
+  fasilitator_ex: number;
+  perdiem: number;
+  sekretariat: number;
+};

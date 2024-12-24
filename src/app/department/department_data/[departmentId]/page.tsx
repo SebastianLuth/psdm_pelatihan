@@ -1,4 +1,4 @@
-import DepartmentDataIdComponent from "@/components/Detail/DetailDepartmentData";
+import DepartmentDataIdComponent from "@/components/Layouts/Detail/DetailDepartmentData";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
 

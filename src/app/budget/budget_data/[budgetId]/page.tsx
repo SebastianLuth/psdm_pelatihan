@@ -1,7 +1,7 @@
 import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import DetailBudgetComponent from "@/components/Detail/DetailBudget";
+import DetailBudgetComponent from "@/components/Layouts/Detail/DetailBudget";
 
 export const metadata = {
   title: "N4TALENT | Detail Anggaran",

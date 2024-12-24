@@ -1,4 +1,4 @@
-import DetailQuestionLevel1Component from "@/components/Detail/DetailQuestionLevel1";
+import DetailQuestionLevel1Component from "@/components/Layouts/Detail/DetailQuestionLevel1";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
 

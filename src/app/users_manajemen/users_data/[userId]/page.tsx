@@ -1,4 +1,4 @@
-import UserDetailComponent from "@/components/Detail/DetailUserData";
+import UserDetailComponent from "@/components/Layouts/Detail/DetailUserData";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
 

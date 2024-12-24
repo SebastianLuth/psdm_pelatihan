@@ -5,7 +5,6 @@ import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import EventSummaryPopover from "@/components/event-summary-popover";
 import { colorsBarCalendar, Event } from "@/types/dashboar-tipe";
-import { deleteEvent, getEventDataCalendar, postEvent } from "@/service/dashboard";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { useAuth } from "@/context/AuthContext";
 import axios from "axios";
@@ -46,52 +45,6 @@ export default function MyCalendar() {
     setShowPopover(true);
   };
 
-  // const handleSelectSlot = ({ start, end }: SlotInfo) => {
-  //   if(userData?.role !== "admin") return;
-  //   setNewEvent({ start, end });
-  //   setShowModal(true);
-  // };
-
-  // const handleSaveEvent = async () => {
-  //   try {
-  //     if (newEvent.title) {
-  //       const formattedEvent = {
-  //         title: newEvent.title,
-  //         description: newEvent.description,
-  //         dateStart: moment(newEvent.start).format("YYYY-MM-DD"),
-  //         dateEnd: moment(newEvent.end).format("YYYY-MM-DD"),
-  //       };
-  
-  //       // Send the event to the backend
-  //       await postEvent(formattedEvent);
-  //       setIsUploaded(true);
-  
-  //       // Update the events state with the new event
-  //       setEvents((prevEvents) => [...prevEvents, newEvent as Event]);
-  //       setNewEvent({});
-  //     }
-  //   } catch (error) {
-  //     setIsUploaded(false);
-  //     console.error("Error saving event:", error);
-  //   } finally {
-  //     setShowModal(false);
-  //     setIsUploaded(false);
-  //   }
-   
-  // };
-  const handleDeleteEvent = async () => {
-    if (selectedEvent) {
-      try {
-        const evenId = Number(selectedEvent.id);
-        await deleteEvent(evenId);
-        // Setelah delete berhasil, fetch ulang data event
-        featchAllEvent();
-        setSelectedEvent(null);
-      } catch (error) {
-        console.error("Error deleting event:", error);
-      }
-    }
-  };
 
   const handleToday = () => {
     setCurrentDate(new Date());
@@ -107,14 +60,7 @@ export default function MyCalendar() {
     },
   });
 
-  const handleRandomCalor = () => {
-    
-  }
 
-  // const handleCloseEvenSummaryPopover = () => {
-  //   setIsUploaded(false);
-  //   setShowModal(false);
-  // }
 
   useEffect(() => {
     featchAllEvent();
@@ -202,7 +148,6 @@ export default function MyCalendar() {
         <EventSummaryPopover
           event={selectedEvent}
           onClose={()=> setShowPopover(false)}
-          onDelete={handleDeleteEvent}
         />
       )}
 
