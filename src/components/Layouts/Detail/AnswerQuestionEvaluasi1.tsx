@@ -1,32 +1,26 @@
 "use client";
-import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-
-interface Question {
-  id: number;
-  pertanyaan: string;
-}
+import {
+  getAllQuestionEvaluation1,
+  submitAnswerEvaluation1,
+} from "@/service/evaluation1";
+import { QuestionEvaluation1 } from "@/types/evaluation1";
 
 const EvaluasiTraining1Component = () => {
   const trainingId = useParams().training_id;
-  const [questions, setQuestions] = useState<Question[]>([]);
+  const [questions, setQuestions] = useState<QuestionEvaluation1[]>([]);
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const fetchQuestions = useCallback(async () => {
     try {
       setLoading(true);
-      const result = await axios.get(
-        `http://localhost:5000/api/evaluation/start/${trainingId}`,
-        {
-          withCredentials: true,
-        },
-      );
-      console.log(result.data.data);
-      setQuestions(result.data.data);
+      const result = await getAllQuestionEvaluation1(Number(trainingId));
+      setQuestions(result);
     } catch (error) {
-      console.error("Error fetching questions:", error);
+      setError(true);
     } finally {
       setLoading(false);
     }
@@ -39,21 +33,13 @@ const EvaluasiTraining1Component = () => {
   const handleSubmit = async () => {
     try {
       setLoading(true);
-      const answerArray = Object.entries(answers).map(([id, jawaban]) => ({
-        pertanyaan_id: Number(id),
-        jawaban,
-      }));
-      await axios.post(
-        `http://localhost:5000/api/evaluation/submit/${trainingId}`,
-        { answers: answerArray },
-        {
-          withCredentials: true,
-        },
-      );
-      alert("Jawaban berhasil dikirim!");
-      setAnswers({});
+      const result = await submitAnswerEvaluation1(Number(trainingId), answers);
+      if (result === true) {
+        alert("Jawaban berhasil dikirim!");
+        setAnswers({});
+      }
     } catch (error) {
-      console.error("Error submitting answers:", error);
+      setError(true);
     } finally {
       setLoading(false);
     }

@@ -1,76 +1,38 @@
 "use client";
-import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
-import { format } from "date-fns";
 import { useAuth } from "@/context/AuthContext";
-import { unitKerjaList } from "@/types/manajement-users-type";
 import { UserTraining } from "@/types/training-types";
+import { getAllUserAndTheirTrainings } from "@/service/evaluation1";
+import { getAllUserAndTheirTrainingsEvaluation3 } from "@/service/evaluasi3";
+import { UserTrainingEvaluation3 } from "@/types/evaluasi3";
 
 const TableEvaluationTraining2 = () => {
   const { userData } = useAuth();
-  const [trainingData, setTrainingData] = useState<any[]>([]);
+  const [trainingData, setTrainingData] = useState<UserTrainingEvaluation3[]>(
+    [],
+  );
   const [trainingDataAdmin, setTrainingDataAdmin] = useState<UserTraining[]>(
     [],
   );
-
-  const getUnitKerjaIdByName = (name: string): number | undefined => {
-    const unit = unitKerjaList.find((unit) => unit.name === name);
-    return unit?.id; // Mengembalikan undefined jika tidak ditemukan
-  };
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const fetchAllUserAndTheirTrainings = useCallback(async () => {
     try {
-      const unitKerjaId = getUnitKerjaIdByName(userData?.unit_kerja ?? "");
-      if (!unitKerjaId) {
-        console.log("Unit kerja tidak ditemukan dalam daftar.");
-        return;
-      }
-
-      const result = await axios.get(
-        `http://localhost:5000/api/evaluation3?unit_kerja=${unitKerjaId}`,
-      );
-
-      // Hapus duplikat berdasarkan kombinasi user_id dan training_id
-      const uniqueData = Array.from(
-        new Map(
-          result.data.data.map((item: any) => [
-            `${item.user_id}-${item.training_id}`,
-            item,
-          ]),
-        ).values(),
-      );
-
-      const formattedData = uniqueData.map((training: any) => ({
-        id: training.training_id,
-        judul: training.training_title,
-        nama: training.name,
-        jenis: training.training_type,
-        tgl_mulai: format(new Date(training.start_date), "dd MMMM yyyy"),
-        tgl_selesai: format(new Date(training.end_date), "dd MMMM yyyy"),
-        lembaga: training.training_location,
-        hasCompletedEvaluation: training.has_completed_evaluation,
-        participanId: training.user_id,
-      }));
-
-      setTrainingData(formattedData);
+      const unitKerja = userData?.unit_kerja ? userData?.unit_kerja : "";
+      const result = await getAllUserAndTheirTrainingsEvaluation3(unitKerja);
+      setTrainingData(result || []);
     } catch (error) {
-      console.log(error || "Data tidak ditemukan");
+      setError(true);
     }
   }, [userData?.unit_kerja]);
 
   const fetchAllUserAndTheirTrainingsAdmin = async () => {
     try {
-      const result = await axios.get(`http://localhost:5000/api/evaluation`);
-
-      const formattedData = result.data.data.map((training: UserTraining) => ({
-        ...training,
-        start_date: format(new Date(training.start_date), "dd MMMM yyyy"),
-        end_date: format(new Date(training.end_date), "dd MMMM yyyy"),
-      }));
-
-      setTrainingDataAdmin(formattedData);
+      const result = await getAllUserAndTheirTrainings();
+      setTrainingDataAdmin(result);
     } catch (error) {
-      console.log(error || "Data tidak ditemukan");
+      setError(true);
     }
   };
 
@@ -168,8 +130,8 @@ const TableEvaluationTraining2 = () => {
                           onClick={() =>
                             handleEvaluationClick(
                               training.tgl_selesai,
-                              training.id,
-                              training.participanId,
+                              Number(training.id),
+                              Number(training.participanId),
                             )
                           }
                           className="mr-2 inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-green-400 to-green-600 px-4 py-2 text-sm font-medium text-white shadow-md hover:from-green-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-green-400"

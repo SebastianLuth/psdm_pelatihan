@@ -1,10 +1,9 @@
 "use client";
 import { useAuth } from "@/context/AuthContext";
 import { TrainingType, UserTraining } from "@/types/training-types";
-import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { format } from "date-fns";
+import { getAllTrainingEvaluation1, getAllUserAndTheirTrainings } from "@/service/evaluation1";
 
 const TableEvaluationTraining1 = () => {
   const { userData } = useAuth();
@@ -12,35 +11,23 @@ const TableEvaluationTraining1 = () => {
   const [trainingDataAdmin, setTrainingDataAdmin] = useState<UserTraining[]>(
     [],
   );
+  const [loadng, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const fetchAllTraining = async () => {
     try {
-      const result = await axios.get(`http://localhost:5000/api/training`);
-      const formattedData = result.data.data.map((training: TrainingType) => ({
-        ...training,
-        tgl_mulai: format(new Date(training.tgl_mulai), "dd MMMM yyyy"),
-        tgl_selesai: format(new Date(training.tgl_selesai), "dd MMMM yyyy"),
-      }));
-      setTrainingData(formattedData);
+      const result = await getAllTrainingEvaluation1()
+      setTrainingData(result);
     } catch (error) {
-      console.log(error || "Data tidak ditemukan");
-    }
+      setError(true);    }
   };
 
   const fetchAllUserAndTheirTrainings = async () => {
     try {
-      const result = await axios.get(`http://localhost:5000/api/evaluation`);
-
-      const formattedData = result.data.data.map((training: UserTraining) => ({
-        ...training,
-        start_date: format(new Date(training.start_date), "dd MMMM yyyy"),
-        end_date: format(new Date(training.end_date), "dd MMMM yyyy"),
-      }));
-
-      setTrainingDataAdmin(formattedData);
+      const result = await getAllUserAndTheirTrainings()
+      setTrainingDataAdmin(result);
     } catch (error) {
-      console.log(error || "Data tidak ditemukan");
-    }
+      setError(true);    }
   };
   
   useEffect(() => {
