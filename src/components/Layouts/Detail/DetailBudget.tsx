@@ -2,9 +2,9 @@
 import React, { useCallback, useEffect, useState } from "react";
 import ReactECharts from "echarts-for-react";
 import { budgetType } from "@/types/budget-types";
-import axios from "axios";
 import { useParams } from "next/navigation";
 import { PelatihanResponseType, TrainingType } from "@/types/training-types";
+import { getDetailBudget } from "@/service/budget";
 
 const DetailBudgetComponent = () => {
   const [trainingData, setTrainingData] = useState<TrainingType[]>([]);
@@ -14,10 +14,7 @@ const DetailBudgetComponent = () => {
 
   const fetchDetailBudget = useCallback(async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:5000/api/budget/${budgetId}`,
-      );
-      const data = response.data;
+      const data = await getDetailBudget(Number(budgetId));
       if (data) {
         setBudgetData(data);
         setTrainingData(

@@ -5,9 +5,18 @@ import ReactECharts from "echarts-for-react";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import axios from "axios";
-import { DetailCostType, DetailCostTypeUpload, TrainingTypeDetail } from "@/types/training-types";
-
+import {
+  DetailCostType,
+  DetailCostTypeUpload,
+  TrainingTypeDetail,
+} from "@/types/training-types";
+import {
+  deleteDetailCostTraining,
+  getDetailTrainingCost,
+  getTrainingData,
+  updateDetailCostTraining,
+  uploadFileTrainingCost,
+} from "@/service/training";
 
 export default function TrainingDataIdComponent() {
   const [trainingData, setTrainingData] = useState<TrainingTypeDetail>();
@@ -19,16 +28,15 @@ export default function TrainingDataIdComponent() {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const { trainingId } = useParams();
+  const [error, setError] = useState<boolean>(false);
 
   const [updateDetailCost, setUpdateDetailCost] = useState<DetailCostType[]>();
 
   const fetchTrainingData = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await axios.get(
-        `http://localhost:5000/api/training/${trainingId}`,
-      );
-      const { training, peserta } = response.data.data;
+      const result = await getTrainingData(Number(trainingId));
+      const { training, peserta } = result;
       setTrainingData({
         id: training?.id || 0,
         judul: training?.judul || "",
@@ -45,7 +53,7 @@ export default function TrainingDataIdComponent() {
         peserta: peserta || [],
       });
     } catch (error) {
-      console.error("Failed to fetch training data:", error);
+      setError(true);
     } finally {
       setLoading(false);
     }
@@ -53,13 +61,9 @@ export default function TrainingDataIdComponent() {
 
   const fetchDetailTrainingCost = useCallback(async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:5000/api/training/${trainingId}/cost-details`,
-      );
-      console.log("ini detail cost response ", response.data.data);
-
+      const result = await getDetailTrainingCost(Number(trainingId));
       // Map the API response to a format suitable for chartOptions
-      const mappedCostDetails = response.data.data
+      const mappedCostDetails = result
         .map((item: DetailCostType) => [
           { name: "Akomodasi", value: item.akomodasi },
           { name: "Fasilitator Eksternal", value: item.fasilitator_ex },
@@ -69,7 +73,7 @@ export default function TrainingDataIdComponent() {
         .flat();
       setDetailTrainingCost(mappedCostDetails);
     } catch (error) {
-      console.error("Error fetching training cost details:", error);
+      setError(true);
     }
   }, [trainingId]);
 
@@ -161,24 +165,14 @@ export default function TrainingDataIdComponent() {
       if (!file) {
         throw new Error("No file selected");
       }
-
       setLoading(true);
       const formData = new FormData();
       formData.append("detail_cost", file);
-
-      const response = await axios.post(
-        `http://localhost:5000/api/training/${trainingId}/cost-details`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        },
-      );
+      await uploadFileTrainingCost(formData, Number(trainingId));
       setModalUploadExcel(false);
       fetchDetailTrainingCost();
     } catch (error) {
-      console.error("Error uploading file:", error);
+      setError(true);
     } finally {
       setLoading(false);
     }
@@ -213,35 +207,29 @@ export default function TrainingDataIdComponent() {
             (item) => item.name.toLowerCase() === "fasilitator eksternal",
           )?.value || 0,
         perdiem:
-          updateDetailCost.find(
-            (item) => item.name.toLowerCase() === "per diem",
-          )?.value || 0,
+          updateDetailCost.find((item) => item.name.toLowerCase() === "perdiem")
+            ?.value || 0,
         sekretariat:
           updateDetailCost.find(
             (item) => item.name.toLowerCase() === "sekretariat",
           )?.value || 0,
       };
-
-      // Send the payload to the server
-      await axios.put(
-        `http://localhost:5000/api/training/${trainingId}/cost-details`,
-        payload,
-      );
-      setModalEditDetailCost(false); // Tutup modal
+      await updateDetailCostTraining(Number(trainingId), payload);
+      setModalEditDetailCost(false);
       fetchDetailTrainingCost(); // Refresh data
     } catch (error) {
-      console.error("Error updating detail cost:", error);
+      setError(true);
     }
   };
 
   const handleDeleteDetailCost = async () => {
     try {
-      await axios.delete(
-        `http://localhost:5000/api/training/${trainingId}/cost-details`,
-      );
-      fetchDetailTrainingCost();
+      const result = await deleteDetailCostTraining(Number(trainingId));
+      if (result === true) {
+        fetchDetailTrainingCost();
+      }
     } catch (error) {
-      console.error("Error deleting detail cost:", error);
+      setError(true);
     }
   };
 

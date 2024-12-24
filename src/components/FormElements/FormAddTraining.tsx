@@ -6,21 +6,23 @@ import {
   jenisPelatihanOptions,
 } from "@/types/budget-types";
 import { User } from "@/types/manajement-users-type";
-import axios from "axios";
 import { FormEvent, useCallback, useEffect, useState } from "react";
 import SelectUnitKerja from "../SelectGroup/SelectUnitKerja";
 import { getAllDataBawahanInUnitKerja } from "@/service/management-users";
 import { TrainingType } from "@/types/training-types";
 import Swal from "sweetalert2";
+import { addTraining, getJenisPelatihanData } from "@/service/training";
 
 const AddTraining = () => {
   const [trainingData, setTrainingData] = useState<Partial<TrainingType>>({});
-  const [jenisPelatihanRKAP, setJenisPelatihanRKAP] = useState<budgetType[]>([]);
+  const [jenisPelatihanRKAP, setJenisPelatihanRKAP] = useState<budgetType[]>(
+    [],
+  );
   const [selectedUnitKerja, setSelectedUnitKerja] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedParticipants, setSelectedParticipants] = useState<number[]>(
     [],
-  ); 
+  );
   const [participants, setParticipants] = useState<User[]>([]);
 
   // Get all user by unit kerja
@@ -38,10 +40,8 @@ const AddTraining = () => {
 
   const fetchJenisPelatihanData = async () => {
     try {
-      const result = await axios.get(`http://localhost:5000/api/budget`, {
-        withCredentials: true,
-      });
-      setJenisPelatihanRKAP(result.data.data);
+      const result = await getJenisPelatihanData();
+      setJenisPelatihanRKAP(result);
     } catch (error) {
       console.error("Error fetching jenis pelatihan data:", error);
     }
@@ -67,25 +67,10 @@ const AddTraining = () => {
   };
   const handleAddTraining = async (e: FormEvent) => {
     e.preventDefault();
-
     try {
-      const payload = {
-        ...trainingData,
-        jumlah_peserta: selectedParticipants.length,
-        peserta: selectedParticipants.map((id) => ({ id })),
-      };
-      const result = await axios.post(
-        `http://localhost:5000/api/training`,
-        payload,
-      );
-      if (result.status === 201) {
-        await Swal.fire({
-          title: "Success!",
-          text: "Berhasil Menambahkan Pelatihan",
-          icon: "success",
-          confirmButtonText: "OK",
-        });
-      }
+      const jumlah_peserta = selectedParticipants.length;
+      const peserta = selectedParticipants.map((id) => ({ id }));
+      await addTraining(jumlah_peserta, peserta, trainingData);
     } catch (error: any) {
       const errorMessage =
         error.response?.data.message ||

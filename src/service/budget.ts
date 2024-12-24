@@ -59,6 +59,17 @@ export const deleteBudget = async (id: number | undefined) => {
       });
     }
   } catch (error) {
-    throw error
+    throw error;
+  }
+};
+
+export const getDetailBudget = async (budgetId: number) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:5000/api/budget/${budgetId}`
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
   }
 };

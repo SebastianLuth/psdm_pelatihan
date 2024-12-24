@@ -4,7 +4,6 @@ import {
   updateQuestionLevel3,
 } from "@/service/question";
 import { QuestionTypeLevel3Form } from "@/types/question-type";
-import axios from "axios";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
