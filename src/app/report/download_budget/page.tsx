@@ -1,13 +1,13 @@
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import AssessmentReport from "@/components/Tables/AssesmentReport";
+import ExportDataBudget from "@/components/Tables/ExportDataBudget";
 
 const AssessmentReportPage = () => {
     return (
         <>
             <ProtectedRoute allowedRoles={['admin']}>
             <DefaultLayout>
-                <AssessmentReport/>
+                <ExportDataBudget/>
             </DefaultLayout>
             </ProtectedRoute>
         </>

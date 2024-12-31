@@ -170,9 +170,9 @@ export const menuGroups = [
           label: "Laporan",
           route: "#",
           children: [
-            { label: "Laporan Anggaran RKAP", route: "/report/evaluation1" },
-            { label: "Laporan Anggaran Pelatihan", route: "/report/evaluation2" },
-            { label: "Laporan Evaluasi 1 & 3", route: "/report/assessment" },
+            { label: "Download Laporan Anggaran RKAP", route: "/report/download_budget" },
+            { label: "Laporan Anggaran Evaluasi 1 & 3", route: "/report/download_evaluation" },
+            { label: "Laporan Anggaran Pelatihan", route: "/report/download_pelatihan" },
           ],
           role : "admin"
         },

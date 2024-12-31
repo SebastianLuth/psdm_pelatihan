@@ -1,12 +1,31 @@
-'use client';
-import React, { useRef, useState } from 'react';
-import CardDataStats from './CardDataStats';
+"use client";
+import React, { useEffect, useRef, useState } from "react";
+import CardDataStats from "./CardDataStats";
+import Image from "next/image";
+import { useAuth } from "@/context/AuthContext";
+import axios from "axios";
+import * as echarts from "echarts";
+
+interface CountBudgetData {
+   tahun : number,
+   totalAnggaran : number,
+   sisaAnggaran : number,
+   penyerapanAnggaran : number 
+}
 
 const ScrollableCards: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [error, setError] = useState(false)
+  const [countBudgetData, setCountBudgetData] = useState<CountBudgetData>({
+    tahun: 0,
+    totalAnggaran: 0,
+    sisaAnggaran: 0,
+    penyerapanAnggaran: 0
+  })
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+  const {userData} = useAuth()
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (scrollRef.current) {
@@ -20,6 +39,68 @@ const ScrollableCards: React.FC = () => {
     setIsDragging(false);
   };
 
+  const fetchCountBudgetPerYears = async() => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/budget/count_budget?tahun_anggaran=2025`);
+      const data = response.data.data;
+      setCountBudgetData({
+        tahun : data.tahun,
+        totalAnggaran : data.total_anggaran,
+        sisaAnggaran : data.sisa_anggaran,
+        penyerapanAnggaran : data.penyerapan_anggaran
+      });
+    } catch (error) {
+      setError(false)
+    }
+  }
+
+  const renderChart = (
+    container: HTMLDivElement | null,
+    value: number,
+    title: string,
+    color: string
+  ) => {
+    if (!container) return;
+
+    const chart = echarts.init(container);
+    chart.setOption({
+      title: {
+        text: `${Math.round((value / countBudgetData.totalAnggaran) * 100)}%`,
+        left: "center",
+        top: "center",
+        textStyle: {
+          fontSize: 20,
+          fontWeight: "bold",
+        },
+      },
+      series: [
+        {
+          type: "pie",
+          radius: ["70%", "90%"],
+          avoidLabelOverlap: false,
+          label: {
+            show: false,
+          },
+          labelLine: {
+            show: false,
+          },
+          data: [
+            { value, name: title, itemStyle: { color } },
+            {
+              value: countBudgetData.totalAnggaran - value,
+              name: "Remaining",
+              itemStyle: { color: "#e0e0e0" },
+            },
+          ],
+        },
+      ],
+    });
+
+    window.addEventListener("resize", () => {
+      chart.resize();
+    });
+  };
+
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!isDragging || !scrollRef.current) return;
     e.preventDefault();
@@ -27,65 +108,114 @@ const ScrollableCards: React.FC = () => {
     const walk = (x - startX) * 1.5; // Speed multiplier
     scrollRef.current.scrollLeft = scrollLeft - walk;
   };
+  const formatCurrencyShort = (value: number): string => {
+    if (value >= 1_000_000_000) {
+      return `${(value / 1_000_000_000).toFixed()} miliar`;
+    } else if (value >= 1_000_000) {
+      return `${(value / 1_000_000).toFixed()} juta`;
+    } else if (value >= 1_000) {
+      return `${(value / 1_000).toFixed()} ribu`;
+    } else {
+      return `${value} rupiah`;
+    }
+  };
+   
+  useEffect(() => {
+    fetchCountBudgetPerYears()
+  }, [])
 
+  useEffect(() => {
+    renderChart(
+      document.getElementById("chart-total-anggaran") as HTMLDivElement,
+      countBudgetData.totalAnggaran,
+      "Total Anggaran",
+      "#ff6b6b"
+    );
+    renderChart(
+      document.getElementById("chart-sisa-anggaran") as HTMLDivElement,
+      countBudgetData.sisaAnggaran,
+      "Sisa Anggaran",
+      "#4caf50"
+    );
+    renderChart(
+      document.getElementById("chart-penyerapan-anggaran") as HTMLDivElement,
+      countBudgetData.penyerapanAnggaran,
+      "Penyerapan Anggaran",
+      "#2196f3"
+    );
+  }, [countBudgetData]);
   return (
     <div className="overflow-x-auto">
-      <div
-        ref={scrollRef}
-        className="flex space-x-4 cursor-grab active:cursor-grabbing overflow-x-auto" // Enable horizontal scrolling
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeaveOrUp}
-        onMouseUp={handleMouseLeaveOrUp}
-        style={{ maxHeight: '200px', maxWidth: '1420px',  overflow: 'hidden', marginLeft: 'auto', marginRight: 'auto'}} // Set height according to your need
-      >
-        <div className="flex space-x-4 min-w-fit">
-          <CardDataStats title="Total Users" total="3.456K" rate="0.43%" levelUp>
-            <svg className="fill-primary dark:fill-white" width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              {/* SVG Path */}
-            </svg>
-          </CardDataStats>
-          <CardDataStats title="Total Profit" total="$45.2K" rate="4.35%" levelUp>
-            <svg className="fill-primary dark:fill-white" width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-              {/* SVG Path */}
-            </svg>
-          </CardDataStats>
-          <CardDataStats title="Total Product" total="2.450" rate="2.59%" levelUp>
-            <svg className="fill-primary dark:fill-white" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-              {/* SVG Path */}
-            </svg>
-          </CardDataStats>
-          <CardDataStats title="Total Users" total="3.456K" rate="0.43%" levelUp>
-            <svg className="fill-primary dark:fill-white" width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              {/* SVG Path */}
-            </svg>
-          </CardDataStats>
-          <CardDataStats title="Total Profit" total="$45.2K" rate="4.35%" levelUp>
-            <svg className="fill-primary dark:fill-white" width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-              {/* SVG Path */}
-            </svg>
-          </CardDataStats>
-          <CardDataStats title="Total Profit" total="$45.2K" rate="4.35%" levelUp>
-            <svg className="fill-primary dark:fill-white" width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-              {/* SVG Path */}
-            </svg>
-          </CardDataStats>
-          <CardDataStats title="Total Profit" total="$45.2K" rate="4.35%" levelUp>
-            <svg className="fill-primary dark:fill-white" width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-              {/* SVG Path */}
-            </svg>
-          </CardDataStats>
-          <CardDataStats title="Total Profit" total="$45.2K" rate="4.35%" levelUp>
-            <svg className="fill-primary dark:fill-white" width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-              {/* SVG Path */}
-            </svg>
-          </CardDataStats>
-          <CardDataStats title="Total Profit" total="$45.2K" rate="4.35%" levelUp>
-            <svg className="fill-primary dark:fill-white" width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-              {/* SVG Path */}
-            </svg>
-          </CardDataStats>
-          {/* Add other cards here */}
+      <div className="flex space-x-10">
+        <div className="mx-auto mb-6 w-1/2 rounded-lg bg-blue-500 text-white shadow-lg mr-5">
+          <div className="flex items-start items-center justify-center align-middle">
+          <div>
+            <h1 className="text-2xl font-bold">{userData?.nama}</h1>
+            <p className="text-sm">Selamat datang di website N4TELENT</p>
+            <div className="mt-6 flex justify-center space-x-10">
+              <div className="text-center bg-blue-800 p-4 rounded-lg">
+                <p className="text-2xl font-bold">{countBudgetData.penyerapanAnggaran ? formatCurrencyShort(countBudgetData.penyerapanAnggaran) : '0'}</p>
+                <p className="text-sm">Anggaran Terpakai</p>
+              </div>
+              <div className="text-center bg-blue-800 p-4 rounded-lg">
+                <p className="text-4xl font-bold">{Math.round((countBudgetData.penyerapanAnggaran / countBudgetData.totalAnggaran) * 100)}%</p>
+                <p className="text-sm">Persentasi Terpakai</p>
+              </div>
+            </div>
+          </div>
+            <div>
+              <Image
+                width={240}
+                height={12}
+                src={"/images/logo/make-social-media.webp"}
+                alt="Logo DASHBOARD"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          ref={scrollRef}
+          className="flex cursor-grab space-x-4 overflow-x-auto active:cursor-grabbing" 
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeaveOrUp}
+          onMouseUp={handleMouseLeaveOrUp}
+          style={{
+            maxHeight: "240px",
+            maxWidth: "1420px",
+            overflow: "hidden",
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
+        >
+          <div className="flex min-w-fit space-x-4">
+            <CardDataStats
+              title="Total Anggaran"
+              total={countBudgetData.totalAnggaran ? countBudgetData.totalAnggaran.toLocaleString() : 0}
+              colorClass="bg-gradient-to-br from-pink-100 to-pink-200"
+            >
+              <div id="chart-total-anggaran" style={{ width: 100, height: 100 }} />
+            </CardDataStats>
+            <CardDataStats
+              title="Sisa Anggaran"
+              total={countBudgetData.sisaAnggaran ? countBudgetData.sisaAnggaran.toLocaleString() : 0}
+              rate={`${100 - Math.round((countBudgetData.sisaAnggaran / countBudgetData.totalAnggaran) * 100)}%`}
+              colorClass="bg-gradient-to-br from-blue-100 to-blue-200"
+              levelDown
+            >
+              <div id="chart-sisa-anggaran" style={{ width: 100, height: 100 }} />
+            </CardDataStats>
+            <CardDataStats
+              title="Penyerapan Anggaran"
+              total={countBudgetData.penyerapanAnggaran ? countBudgetData.penyerapanAnggaran.toLocaleString() : 0}
+              colorClass="bg-gradient-to-br from-green-100 to-green-200"
+            >
+              <div
+                id="chart-penyerapan-anggaran"
+                style={{ width: 100, height: 100 }}
+              />
+            </CardDataStats>
+          </div>
         </div>
       </div>
     </div>

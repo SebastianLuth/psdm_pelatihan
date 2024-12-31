@@ -1,7 +1,22 @@
-import { DetailCostTypeUpload } from "@/types/training-types";
+import { DetailCostTypeUpload, TrainingType } from "@/types/training-types";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { format } from "date-fns";
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
+export const getAllTraining = async () => {
+  try {
+    const result = await axios.get(`${baseUrl}/api/training`);
+    const formattedData = result.data.data.map((training: TrainingType) => ({
+      ...training,
+      tgl_mulai: format(new Date(training.tgl_mulai), "dd MMMM yyyy"),
+      tgl_selesai: format(new Date(training.tgl_selesai), "dd MMMM yyyy"),
+    }));
+    return formattedData;
+  } catch (error) {
+    throw error;
+  }
+};
 
 export const getJenisPelatihanData = async () => {
   try {

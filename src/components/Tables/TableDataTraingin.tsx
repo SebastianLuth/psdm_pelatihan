@@ -5,19 +5,15 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import Link from "next/link";
+import { getAllTraining } from "@/service/training";
 
 const TableDataTraingin = () => {
   const [allTraining, setAllTraining] = useState<TrainingType[]>([]);
   const [error, setError] = useState(false);
   const fetchAllTraining = async () => {
     try {
-      const result = await axios.get(`http://localhost:5000/api/training`);
-      const formattedData = result.data.data.map((training: TrainingType) => ({
-        ...training,
-        tgl_mulai: format(new Date(training.tgl_mulai), "dd MMMM yyyy"),
-        tgl_selesai: format(new Date(training.tgl_selesai), "dd MMMM yyyy"),
-      }));
-      setAllTraining(formattedData);
+      const result = await getAllTraining();
+      setAllTraining(result);
     } catch (error) {
       setError(true);
     }
