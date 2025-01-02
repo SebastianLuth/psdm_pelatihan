@@ -21,6 +21,7 @@ export interface TrainingType {
   jumlah_peserta: number;
   tgl_mulai: string;
   tgl_selesai: string;
+  jam_pelajaran?: number;
   peserta: ParticipantType[];
 }
 

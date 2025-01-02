@@ -1,6 +1,4 @@
-import { useAuth } from "@/context/AuthContext";
 import DarkModeSwitcher from "./DarkModeSwitcher";
-import DropdownMessage from "./DropdownMessage";
 import DropdownNotification from "./DropdownNotification";
 import DropdownUser from "./DropdownUser";
 
@@ -96,7 +94,6 @@ const Header = (props: {
           <ul className="flex items-center gap-2 2xsm:gap-4">
             <DarkModeSwitcher />
             <DropdownNotification />
-            <DropdownMessage />
           </ul>
           <DropdownUser/>
         </div>

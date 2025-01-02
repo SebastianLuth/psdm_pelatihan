@@ -185,6 +185,19 @@ const AddTraining = () => {
           />
         </div>
 
+        {/* Jam Pelajaran */}
+        <div>
+          <label className="text-gray-700">Jam Pelajaran Pelatihan</label>
+          <input
+            type="number"
+            name="jam_pelajaran"
+            value={trainingData.jam_pelajaran}
+            onChange={handleInputChange}
+            placeholder="Contoh: 10 (Berarti 10jam)"
+            className="mt-1 w-full rounded-md border p-2"
+          />
+        </div>
+
         {/* Kompetensi Pelatihan */}
         <div>
           <label className="text-gray-700">Kompetensi Pelatihan</label>
