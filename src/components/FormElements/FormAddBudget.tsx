@@ -47,6 +47,7 @@ const FormAddBudget = () => {
       const errorMessage =
         err.response?.data.message ||
         err.response?.data.error ||
+        err.response?.error||
         "Failed to submit budget.";
       await Swal.fire({
         title: "Gagal!",

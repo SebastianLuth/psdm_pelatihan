@@ -39,9 +39,7 @@ const TableEvaluationTraining1 = () => {
   }, []);
 
   const userTraining = trainingData.filter((training) =>
-    training.peserta.some(
-      (participant) => participant.user_id === userData?.id,
-    ),
+    training.user_id === userData?.id
   );
 
   const handleEvaluationClick = (
@@ -144,6 +142,7 @@ const TableEvaluationTraining1 = () => {
             </table>
           )}
 
+          {/* Bermasalah */}
           {userData?.role === "user" && (
             <table className="dark: min-w-full border-collapse text-left text-sm text-gray-300 text-gray-700">
               <thead>

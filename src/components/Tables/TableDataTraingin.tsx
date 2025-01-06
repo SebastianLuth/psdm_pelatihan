@@ -1,9 +1,7 @@
 "use client";
 
 import { TrainingType } from "@/types/training-types";
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { format } from "date-fns";
 import Link from "next/link";
 import { getAllTraining } from "@/service/training";
 

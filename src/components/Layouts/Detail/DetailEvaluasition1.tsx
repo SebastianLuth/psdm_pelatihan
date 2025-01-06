@@ -1,6 +1,4 @@
 "use client";
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import ProtectedRoute from "@/components/ProtectedRoute";
 import { getEvaluationData } from "@/service/evaluation1";
 import { EvaluationItem } from "@/types/evaluation1";
 import { useParams } from "next/navigation";
@@ -29,8 +27,6 @@ export default function DetailEvaluasiTraining1Component() {
   }, [fetchEvaluationData]);
 
   return (
-    <ProtectedRoute>
-      <DefaultLayout>
         <div className="p-6">
           {/* Header */}
           <h1 className="mb-2 text-lg font-bold">
@@ -116,7 +112,5 @@ export default function DetailEvaluasiTraining1Component() {
             </div>
           </div>
         </div>
-      </DefaultLayout>
-    </ProtectedRoute>
   );
 }

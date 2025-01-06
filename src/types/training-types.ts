@@ -1,13 +1,3 @@
-export interface ParticipantType {
-  user_id: number;
-  username: number;
-  nama: string;
-  nomor_hp: string;
-  unit_kerja: string;
-  jabatan: string;
-  level: number;
-}
-
 export interface TrainingType {
   id?: number;
   judul: string;
@@ -22,7 +12,29 @@ export interface TrainingType {
   tgl_mulai: string;
   tgl_selesai: string;
   jam_pelajaran?: number;
-  peserta: ParticipantType[];
+  user_id?: number;
+}
+
+export interface trainingFundAbsorption {
+  user_id: number;
+  judul_pelatihan : string;
+  rkap_pelatiahn : string;
+  metode_pelatihan : string;
+  lokasi_pelatihan : string;
+  total_anggaran_pelatihan : string;
+  total_peserta: number;
+  lembaga_pelatihan : string;
+  kompetensi_pelatihan : string;
+  jenis_pelatihan : string;
+  tanggal_mulai_pelatihan : string;
+  tanggal_selesai_pelatihan : string;
+  jam_pelajaran_pelatihan: number;
+  niksap_pelatihan: number;
+  nama_peserta : string;
+  unit_kerja_peserta  : string;
+  jabatan_peserta: string;
+  level_peserta  : string;
+  biaya_per_user : string;
 }
 
 

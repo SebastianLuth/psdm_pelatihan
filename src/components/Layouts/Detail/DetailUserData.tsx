@@ -1,9 +1,8 @@
 "use client";
+import ReactECharts from "echarts-for-react";
 import DetailedProfileCard from "@/components/Card/DetailedProfileCard";
 import DropdownSettingProfile from "@/components/Dropdowns/DropdownSettingProfile";
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import CreateBawahanModal from "@/components/Modal/CreateBawahan";
-import ProtectedRoute from "@/components/ProtectedRoute";
 import { TableListBawahan } from "@/components/Tables/TableListBawahan";
 import {
   addBawahan,
@@ -22,6 +21,8 @@ import {
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import axios from "axios";
+import { trainingFundAbsorption } from "@/types/training-types";
 
 const UserDetailComponent = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -34,6 +35,7 @@ const UserDetailComponent = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
   const [editingStatus, setEditingStatus] = useState(false);
+  const [trainingFundAbsorption, setTrainingFundAbsorption ] = useState<trainingFundAbsorption[]>([]);
 
   const getUnitKerjaId = (unitKerjaName: string) => {
     const unitKerja = unitKerjaList.find((item) => item.name === unitKerjaName);
@@ -153,6 +155,52 @@ const UserDetailComponent = () => {
     }
   };
 
+  const fetchTrainingFundAbsorption = useCallback(async () => {
+    try {
+        const response = await axios.get(
+          `http://localhost:5000/api/user/${userId}/profil_budget_user`
+        )
+
+        console.log("ini data response training fund  absiption",response.data.data);
+        setTrainingFundAbsorption(response.data.data);
+    } catch (error) {
+      console.error("Error fetching training data:", error);
+    }
+  }, [userId]);
+
+  const chartOptions = {
+    tooltip : {
+      trigger: "axis",
+      axisPointer: {
+        type: "shadow",
+      },
+    },
+    legend: {
+      data: ["Biaya Pelatihan"],
+    },
+    xAxis: {
+      type: "category",
+      data: trainingFundAbsorption.map((absorption) => absorption.judul_pelatihan || "Tidak Ada"),
+    },
+    yAxis: [
+      {
+        type: "value",
+        name: "Biaya (Rp)",
+        position: "left",
+      },
+    ],
+    series: [
+      {
+        name: "Biaya Pelatihan",
+        type: "bar",
+        data: trainingFundAbsorption.map((training) => training.biaya_per_user || 0),
+        itemStyle: {
+          color: "#4f46e5",
+        },
+      },
+    ],
+  }
+
   useEffect(() => {
     fetchDetailUser();
   }, [fetchDetailUser]);
@@ -169,17 +217,20 @@ const UserDetailComponent = () => {
     }
   }, [user?.unit_kerja, fetchAllDataBawahan]);
 
+  useEffect(() => {
+    fetchTrainingFundAbsorption();
+  },[fetchTrainingFundAbsorption])
+
   if (!user) {
     return (
-      <DefaultLayout>
         <div className="flex min-h-screen items-center justify-center">
           <p>Loading...</p>
         </div>
-      </DefaultLayout>
     );
   }
 
   return (
+    <>
     <div className="mx-auto flex min-h-screen flex-col items-center bg-gradient-to-r from-gray-50 to-gray-200 p-4">
       {/* Header Section */}
       <div className="mb-8 flex w-full items-center justify-between">
@@ -237,6 +288,12 @@ const UserDetailComponent = () => {
         </div>
       </div>
     </div>
+    <div className="">
+      <h1>Ini total Biaya</h1>
+      <div className="">Total Dana Yang telah anda Serap adalah {1000000}</div>
+      <ReactECharts option={chartOptions} style={{ height: "400px" }} />
+    </div>
+    </>
   );
 };
 export default UserDetailComponent;

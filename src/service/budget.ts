@@ -21,7 +21,7 @@ export const addBudget = async (budgetData: budgetType) => {
       window.location.reload();
     }
   } catch (error) {
-    console.error("Error adding budget:", error);
+    throw error;
   }
 };
 

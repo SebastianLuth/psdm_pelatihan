@@ -6,6 +6,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import React from "react";
 import { debounce } from "lodash";
 import { useRouter } from 'next/navigation';
+import Swal from "sweetalert2";
 const ErrorFallback = ({ error, resetErrorBoundary }: { error: Error, resetErrorBoundary: () => void }) => (
   <div role="alert">
     <p>Something went wrong:</p>
@@ -20,6 +21,7 @@ const TableDataAnggaran: React.FC = () => {
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [limit, setLimit] = useState<number>(10);
   const router = useRouter();
 
   const fetchAllBudget = useCallback(async () => {
@@ -42,8 +44,22 @@ const TableDataAnggaran: React.FC = () => {
     try {
       await deleteBudget(id);
       fetchAllBudget();
-    } catch (error) {
+    } catch (error : any) {
       setError(true);
+      let errorMessage =
+      error.response?.data.message ||
+      error.response?.data.error ||
+      error.response?.error||
+        "Failed to submit budget.";
+      if(error.response?.data.error === 'Cannot delete or update a parent row: a foreign key constraint fails (`psdm_pelatihan`.`tbl_pelatihan`, CONSTRAINT `tbl_pelatihan_ibfk_1` FOREIGN KEY (`jenis`) REFERENCES `tbl_anggaran` (`jenis_anggaran`))') {
+        errorMessage = "Data Anggaran ini masih digunakan oleh data pelatihan. Silakan hapus data pelatihan terlebih dahulu.";
+      }
+        await Swal.fire({
+              title: "Gagal!",
+              text: `${errorMessage}`,
+              icon: "error",
+              confirmButtonText: "OK",
+      });
     } finally {
       setLoading(false);
     }
@@ -66,10 +82,13 @@ const TableDataAnggaran: React.FC = () => {
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     debouncedSearch(event.target.value);
   };
+  const handleLimitChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setLimit(Number(event.target.value));
+  };
 
   const filteredBudgetData = budgetData.filter(budget =>
     budget.jenis_anggaran.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  ).slice(0, limit);
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback} onReset={fetchAllBudget}>
@@ -82,7 +101,10 @@ const TableDataAnggaran: React.FC = () => {
             <div className="flex items-center justify-between py-4">
               <div className="flex items-center space-x-3">
                 <span className="text-gray-700 dark:text-gray-300">Show</span>
-                <select className="rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200">
+                <select 
+                onChange={handleLimitChange}
+                value={limit}
+                className="rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200">
                   <option value="10">10</option>
                   <option value="25">25</option>
                   <option value="50">50</option>

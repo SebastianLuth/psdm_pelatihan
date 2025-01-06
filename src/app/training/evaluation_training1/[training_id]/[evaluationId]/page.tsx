@@ -1,4 +1,3 @@
-"use client";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import DetailEvaluasiTraining1Component from "@/components/Layouts/Detail/DetailEvaluasition1";
 import ProtectedRoute from "@/components/ProtectedRoute";
