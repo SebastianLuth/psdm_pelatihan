@@ -72,14 +72,13 @@ export interface User {
 
   export interface UserDataToAdd{
     nama: string
-    username: number,
+    username: number | string,
     nomor_hp: string,
     jabatan: string,
     unit_kerja: number,
     level: number,
     role: string,
     password: string,
-    biaya_pelatihan_user: 0,
   }
 
 export interface BawahanUser {

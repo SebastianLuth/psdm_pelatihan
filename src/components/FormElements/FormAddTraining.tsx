@@ -71,6 +71,8 @@ const AddTraining = () => {
       const jumlah_peserta = selectedParticipants.length;
       const peserta = selectedParticipants.map((id) => ({ id }));
       await addTraining(jumlah_peserta, peserta, trainingData);
+      setTrainingData({});
+      setSelectedParticipants([]);
     } catch (error: any) {
       const errorMessage =
         error.response?.data.message ||
@@ -94,41 +96,39 @@ const AddTraining = () => {
   }, [fetchAllUserByUnitKerja]);
 
   return (
-    <div className="mx-auto rounded-lg bg-white p-8 shadow-lg">
-      <h2 className="mb-2 text-2xl font-semibold text-blue-600">
+    <div className="max-w-6xl mx-auto bg-white p-12 shadow-md rounded-lg dark:border-strokedark dark:bg-boxdark">
+      <h2 className="text-2xl font-bold mb-6 dark:text-white">
         Tambah Data Pelatihan
       </h2>
-      <p className="mb-6 text-gray-500">
-        Halaman ini untuk tambah data pelatihan.
-      </p>
       <form
         className="grid grid-cols-1 gap-4 md:grid-cols-3"
         onSubmit={handleAddTraining}
       >
         {/* Nama Pelatihan */}
         <div>
-          <label className="text-gray-700">Nama Pelatihan</label>
+          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Nama Pelatihan</label>
           <input
             type="text"
             name="judul"
             value={trainingData.judul}
             onChange={handleInputChange}
             placeholder="Contoh: Capacity Building"
-            className="mt-1 w-full rounded-md border p-2"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
         </div>
 
         {/* Jenis Pelatihan */}
         <div>
-          <label className="text-gray-700">RKAP Type</label>
+          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">RKAP Type</label>
           <select
             name="jenis"
-            value={trainingData.jenis}
+            value={trainingData.jenis || ""}
             onChange={handleInputChange}
-            className="mt-1 w-full rounded-md border p-2"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            required
           >
-            <option value={""} disabled>
-              Pilih Jenis Pelatihan
+            <option value="" disabled>
+              Pilih RKAP Pelatihan
             </option>
             {/* Options here */}
             {jenisPelatihanRKAP.map((item, index) => (
@@ -141,11 +141,13 @@ const AddTraining = () => {
 
         {/* Metode Pelatihan */}
         <div>
-          <label className="text-gray-700">Metode Pelatihan</label>
+          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300 ">Metode Pelatihan</label>
           <select
             name="metode"
             onChange={handleInputChange}
-            className="mt-1 w-full rounded-md border p-2"
+            value={trainingData.metode || ""}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            required
           >
             <option value={""} disabled>
               Pilih Metode Pelatihan
@@ -161,52 +163,53 @@ const AddTraining = () => {
 
         {/* Lokasi Pelatihan */}
         <div>
-          <label className="text-gray-700">Lokasi Pelatihan</label>
+          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Lokasi Pelatihan</label>
           <input
             type="text"
             name="lokasi"
             value={trainingData.lokasi}
             onChange={handleInputChange}
             placeholder="Contoh: Medan / Webinar"
-            className="mt-1 w-full rounded-md border p-2"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
         </div>
 
         {/* Lembaga Pelatihan */}
         <div>
-          <label className="text-gray-700">Lembaga Pelatihan</label>
+          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Lembaga Pelatihan</label>
           <input
             type="text"
             name="lembaga"
             value={trainingData.lembaga}
             onChange={handleInputChange}
             placeholder="Contoh: LPP / NON LPP (GML, and other...)"
-            className="mt-1 w-full rounded-md border p-2"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
         </div>
 
         {/* Jam Pelajaran */}
         <div>
-          <label className="text-gray-700">Jam Pelajaran Pelatihan</label>
+          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Jam Pelajaran Pelatihan</label>
           <input
             type="number"
             name="jam_pelajaran"
             value={trainingData.jam_pelajaran}
             onChange={handleInputChange}
             placeholder="Contoh: 10 (Berarti 10jam)"
-            className="mt-1 w-full rounded-md border p-2"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
         </div>
 
         {/* Kompetensi Pelatihan */}
         <div>
-          <label className="text-gray-700">Kompetensi Pelatihan</label>
+          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Kompetensi Pelatihan</label>
           <select
             name="kompetensi"
             onChange={handleInputChange}
-            className="mt-1 w-full rounded-md border p-2"
+            value={trainingData.kompetensi || ""}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           >
-            <option disabled>Pilih Kompetensi Pelatihan</option>
+            <option value={""} disabled>Pilih Kompetensi Pelatihan</option>
             {/* Options here */}
             {kompetensiOptions.map((item, index) => (
               <option key={index} value={item.label}>
@@ -218,26 +221,27 @@ const AddTraining = () => {
 
         {/* Jumlah Anggaran */}
         <div>
-          <label className="text-gray-700">Jumlah Anggaran</label>
+          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Jumlah Anggaran</label>
           <input
             name="jumlah_anggaran"
             value={trainingData.jumlah_anggaran}
             onChange={handleInputChange}
             placeholder="Contoh: 5000000"
-            className="mt-1 w-full rounded-md border p-2"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:placeholder-gray-400 dark:bg-gray-700 dark:border-gray-600  dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             type="text"
           ></input>
         </div>
 
         {/* RKAP Type */}
         <div>
-          <label className="text-gray-700">Jenis Pelatihan</label>
+          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Jenis Pelatihan</label>
           <select
             name="rkap_type"
             onChange={handleInputChange}
-            className="mt-1 w-full rounded-md border p-2"
+            value={trainingData.rkap_type || ""}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           >
-            <option disabled>Pilih Type</option>
+            <option value={""} disabled>Pilih Jenis Pelatihan</option>
             {/* Options here */}
             {jenisPelatihanOptions.map((item, index) => (
               <option key={index} value={item.label}>
@@ -249,31 +253,31 @@ const AddTraining = () => {
 
         {/* Tanggal Mulai */}
         <div>
-          <label className="text-gray-700">Tanggal Mulai</label>
+          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Tanggal Mulai</label>
           <input
             name="tgl_mulai"
             value={trainingData.tgl_mulai}
             onChange={handleInputChange}
             type="date"
-            className="mt-1 w-full rounded-md border p-2"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
         </div>
 
         {/* Tanggal Selesai */}
         <div>
-          <label className="text-gray-700">Tanggal Selesai</label>
+          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Tanggal Selesai</label>
           <input
             name="tgl_selesai"
             value={trainingData.tgl_selesai}
             onChange={handleInputChange}
             type="date"
-            className="mt-1 w-full rounded-md border p-2"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
         </div>
 
         {/* Jumlah Peserta */}
         <div>
-          <label className="text-gray-700">Jumlah Peserta</label>
+          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Jumlah Peserta</label>
           <input
             type="number"
             min={0}
@@ -281,7 +285,7 @@ const AddTraining = () => {
             value={trainingData.jumlah_peserta}
             onChange={handleInputChange}
             placeholder="Contoh: 25"
-            className="mt-1 w-full rounded-md border p-2"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
         </div>
 
@@ -296,14 +300,14 @@ const AddTraining = () => {
 
             {/* Input Cari Peserta */}
             <div className="w-full md:w-1/3">
-              <label className="mb-2 block font-medium text-gray-800">
+              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                 Cari Peserta Pelatihan
               </label>
               <div className="relative">
                 <input
                   type="text"
                   placeholder="Cari nama peserta..."
-                  className="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-3 text-gray-700 shadow-sm transition focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -315,31 +319,31 @@ const AddTraining = () => {
           </div>
 
           {/* Tabel */}
-          <div className="mt-8 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg">
-            <table className="w-full border-collapse text-left text-sm">
+          <div className="mt-8 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg dark:bg-gray-800">
+            <table  className="min-w-full border-collapse text-left text-sm text-gray-700 dark:text-gray-300">
               {/* Header Tabel */}
-              <thead className="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
-                <tr>
-                  <th className="px-4 py-4 text-center font-medium tracking-wide">
+              <thead>
+                <tr className="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
+                  <th className="px-4 py-4 ">
                     No
                   </th>
-                  <th className="px-4 py-4 text-center font-medium tracking-wide">
+                  <th className="px-4 py-4">
                     Pilih
                   </th>
-                  <th className="px-4 py-4 font-medium tracking-wide">
+                  <th className="px-4 py-4">
                     NIK_SAP
                   </th>
-                  <th className="px-4 py-4 font-medium tracking-wide">
+                  <th className="px-4 py-4">
                     Nama Peserta
                   </th>
-                  <th className="px-4 py-4 font-medium tracking-wide">
+                  <th className="px-4 py-4">
                     Jabatan
                   </th>
                 </tr>
               </thead>
 
               {/* Body Tabel */}
-              <tbody>
+              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                 {participants.length > 0 ? (
                   participants
                     .filter((participant) =>
@@ -350,15 +354,13 @@ const AddTraining = () => {
                     .map((participant, index) => (
                       <tr
                         key={participant.id}
-                        className={`${
-                          index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                        } transition hover:bg-blue-50`}
+                        className="group transform transition-transform duration-200 hover:scale-[1.02] hover:bg-gray-50 dark:hover:bg-gray-800"
                       >
-                        <td className="px-6 py-4 font-medium text-gray-800">
+                        <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
                           {index + 1}
                         </td>
 
-                        <td className="px-6 py-4 text-center">
+                        <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
                           <input
                             type="checkbox"
                             className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
@@ -370,13 +372,13 @@ const AddTraining = () => {
                             }
                           />
                         </td>
-                        <td className="px-6 py-4 font-medium text-gray-800">
+                        <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
                           {participant.username}
                         </td>
-                        <td className="px-6 py-4 font-medium text-gray-800">
+                        <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
                           {participant.nama}
                         </td>
-                        <td className="px-6 py-4 font-medium text-gray-800">
+                        <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
                           {participant.jabatan}
                         </td>
                       </tr>
@@ -385,7 +387,7 @@ const AddTraining = () => {
                   <tr>
                     <td
                       colSpan={2}
-                      className="px-6 py-4 text-center text-gray-500"
+                      className="px-6 py-4 text-gray-800 dark:text-gray-100"
                     >
                       Tidak ada peserta yang ditemukan.
                     </td>

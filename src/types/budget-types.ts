@@ -1,6 +1,6 @@
 export interface budgetType {
   id?: number | undefined;
-  niksap_anggaran: number | null;
+  niksap_anggaran?: number | null;
   jenis_anggaran: string;
   total_anggaran: number | null;
   sisa_anggaran?: number | null;

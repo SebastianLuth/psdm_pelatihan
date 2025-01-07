@@ -35,7 +35,9 @@ const UserDetailComponent = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
   const [editingStatus, setEditingStatus] = useState(false);
-  const [trainingFundAbsorption, setTrainingFundAbsorption ] = useState<trainingFundAbsorption[]>([]);
+  const [trainingFundAbsorption, setTrainingFundAbsorption] = useState<
+    trainingFundAbsorption[]
+  >([]);
 
   const getUnitKerjaId = (unitKerjaName: string) => {
     const unitKerja = unitKerjaList.find((item) => item.name === unitKerjaName);
@@ -140,7 +142,6 @@ const UserDetailComponent = () => {
         unit_kerja: updatedUser.unit_kerja || unitKerjaId,
       };
 
-
       // Kirim data ke API menggunakan FormData
       await updateUser(Number(userId), finalData, foto_profil);
 
@@ -157,19 +158,22 @@ const UserDetailComponent = () => {
 
   const fetchTrainingFundAbsorption = useCallback(async () => {
     try {
-        const response = await axios.get(
-          `http://localhost:5000/api/user/${userId}/profil_budget_user`
-        )
+      const response = await axios.get(
+        `http://localhost:5000/api/user/${userId}/profil_budget_user`,
+      );
 
-        console.log("ini data response training fund  absiption",response.data.data);
-        setTrainingFundAbsorption(response.data.data);
+      console.log(
+        "ini data response training fund  absiption",
+        response.data.data,
+      );
+      setTrainingFundAbsorption(response.data.data);
     } catch (error) {
       console.error("Error fetching training data:", error);
     }
   }, [userId]);
 
   const chartOptions = {
-    tooltip : {
+    tooltip: {
       trigger: "axis",
       axisPointer: {
         type: "shadow",
@@ -180,7 +184,9 @@ const UserDetailComponent = () => {
     },
     xAxis: {
       type: "category",
-      data: trainingFundAbsorption.map((absorption) => absorption.judul_pelatihan || "Tidak Ada"),
+      data: trainingFundAbsorption.map(
+        (absorption) => absorption.judul_pelatihan || "Tidak Ada",
+      ),
     },
     yAxis: [
       {
@@ -193,13 +199,15 @@ const UserDetailComponent = () => {
       {
         name: "Biaya Pelatihan",
         type: "bar",
-        data: trainingFundAbsorption.map((training) => training.biaya_per_user || 0),
+        data: trainingFundAbsorption.map(
+          (training) => training.biaya_per_user || 0,
+        ),
         itemStyle: {
           color: "#4f46e5",
         },
       },
     ],
-  }
+  };
 
   useEffect(() => {
     fetchDetailUser();
@@ -219,80 +227,82 @@ const UserDetailComponent = () => {
 
   useEffect(() => {
     fetchTrainingFundAbsorption();
-  },[fetchTrainingFundAbsorption])
+  }, [fetchTrainingFundAbsorption]);
 
   if (!user) {
     return (
-        <div className="flex min-h-screen items-center justify-center">
-          <p>Loading...</p>
-        </div>
+      <div className="flex min-h-screen items-center justify-center">
+        <p>Loading...</p>
+      </div>
     );
   }
 
   return (
     <>
-    <div className="mx-auto flex min-h-screen flex-col items-center bg-gradient-to-r from-gray-50 to-gray-200 p-4">
-      {/* Header Section */}
-      <div className="mb-8 flex w-full items-center justify-between">
-        <div>
-          <h2 className="text-4xl font-bold text-gray-900">User Profile</h2>
-          <p className="text-base text-gray-500">
-            Detail informasi user @{user.username}
-          </p>
-        </div>
-        <div>
-          <DropdownSettingProfile handleStatusUpdate={handleStatusUpdate} />
-        </div>
-      </div>
-      <div className="grid w-full grid-cols-1 gap-6 lg:grid-cols-3">
-        {/* Profile Section */}
-        <DetailedProfileCard
-          user={user}
-          editingStatus={editingStatus}
-          handleSubmit={handleSubmit}
-        />
-        {/* Profile Section End */}
-        <div className="col-span-2 space-y-6">
-          {/* List Bawahan */}
-          <div className="w-full rounded-2xl bg-white p-6 shadow-lg">
-            <div className="mb-4 flex items-center justify-between">
-              <h3 className="text-xl font-semibold text-gray-800">
-                List Bawahan
-              </h3>
-              <button
-                onClick={() => setShowModal(true)}
-                className="rounded-lg bg-blue-500 px-4 py-2 text-white transition hover:bg-blue-600"
-              >
-                Tambah Bawahan
-              </button>
-            </div>
-            {/* Modal add bawahan */}
-            {showModal ? (
-              <>
-                <CreateBawahanModal
-                  dataAllUserByUnitKerja={dataAllUserByUnitKerja}
-                  onClose={handleCloseModal}
-                  onAddBawahan={handleAddBawahan}
-                  success={success}
-                  error={error}
-                />
-              </>
-            ) : null}
-            {/* Modal add bawahan End*/}
-            <TableListBawahan
-              allBawahan={allBawahan}
-              onDeleteBawahan={handleDeleteBawahan}
-            />
+      <div className="mx-auto flex min-h-screen flex-col items-center bg-gradient-to-r from-gray-50 to-gray-200 p-4">
+        {/* Header Section */}
+        <div className="mb-8 flex w-full items-center justify-between">
+          <div>
+            <h2 className="text-4xl font-bold text-gray-900">User Profile</h2>
+            <p className="text-base text-gray-500">
+              Detail informasi user @{user.username}
+            </p>
           </div>
-          {/* List Bawahan End */}
+          <div>
+            <DropdownSettingProfile handleStatusUpdate={handleStatusUpdate} />
+          </div>
+        </div>
+        <div className="grid w-full grid-cols-1 gap-6 lg:grid-cols-3">
+          {/* Profile Section */}
+          <DetailedProfileCard
+            user={user}
+            editingStatus={editingStatus}
+            handleSubmit={handleSubmit}
+          />
+          {/* Profile Section End */}
+          <div className="col-span-2 space-y-6">
+            {/* List Bawahan */}
+            <div className="w-full rounded-2xl bg-white p-6 shadow-lg">
+              <div className="mb-4 flex items-center justify-between">
+                <h3 className="text-xl font-semibold text-gray-800">
+                  List Bawahan
+                </h3>
+                <button
+                  onClick={() => setShowModal(true)}
+                  className="rounded-lg bg-blue-500 px-4 py-2 text-white transition hover:bg-blue-600"
+                >
+                  Tambah Bawahan
+                </button>
+              </div>
+              {/* Modal add bawahan */}
+              {showModal ? (
+                <>
+                  <CreateBawahanModal
+                    dataAllUserByUnitKerja={dataAllUserByUnitKerja}
+                    onClose={handleCloseModal}
+                    onAddBawahan={handleAddBawahan}
+                    success={success}
+                    error={error}
+                  />
+                </>
+              ) : null}
+              {/* Modal add bawahan End*/}
+              <TableListBawahan
+                allBawahan={allBawahan}
+                onDeleteBawahan={handleDeleteBawahan}
+              />
+            </div>
+            {/* List Bawahan End */}
+          </div>
         </div>
       </div>
-    </div>
-    <div className="">
-      <h1>Ini total Biaya</h1>
-      <div className="">Total Dana Yang telah anda Serap adalah {1000000}</div>
-      <ReactECharts option={chartOptions} style={{ height: "400px" }} />
-    </div>
+      <div className="">
+        <h1>Ini total Biaya</h1>
+        <div className="">
+          Total Dana Yang telah anda Serap adalah {1000000}
+        </div>
+        <ReactECharts option={chartOptions} style={{ height: "400px" }} />
+      </div>
     </>
   );
 };

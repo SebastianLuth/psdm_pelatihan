@@ -6,10 +6,9 @@ import Swal from "sweetalert2";
 
 const FormAddBudget = () => {
   const [budgetData, setBudgetData] = useState<budgetType>({
-    niksap_anggaran: null,
     jenis_anggaran: "",
     total_anggaran: null,
-    tahun_anggaran: 2024,
+    tahun_anggaran: 2025,
   });
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
@@ -59,8 +58,8 @@ const FormAddBudget = () => {
   };
 
   return (
-    <div className="mx-auto rounded-lg bg-white p-8 shadow-lg">
-      <h2 className="mb-4 text-2xl font-semibold text-gray-800">
+    <div className="max-w-4xl mx-auto bg-white p-12 shadow-md rounded-lg dark:border-strokedark dark:bg-boxdark">
+      <h2 className="mb-4 text-2xl font-semibold text-gray-800 dark:text-white">
         Tambah Anggaran
       </h2>
       {success && (
@@ -68,27 +67,14 @@ const FormAddBudget = () => {
       )}
       <form onSubmit={handlePostBudget}>
         <div className="mb-5">
-          <label className="mb-1 block font-medium text-gray-600">
-            NIK-SAP Penanggung Jawab
-          </label>
-          <input
-            type="text"
-            name="niksap_anggaran"
-            placeholder="Contoh : 499999"
-            value={budgetData.niksap_anggaran ?? ""}
-            onChange={handleInputChange}
-            className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-100"
-          />
-        </div>
-        <div className="mb-5">
-          <label className="mb-1 block font-medium text-gray-600">
+          <label className="mb-1 block font-medium text-gray-600 dark:text-white">
             Jenis RKAP Anggaran
           </label>
           <select
             name="jenis_anggaran"
             onChange={handleInputChange}
-            className="mt-1 w-full rounded-md border p-2"
-            defaultValue=""
+            value={budgetData.jenis_anggaran || ""}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           >
             <option value="" disabled>
               Pilih Type
@@ -103,7 +89,7 @@ const FormAddBudget = () => {
         </div>
 
         <div className="mb-5">
-          <label className="mb-1 block font-medium text-gray-600">
+          <label className="mb-1 block font-medium text-gray-600 dark:text-white">
             Total Anggaran
           </label>
           <input
@@ -112,11 +98,11 @@ const FormAddBudget = () => {
             placeholder="Contoh : 20000000"
             value={budgetData.total_anggaran ?? ""}
             onChange={handleInputChange}
-            className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-100"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
         </div>
         <div className="mb-5">
-          <label className="mb-1 block font-medium text-gray-600">
+          <label className="mb-1 block font-medium text-gray-600 dark:text-white">
             Tahun Anggaran
           </label>
           <input
@@ -125,25 +111,11 @@ const FormAddBudget = () => {
             placeholder="Contoh : 2024"
             value={budgetData.tahun_anggaran}
             onChange={handleInputChange}
-            className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-100"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
         </div>
 
         <div className="mt-8 flex justify-end gap-4">
-          <button
-            type="reset"
-            onClick={() =>
-              setBudgetData({
-                niksap_anggaran: 0,
-                jenis_anggaran: "",
-                total_anggaran: 0,
-                tahun_anggaran: 0,
-              })
-            }
-            className="rounded-lg bg-orange-500 px-6 py-3 font-semibold text-white shadow-md hover:bg-orange-600 focus:outline-none focus:ring focus:ring-orange-300"
-          >
-            Reset Form
-          </button>
           <button
             type="submit"
             className="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white shadow-md hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300"

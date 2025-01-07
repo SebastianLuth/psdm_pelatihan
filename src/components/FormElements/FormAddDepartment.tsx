@@ -42,10 +42,11 @@ export function FormAddDepartment({
   };
 
   return (
-    <div className="rounded-sm border border-stroke bg-white p-8 shadow-default dark:border-strokedark dark:bg-boxdark">
+    <div className="max-w-4xl mx-auto bg-white p-12 shadow-md rounded-lg dark:border-strokedark dark:bg-boxdark">
+      <h1 className="text-2xl font-bold mb-6 dark:text-white">Tambah Unit Kerja</h1>
       <form onSubmit={handleSubmit}>
         <div>
-          <label className="mb-1 block font-medium text-gray-600">
+          <label className="mb-1 block font-medium text-gray-600 dark:text-white">
             Nama Unit Kerja
           </label>
           <input
@@ -57,7 +58,7 @@ export function FormAddDepartment({
                   ? "Contoh: Bagian Sumber Daya Manusia"
                   : `Masukkan nama baru unit kerja untuk ${detailUnitKerja[0]?.unit_kerja}`
               }
-            className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-100"
+            className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
         </div>
         <button

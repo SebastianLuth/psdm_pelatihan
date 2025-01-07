@@ -103,7 +103,7 @@ const TableDataUnitKerja = () => {
         </div>
       </div>
 
-      <div className="overflow-x-auto">
+      <div className="mt-8 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg">
         <table className="min-w-full border-collapse text-left text-sm text-gray-700 dark:text-gray-300">
           <thead>
             <tr className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white">

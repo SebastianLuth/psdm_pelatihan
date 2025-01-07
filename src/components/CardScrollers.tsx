@@ -160,8 +160,8 @@ const ScrollableCards: React.FC = () => {
             <div className="flex items-center md:items-start">
               <div className="flex flex-col items-center justify-center">
                 <h1 className="text-xl font-bold">{userData?.nama}</h1>
-                <p className="text-xs">Selamat datang di website N4TELENT</p>
-                <div className="mt-4 flex flex-col justify-center space-y-4 md:flex-row md:justify-start md:space-x-6 md:space-y-0">
+                <p className="text-xs">Selamat datang di N4TALENT</p>
+                <div className="mt-3 flex flex-col justify-center space-y-4 md:flex-row md:justify-start md:space-x-6 md:space-y-0">
                   <div className="rounded-lg bg-blue-800 p-4 text-center">
                     <p className="text-xl font-bold">
                       {countBudgetData.penyerapanAnggaran

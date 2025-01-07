@@ -8,14 +8,13 @@ import Swal from 'sweetalert2';
 const FormDataUser = () => {
   const [userData, setUserData] = useState<UserDataToAdd>({
     nama: "",
-    username: 0,
+    username : "",
     nomor_hp: "",
     jabatan: "",
     unit_kerja: 1,
     level: 6,
     role: "user",
     password: "",
-    biaya_pelatihan_user: 0,
   });
   
   const [dataAllUnitKerja, setDataAllUnitKerja] = useState<UnitKerja[]>([]);
@@ -33,11 +32,18 @@ const FormDataUser = () => {
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setUserData(prevData => ({
-      ...prevData,
-      [name]: name === "username" ? Number(value) : value
-    }));
+  
+    const numericFields = ["username", "unit_kerja", "level"];
+  
+    setUserData(prevData => {
+      const newValue = numericFields.includes(name) && value !== "" ? Number(value) : value;
+      return {
+        ...prevData,
+        [name]: newValue,
+      };
+    });
   };
+  
 
   const handleAddUser = async (e: FormEvent) => {
     e.preventDefault();
@@ -64,81 +70,86 @@ const FormDataUser = () => {
   }, []);
 
   return (
-    <div className="mx-auto rounded-lg bg-white p-8 shadow-lg">
-      <h2 className="mb-4 text-2xl font-semibold text-gray-800">Tambah Data User</h2>
+    <>
+    <div className="max-w-4xl mx-auto bg-white p-12 shadow-md rounded-lg dark:border-strokedark dark:bg-boxdark">
+      <h1 className="text-2xl font-bold mb-6 dark:text-white">Tambah User</h1>
       <form onSubmit={handleAddUser}>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="grid gap-6 mb-6 lg:grid-cols-2">
           <div>
-            <label className="mb-1 block font-medium text-gray-600">Nama</label>
+            <label
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            >
+              Nama
+            </label>
             <input
               type="text"
               name="nama"
-              value={userData.nama}
+              value={userData.nama || ""}
               onChange={handleInputChange}
-              placeholder="Contoh : Muhammad Fikri Haikal"
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-100"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Masukkan Nama User"
               required
             />
           </div>
           <div>
-            <label className="mb-1 block font-medium text-gray-600">NIK-SAP</label>
+            <label
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            >
+              NIKSAP
+            </label>
             <input
               type="number"
               name="username"
-              value={userData.username}
+              value={userData.username || ""}
               onChange={handleInputChange}
-              placeholder="Contoh : 499999"
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-100"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="mb-1 block font-medium text-gray-600">Nomor HP</label>
-            <input
-              type="text"
-              name="nomor_hp"
-              value={userData.nomor_hp}
-              onChange={handleInputChange}
-              placeholder="Contoh : 081263270357"
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-100"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="contoh : 49999999"
               required
             />
           </div>
           <div>
-            <label className="mb-1 block font-medium text-gray-600">Unit Kerja</label>
-            <select
-              name="unit_kerja"
-              value={userData.unit_kerja}
-              onChange={handleInputChange}
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-100"
-              required
+            <label
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
             >
-              <option value="" disabled>Pilih Unit Kerja</option>
-              {dataAllUnitKerja.map(unit => (
-                <option key={unit.id} value={unit.id}>{unit.unit_kerja}</option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label className="mb-1 block font-medium text-gray-600">Jabatan</label>
+              Jabatan
+            </label>
             <input
               type="text"
               name="jabatan"
               value={userData.jabatan}
               onChange={handleInputChange}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Contoh : Staff Sub Bagian Persona"
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-100"
               required
             />
           </div>
           <div>
-            <label className="mb-1 block font-medium text-gray-600">Level Jabatan</label>
+            <label
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            >
+              Nomor Ponsel
+            </label>
+            <input
+              type="tel"
+              name="nomor_hp"
+              value={userData.nomor_hp}
+              onChange={handleInputChange}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="081376059457"
+              required
+            />
+          </div>
+          <div>
+            <label
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            >
+              Level Jabatan
+            </label>
             <select
               name="level"
               value={userData.level}
               onChange={handleInputChange}
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-100"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               required
             >
               {LevelJabatanOptions.map(level => (
@@ -147,44 +158,74 @@ const FormDataUser = () => {
             </select>
           </div>
           <div>
-            <label className="mb-1 block font-medium text-gray-600">Role</label>
+            <label
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            >
+              Role
+            </label>
             <select
               name="role"
               value={userData.role}
               onChange={handleInputChange}
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-100"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               required
             >
               {RoleOptions.map(role => (
                 <option key={role.value} value={role.value}>{role.label}</option>
               ))}
             </select>
-          </div>
-          <div>
-            <label className="mb-1 block font-medium text-gray-600">Password</label>
-            <input
-              type="password"
-              name="password"
-              value={userData.password}
-              onChange={handleInputChange}
-              placeholder="Masukkan password"
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-100"
-              required
-            />
+
           </div>
         </div>
+        <div className="mb-6">
+          <label
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+          >
+            Unit Kerja
+          </label>
+          <select
+              name="unit_kerja"
+              value={userData.unit_kerja}
+              onChange={handleInputChange}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              required
+            >
+              <option value="" disabled>Pilih Unit Kerja</option>
+              {dataAllUnitKerja.map(unit => (
+                <option key={unit.id} value={unit.id}>{unit.unit_kerja}</option>
+              ))}
+            </select>
 
+        </div>
+        <div className="mb-6">
+          <label
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+          >
+            Password
+          </label>
+          <input
+            type="password"
+            name="password"
+            value={userData.password}
+            onChange={handleInputChange}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="•••••••••"
+            required
+          />
+        </div>
         <button
           type="submit"
-          className="mt-6 w-full rounded-lg bg-blue-600 px-4 py-3 text-white font-semibold hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-100"
+          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
-          Tambah User
+          Simpan
         </button>
       </form>
-      {success && <p className="mt-4 text-green-500">User berhasil ditambahkan!</p>}
-      {error && <p className="mt-4 text-red-500">{error}</p>}
-    </div>
-  );
-};
 
-export default FormDataUser;
+      {success && <p className="mt-5 text-green-500">User berhasil ditambahkan!</p>}
+      {error && <p className="mt-5 text-red-500">{error}</p>}
+    </div>
+    </>
+)
+}
+
+export default FormDataUser
