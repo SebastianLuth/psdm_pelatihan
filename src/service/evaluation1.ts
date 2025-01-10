@@ -48,7 +48,6 @@ export const getAllTrainingEvaluation1 = async () => {
       tgl_mulai: format(new Date(training.tgl_mulai), "dd MMMM yyyy"),
       tgl_selesai: format(new Date(training.tgl_selesai), "dd MMMM yyyy"),
     }));
-    console.log("ini formatted untuk user",formattedData);
     return formattedData;
   } catch (error) {
     throw error;

@@ -1,11 +1,12 @@
 "use client";
 import { addBudget } from "@/service/budget";
-import { budgetType, rkapTypeOptions } from "@/types/budget-types";
+import { budgetType, lembagaOptions, rkapTypeOptions } from "@/types/budget-types";
 import { ChangeEvent, FormEvent, useState } from "react";
 import Swal from "sweetalert2";
 
 const FormAddBudget = () => {
   const [budgetData, setBudgetData] = useState<budgetType>({
+    lembaga: "",
     jenis_anggaran: "",
     total_anggaran: null,
     tahun_anggaran: 2025,
@@ -66,6 +67,29 @@ const FormAddBudget = () => {
         <p className="mb-4 text-green-600">Anggaran Berhasil Ditambahkan</p>
       )}
       <form onSubmit={handlePostBudget}>
+
+      <div className="mb-5">
+          <label className="mb-1 block font-medium text-gray-600 dark:text-white">
+            Jenis Lembaga Anggaran
+          </label>
+          <select
+            name="lembaga"
+            onChange={handleInputChange}
+            value={budgetData.lembaga || ""}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          >
+            <option value="" disabled>
+              Pilih Type
+            </option>     
+            {/* Options here */}
+            {lembagaOptions.map((item, index) => (
+              <option key={index} value={item.label}>
+                {item.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <div className="mb-5">
           <label className="mb-1 block font-medium text-gray-600 dark:text-white">
             Jenis RKAP Anggaran

@@ -17,14 +17,17 @@ import {
   unitKerjaList,
   User,
 } from "@/types/manajement-users-type";
-import { useParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import IntegratedComponent from "@/components/Chart/TrainingFundPieChartUser";
+import { trainingFundAbsorption } from "@/types/training-types";
+import { useAuth } from "@/context/AuthContext";
+import axios from "axios";
 
 const UserDetailComponent = () => {
+  const [trainingFundAbsorption, setTrainingFundAbsorption] = useState<trainingFundAbsorption[]>([]);
   const [user, setUser] = useState<User | null>(null);
-  const { userId } = useParams();
+  const userId = useAuth().userData?.id;
   const [showModal, setShowModal] = useState(false);
   const [allBawahan, setAllBawahan] = useState<BawahanUser[]>([]);
   const [dataAllUserByUnitKerja, setDataAllUserByUnitKerja] = useState<User[]>(
@@ -33,6 +36,9 @@ const UserDetailComponent = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
   const [editingStatus, setEditingStatus] = useState(false);
+  const [totalBudgetAbsorptionPerUser, setTotalBudgetAbsorptionPerUser] = useState<number>(0);
+  const [totalHourAbsorptionPerUser, setTotalHourAbsorptionPerUser] = useState<number>(0);
+
 
   const getUnitKerjaId = (unitKerjaName: string) => {
     const unitKerja = unitKerjaList.find((item) => item.name === unitKerjaName);
@@ -151,6 +157,31 @@ const UserDetailComponent = () => {
     }
   };
 
+  const totalAllBudgetTrainingPerUser = (trainingFundAbsorption : trainingFundAbsorption[]) =>{
+    const total = trainingFundAbsorption.reduce((acc, item) => acc + parseFloat(item.biaya_per_user), 0);
+    setTotalBudgetAbsorptionPerUser(total);
+  }
+
+  const totalHoursTrainingPerUser = (trainingFundAbsorption : trainingFundAbsorption[]) =>{
+    const total : number = trainingFundAbsorption.reduce((acc, item) => acc +item.jam_pelajaran_pelatihan, 0);
+    setTotalHourAbsorptionPerUser(total);
+  }
+
+  const fetchTrainingFundAbsorption = useCallback(async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/user/${userId}/profil_budget_user`);
+      setTrainingFundAbsorption(response.data.data);
+      totalAllBudgetTrainingPerUser(response.data.data);
+      totalHoursTrainingPerUser(response.data.data);
+    } catch (error) {
+      console.error("Error fetching training data:", error);
+    }
+  }, [userId]);
+  
+    useEffect(() => {
+      fetchTrainingFundAbsorption();
+    }, [fetchTrainingFundAbsorption]);
+
 
   useEffect(() => {
     fetchDetailUser();
@@ -178,7 +209,7 @@ const UserDetailComponent = () => {
 
   return (
     <>
-      <div className="mx-auto flex min-h-screen flex-col items-center bg-gradient-to-r from-gray-50 to-gray-200 p-4">
+      <div className="mx-auto flex min-h-screen flex-col items-center p-4">
         {/* Header Section */}
         <div className="mb-8 flex w-full items-center justify-between">
           <div>
@@ -233,15 +264,19 @@ const UserDetailComponent = () => {
             </div>
             {/* List Bawahan End */}
           </div>
+
+          {/* pie char */}
+          <div className="flex flex-col col-span-3 mt-20">
+          <div className="flex flex-wrap">
+              <div className="p-6 bg-white font-bold text-xl shadow-[2px_1px_7px_3px_rgba(0,_0,_0,_0.35)] box-shadow: 2px 3px 3px 6px rgba(0, 0, 0, 0.35) z-10">Total Pelatihan Yang telah di serap</div>
+              <div className="p-6 bg-blue-500 text-white font-bold text-xl shadow-[2px_1px_7px_3px_rgba(0,_0,_0,_0.35)] box-shadow: 2px 3px 3px 6px rgba(0, 0, 0, 0.35) z-5">RP. {totalBudgetAbsorptionPerUser.toLocaleString("id-ID")}</div>
+          </div>
+          <p className="p-0 mt-3">Total Jam Pelajaran <b>| {totalHourAbsorptionPerUser}</b></p>
+         <IntegratedComponent trainingFundAbsorption={trainingFundAbsorption}/>
+      </div>
         </div>
       </div>
-      <div className="">
-        <h1>Ini total Biaya</h1>
-        <div className="">
-          Total Dana Yang telah anda Serap adalah {1000000}
-         <IntegratedComponent/>
-        </div>
-      </div>
+     
     </>
   );
 };

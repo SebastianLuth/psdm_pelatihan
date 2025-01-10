@@ -128,6 +128,7 @@ export const menuGroups = [
           children: [
             { label: "Tambah Pelatihan", route: "/training/add_training", role : "admin" },
             { label: "Data Pelatihan", route: "/training/training_data", role: "admin"  },
+            { label: "Laporan Evaluasi Pelatihan", route: "/training/report_evaluation", role : "all"  },
             { label: "Evaluasi Level 1", route: "/training/evaluation_training1" , role : "all" },
             { label: "Evaluasi Level  3 & 4", route: "/training/evaluation_training2",role : "all" },
           ],
@@ -150,6 +151,7 @@ export const menuGroups = [
           route: "#",
           children: [
             { label: "Evaluasi Level 1", route: "/training/evaluation_training1"  },
+            { label: "Laporan Evaluasi Pelatihan", route: "/training/report_evaluation" },
             { label: "Evaluasi Level  3 & 4", route: "/training/evaluation_training2" },
           ],
           role : "user"

@@ -1,27 +1,13 @@
 import React, { useState, useCallback, useEffect } from "react";
 import ReactECharts from "echarts-for-react";
-import axios from "axios";
-import { useAuth } from "@/context/AuthContext";
 import { trainingFundAbsorption } from "@/types/training-types";
 
-const IntegratedComponent: React.FC = () => {
-  const [trainingFundAbsorption, setTrainingFundAbsorption] = useState<trainingFundAbsorption[]>([]);
-  const [selectedTraining, setSelectedTraining] = useState<trainingFundAbsorption | null>(null);
+interface trainingFundAbsorptionProps {
+  trainingFundAbsorption: trainingFundAbsorption[];
+} 
 
-  const userId = useAuth().userData?.id;
-
-  const fetchTrainingFundAbsorption = useCallback(async () => {
-    try {
-      const response = await axios.get(`http://localhost:5000/api/user/${userId}/profil_budget_user`);
-      setTrainingFundAbsorption(response.data.data);
-    } catch (error) {
-      console.error("Error fetching training data:", error);
-    }
-  }, [userId]);
-
-  useEffect(() => {
-    fetchTrainingFundAbsorption();
-  }, [fetchTrainingFundAbsorption]);
+const IntegratedComponent: React.FC<trainingFundAbsorptionProps> = ({trainingFundAbsorption}) => {
+  const [selectedTraining, setSelectedTraining] = useState<trainingFundAbsorption | null>(null);  
 
   const chartData = trainingFundAbsorption.map((item) => ({
     value: parseFloat(item.total_anggaran_pelatihan),
@@ -74,7 +60,7 @@ const IntegratedComponent: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-200 p-10">
+    <div className="min-h-screen mt-10">
       <div className="container mx-auto grid grid-cols-12 gap-8">
         {/* Left Section: Chart */}
         <div className="col-span-5 bg-white shadow-lg rounded-xl p-6">
@@ -90,7 +76,7 @@ const IntegratedComponent: React.FC = () => {
         {/* Right Section: Training Details */}
         <div className="col-span-7 bg-white shadow-lg rounded-xl p-6">
           <h2 className="text-xl font-semibold mb-6 text-center">
-            {selectedTraining ? "Training Details" : "Select a Training to View Details"}
+            {selectedTraining ? "Detail Pelatihan" : "Klik Pelatihan Untuk Melihat Detailnya"}
           </h2>
           {selectedTraining ? (
             <div className="grid grid-cols-2 gap-4">
@@ -123,7 +109,7 @@ const IntegratedComponent: React.FC = () => {
             </div>
           ) : (
             <div className="flex items-center justify-center h-full">
-              <p className="text-gray-500">Click on a section of the chart to view details.</p>
+              <p className="text-gray-500">Klik Sebuah Bagian Untuk Melihat Detail Pelatihan.</p>
             </div>
           )}
         </div>

@@ -4,6 +4,7 @@ export interface budgetType {
   jenis_anggaran: string;
   total_anggaran: number | null;
   sisa_anggaran?: number | null;
+  lembaga?: string | null;
   tahun_anggaran: number;
 }
 
@@ -11,6 +12,11 @@ export interface SelectOption  {
   value: number;
   label: string;
 }
+
+export const lembagaOptions: SelectOption [] = [
+  { value: 1, label: "LPP" },
+  { value: 2, label: "NON LPP" },
+]
 
 export const metodePelatihanOptions: SelectOption [] = [
   { value: 1, label: "Offline" },
@@ -30,23 +36,28 @@ export const rkapTypeOptions: SelectOption [] = [
   { value: 3, label: "Pelatihan & Pengembangan Kompotensi Karyawan (Agro Wallet) Millenial Leader Program" },
   { value: 4, label: "Pelatihan & Pengembangan Kompotensi Karyawan (Agro Wallet) Woman Leader Program" },
   { value: 5, label: "Pelatihan & Pengembangan Kompotensi Karyawan (Agro Wallet) Karyawan Pelaksana" },
-  { value: 7, label: "Pelatihan & Pengembangan Kompetensi Karyawan (In House Training) Karyawan Pimpinan" },
-  { value: 8, label: "Pelatihan & Pengembangan Kompetensi Karyawan (In House Training) Millenial Leader Program" },
-  { value: 9, label: "Pelatihan & Pengembangan Kompetensi Karyawan (In House Training) Woman Leader Program" },
-  { value: 10, label: "Pelatihan & Pengembangan Kompetensi Karyawan (In House Training) Karyawan Pelaksana" },
-  { value: 11, label: "Kursus Jabatan (Leadership Development Program) Karywan Pimpinan PLDP"},
-  { value: 12, label: "Kursus Jabatan (Leadership Development Program) Karyawan Pimpinan Leadership Development Program"},
-  { value : 13, label: "Kursus Jabatan (Leadership Development Program) Karyawan Pelaksana (PPKM & PPTM)"},
-  { value : 14, label: "Program Sertifikasi Kompentensi Khusus Jabatan"},
-  { value : 15, label: "Program Study Banding"},
-  { value: 16, label: "Karyawan Pimpinan - Assesment"},
-  { value: 17, label: "Karyawan Pelaksana - Assesment"}, 
-  { value: 18, label: "Karyawan Pimpinan - Recruitment"},
-  { value: 19, label: "Karyawan Pelaksana - Recruitment"},
-  { value: 20, label: "Biaya Program Internalisasi Budaya"},
-  { value: 21, label: "Biaya Konsultasi Pengembangan SDM"},
-  { value: 22, label: "Biaya Inovasi dan Riset"},
-  { value: 23, label: "Biaya Pengembangan SDM lain-lain"},
+  { value: 6, label: "Pelatihan & Pengembangan Kompetensi Karyawan (In House Training) Karyawan Pimpinan" },
+  { value: 7, label: "Pelatihan & Pengembangan Kompetensi Karyawan (In House Training) Millenial Leader Program" },
+  { value: 8, label: "Pelatihan & Pengembangan Kompetensi Karyawan (In House Training) Woman Leader Program" },
+  { value: 9, label: "Pelatihan & Pengembangan Kompetensi Karyawan (In House Training) Karyawan Pelaksana" },
+  { value: 10, label: "Kursus Jabatan (Leadership Development Program) Karywan Pimpinan PLDP"},
+  { value: 11, label: "Kursus Jabatan (Leadership Development Program) Karyawan Pimpinan Leadership Development Program"},
+  { value : 12, label: "Kursus Jabatan (Leadership Development Program) Karyawan Pelaksana (PPKM & PPTM)"},
+  { value : 13, label: "Program Sertifikasi Kompentensi Khusus Jabatan - Karyawan Pimpinan"},
+  { value : 14, label: "Program Sertifikasi Kompentensi Khusus Jabatan - Karyawan Pelaksana"},
+  { value : 15, label: "Program Study Banding Dalam Negeri"},
+  { value : 16, label: "Program Study Banding Luar Negeri"},
+  { value: 17, label: "Biaya Perjalanan Dinas"},
+  { value: 18, label: "Karyawan Pimpinan - Assesment"},
+  { value: 19, label: "Karyawan Pelaksana - Assesment"}, 
+  { value: 20, label: "Karyawan Pimpinan - Recruitment"},
+  { value: 21, label: "Karyawan Pelaksana - Recruitment"},
+  { value: 22, label: "Program On Boarding Karyawan Baru Karyawan Pimpinan - Recruitment"},
+  { value: 23, label: "Program On Boarding Karyawan Baru Karyawan Pelaksana - Recruitment"},
+  { value: 24, label: "Biaya Program Internalisasi Budaya"},
+  { value: 25, label: "Biaya Konsultasi Pengembangan SDM"},
+  { value: 26, label: "Biaya Inovasi dan Riset"},
+  { value: 27, label: "Biaya Pengembangan SDM lain-lain"},
 ]
 
 export const jenisPelatihanOptions : SelectOption [] = [
