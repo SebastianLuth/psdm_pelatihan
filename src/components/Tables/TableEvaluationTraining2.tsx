@@ -81,7 +81,7 @@ const TableEvaluationTraining2 = () => {
       {userData?.level === 1 && userData?.role === "user" && (
         <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
           <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white">
-            Evaluasi Pelatihan lv 1
+            Evaluasi Pelatihan lv 3
           </h4>
           <p className="text-sm text-gray-500 dark:text-gray-400">
             Halaman ini untuk melihat Semua Evaluasi Pelatihan lv 1.

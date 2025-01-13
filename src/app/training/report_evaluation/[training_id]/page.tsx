@@ -64,12 +64,18 @@ const EvaluationDetailReportTrainingPage = () => {
         {userData?.role === "user" && (
           <>
             <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-              <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white">
+              <div className="flex items-center justify-between">
+                <div className="flex flex-col">
+                <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white">
                 Evaluasi Laporan Pelatihan
               </h4>
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 Upload Evaluasi yang anda miliki di form dibawah ini!
               </p>
+                </div>
+                <h1 className="text-lg font-semibold dark:text-white text-blue-500	">Download Template terlebih dahulu</h1>
+              </div>
+             
               <div className="flex flex-col">
                 <div className="mb-5 mt-5 flex w-full items-center justify-center p-8">
                   <label

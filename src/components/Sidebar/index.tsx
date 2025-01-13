@@ -18,17 +18,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
   return (
     <aside
-      className={`z-100 fixed left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark ${
+      className={`z-100 fixed left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-gradient-to-r from-blue-700 to-blue-500 duration-300 ease-linear dark:bg-boxdark shadow-[10px_0px_10px_8px_rgba(0,_0,_0,_0.1)] rounded-tr-lg ${
         sidebarOpen ? "translate-x-0" : "-translate-x-full lg:-translate-x-72.5"
       }`}
     >
       {/* <!-- SIDEBAR HEADER --> */}
-      <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5 lg:justify-center">
+      <div className="flex items-center justify-between gap-2 px-6 py-4 lg:py-6.5 lg:justify-center">
         <Link href="/">
           <Image
-            width={60}
+            width={100}
             height={32}
-            src={"/images/logo/logo_ptpn4.png"}
+            src={"/images/logo/logo_ptpn4.webp"}
             alt="Logo"
             priority
           />
@@ -61,7 +61,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         <nav className="mt-5 px-4 py-4 lg:mt-9 lg:px-6">
           {menuGroups.map((group, groupIndex) => (
             <div key={groupIndex}>
-              <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
+              <h3 className="mb-4 ml-4 text-sm font-semibold text-white">
                 {group.name}
               </h3>
               <ul className="mb-6 flex flex-col gap-1.5">

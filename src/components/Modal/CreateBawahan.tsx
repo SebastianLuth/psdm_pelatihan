@@ -1,4 +1,6 @@
+'use client';
 import { User } from "@/types/manajement-users-type";
+import { useState } from "react";
 
 type CreateBawahanModalProps = {
   dataAllUserByUnitKerja: User[];
@@ -15,6 +17,27 @@ export default function CreateBawahanModal({
   success,
   error,
 }: CreateBawahanModalProps) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const entriesPerPage = 5;
+
+  const totalEntries = dataAllUserByUnitKerja.length;
+  const totalPages = Math.ceil(totalEntries / entriesPerPage);
+
+  const startIndex = (currentPage - 1) * entriesPerPage;
+  const endIndex = startIndex + entriesPerPage;
+  const currentData = dataAllUserByUnitKerja.slice(startIndex, endIndex);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
@@ -24,9 +47,11 @@ export default function CreateBawahanModal({
 
   return (
     <>
-
       {/* Modal */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center mt-2 mb-2"  onClick={handleOverlayClick}>
+      <div
+        className="fixed inset-0 z-50 mb-2 mt-2 flex items-center justify-center"
+        onClick={handleOverlayClick}
+      >
         {/* Kontainer untuk menjaga modal tetap di tengah dan scrollable */}
         <div className="relative max-h-full w-full overflow-y-auto sm:max-w-sm md:max-w-md lg:max-w-3xl">
           <div className="relative flex flex-col rounded-lg bg-white shadow-lg">
@@ -53,7 +78,7 @@ export default function CreateBawahanModal({
                     </tr>
                   </thead>
                   <tbody>
-                    {dataAllUserByUnitKerja.map((user) => (
+                    {currentData.map((user) => (
                       <tr key={user.id} className="border-b hover:bg-gray-50">
                         <td className="px-4 py-2">{user.nama}</td>
                         <td className="px-4 py-2">{user.username}</td>
@@ -61,7 +86,9 @@ export default function CreateBawahanModal({
                         <td className="px-4 py-2">
                           <button
                             className="rounded bg-emerald-500 px-4 py-2 text-xs font-semibold text-white hover:bg-emerald-600"
-                            onClick={() => onAddBawahan(user.username, user.nama)}
+                            onClick={() =>
+                              onAddBawahan(user.username, user.nama)
+                            }
                           >
                             Tambah
                           </button>
@@ -75,9 +102,28 @@ export default function CreateBawahanModal({
                     Bawahan berhasil ditambahkan.
                   </p>
                 )}
-                {error && (
-                  <p className="mt-4 text-sm text-red-500">{error}</p>
-                )}
+                {error && <p className="mt-4 text-sm text-red-500">{error}</p>}
+              </div>
+              <div className="mt-4 flex items-center justify-between text-sm text-gray-500">
+                <span> Showing {startIndex + 1} to{" "}
+                {Math.min(endIndex, totalEntries)} of {totalEntries} entries
+                </span>
+                <div className="space-x-2">
+                <button
+                    className="rounded-lg bg-gray-200 px-3 py-1 transition hover:bg-gray-300"
+                    onClick={handlePreviousPage}
+                    disabled={currentPage === 1}
+                  >
+                    Previous
+                  </button>
+                  <button
+                    className="rounded-lg bg-gray-200 px-3 py-1 transition hover:bg-gray-300"
+                    onClick={handleNextPage}
+                    disabled={currentPage === totalPages}
+                  >
+                    Next
+                  </button>
+                </div>
               </div>
             </div>
             {/* Footer */}

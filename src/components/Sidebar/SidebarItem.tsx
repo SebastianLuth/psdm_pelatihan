@@ -12,8 +12,24 @@ const SidebarItem = ({ item, pageName, setPageName }: any) => {
 
   const pathname = usePathname();
 
+  const isHoverActive = (item: any) => {
+    if (item.route == '/') {
+      return false
+    }
+    if (item.route === pathname) {
+      return true;
+    }
+    if (item.children) {
+      return item.children.some((child: any) => isHoverActive(child));
+    }
+    return false;
+  };
+
   const isActive = (item: any) => {
-    if (item.route === pathname) return true;
+    
+    if (item.route === pathname) {
+      return true;
+    }
     if (item.children) {
       return item.children.some((child: any) => isActive(child));
     }
@@ -21,14 +37,19 @@ const SidebarItem = ({ item, pageName, setPageName }: any) => {
   };
 
   const isItemActive = isActive(item);
+  const isHoverActiveItem = isHoverActive(item);
 
   return (
     <>
-      <li>
+      <li className={`${
+          pageName === item.label.toLowerCase() || isHoverActiveItem
+            ? "bg-white rounded-t-lg shadow-[inset_10px_0px_6px_-2px_rgba(0,_0,_0,_0.1)]"
+            : ""
+        }`}>
         <Link
           href={item.route}
           onClick={handleClick}
-          className={`${isItemActive ? "bg-graydark dark:bg-meta-4" : ""} group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4`}
+          className={`${isItemActive ? "bg-blue-900 dark:bg-meta-4" : "bg-blue-400"} group relative flex items-center gap-2.5 rounded-lg px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 z-10`}
         >
           {item.icon}
           {item.label}
