@@ -184,7 +184,13 @@ const TableEvaluationTraining1 = () => {
                             training.id,
                           )
                         }
-                        className="mr-2 inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-green-400 to-green-600 px-4 py-2 text-sm font-medium text-white shadow-md hover:from-green-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-green-400"
+                        className={`mr-2 inline-flex items-center space-x-2 rounded-lg px-4 py-2 text-sm font-medium text-white shadow-md focus:outline-none focus:ring-2 ${
+                          training.telah_evaluasi == true
+                            ? "bg-gray-400 cursor-not-allowed"
+                            : "bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 focus:ring-green-400"
+                        }`}
+                        disabled={training.telah_evaluasi == true}
+                      
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"

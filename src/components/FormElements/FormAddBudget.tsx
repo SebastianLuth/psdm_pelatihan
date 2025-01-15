@@ -22,8 +22,7 @@ const FormAddBudget = () => {
       ...prevData,
       [name]:
         name === "total_anggaran" ||
-        name === "tahun_anggaran" ||
-        name === "niksap_anggaran"
+        name === "tahun_anggaran"
           ? +value
           : value,
     }));
@@ -38,7 +37,7 @@ const FormAddBudget = () => {
       await addBudget(budgetData);
       setSuccess(true);
       setBudgetData({
-        niksap_anggaran: 0,
+        lembaga: "",
         jenis_anggaran: "",
         total_anggaran: 0,
         tahun_anggaran: 0,

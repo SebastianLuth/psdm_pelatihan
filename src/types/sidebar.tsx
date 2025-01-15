@@ -106,7 +106,9 @@ export const menuGroups = [
           route: "#",
           children: [
             { label: "Tambah Anggaran", route: "/budget/add_budget" },
+            { label: "Tambah Vendor", route: "/budget/add_vendor" },
             { label: "Data Anggaran", route: "/budget/budget_data" },
+            { label: "Data Vendor", route: "/budget/vendor_data" },
           ],
           role : "admin"
         },

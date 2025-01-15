@@ -13,6 +13,7 @@ export interface TrainingType {
   tgl_selesai: string;
   jam_pelajaran?: number;
   user_id?: number;
+  telah_evaluasi?: boolean;
 }
 
 export interface trainingFundAbsorption {

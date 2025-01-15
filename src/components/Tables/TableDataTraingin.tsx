@@ -4,6 +4,8 @@ import { TrainingType } from "@/types/training-types";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getAllTraining } from "@/service/training";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const TableDataTraingin = () => {
   const [allTraining, setAllTraining] = useState<TrainingType[]>([]);
@@ -18,7 +20,26 @@ const TableDataTraingin = () => {
   };
 
   const handleDeleteTraining = async (trainingId: number | undefined) => {
-    console.log("deleted");
+    try {
+      const result = await Swal.fire({
+            title: "Apakah Anda yakin?",
+            text:
+              "Data Anggaran ini akan dihapus secara permanen dan data-data pelatihannya juga akan dihapus!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, hapus!",
+            cancelButtonText: "Batal",
+          });
+      
+          if (result.isConfirmed) {
+            await axios.delete(`http://localhost:5000/api/training/${trainingId}`);
+          }
+      fetchAllTraining();
+    } catch (error) {
+      setError(true);
+    }
   };
 
   useEffect(() => {

@@ -194,7 +194,7 @@ const FormDataUser = () => {
               {dataAllUnitKerja.map(unit => (
                 <option key={unit.id} value={unit.id}>{unit.unit_kerja}</option>
               ))}
-            </select>
+          </select>
 
         </div>
         <div className="mb-6">

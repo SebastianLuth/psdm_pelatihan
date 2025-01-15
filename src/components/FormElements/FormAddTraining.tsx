@@ -12,6 +12,18 @@ import { getAllDataBawahanInUnitKerja } from "@/service/management-users";
 import { TrainingType } from "@/types/training-types";
 import Swal from "sweetalert2";
 import { addTraining, getJenisPelatihanData } from "@/service/training";
+import axios from "axios";
+
+interface vendorType {
+  id?: number;
+  nama_lembaga: string;
+  alamat_lembaga: string;
+  layanan_utama: string;
+  telpon_lembaga: string;
+  email_lembaga: string;
+  website_lembaga: string;
+  pic_lembaga: string;
+}
 
 const AddTraining = () => {
   const [trainingData, setTrainingData] = useState<Partial<TrainingType>>({});
@@ -23,7 +35,21 @@ const AddTraining = () => {
   const [selectedParticipants, setSelectedParticipants] = useState<number[]>(
     [],
   );
+  const [lembagaData, setLembagaData] = useState<vendorType[]>([]);
+
   const [participants, setParticipants] = useState<User[]>([]);
+
+
+  // Get All Lembaga
+  const fetchLembagaData = async () => {
+    try {
+      const result = await axios.get(`http://localhost:5000/api/vendor`);
+      const data = result.data.data;
+      setLembagaData(data);
+    } catch (error) {
+      console.error("Error fetching jenis pelatihan data:", error);
+    }
+  }
 
   // Get all user by unit kerja
   const fetchAllUserByUnitKerja = useCallback(async () => {
@@ -87,13 +113,18 @@ const AddTraining = () => {
       });
     }
   };
-
   useEffect(() => {
     fetchJenisPelatihanData();
   }, []);
   useEffect(() => {
     fetchAllUserByUnitKerja();
   }, [fetchAllUserByUnitKerja]);
+
+  useEffect(() => {
+    fetchLembagaData();
+  }, []);
+
+  console.log("ini lembaga data", lembagaData);
 
   return (
     <div className="max-w-6xl mx-auto bg-white p-12 shadow-md rounded-lg dark:border-strokedark dark:bg-boxdark">
@@ -177,14 +208,18 @@ const AddTraining = () => {
         {/* Lembaga Pelatihan */}
         <div>
           <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Lembaga Pelatihan</label>
-          <input
-            type="text"
-            name="lembaga"
-            value={trainingData.lembaga}
-            onChange={handleInputChange}
-            placeholder="Contoh: LPP / NON LPP (GML, and other...)"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
+          <select
+              name="lembaga"
+              value={trainingData.lembaga || ""}
+              onChange={handleInputChange}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              required
+            >
+              <option value="" disabled>Pilih Unit Kerja</option>
+              {lembagaData.map(unit => (
+                <option key={unit.id} value={unit.nama_lembaga}>{unit.nama_lembaga}</option>
+              ))}
+          </select>
         </div>
 
         {/* Jam Pelajaran */}

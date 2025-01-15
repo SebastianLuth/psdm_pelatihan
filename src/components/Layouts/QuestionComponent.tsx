@@ -4,17 +4,21 @@ import {
   getQuestionLevel1,
   addQuestionLevel1,
 } from "@/service/question";
-import { QuestionType } from "@/types/question-type";
+import { QuestionType, QuestionTypeLevel1Form } from "@/types/question-type";
 import { useEffect, useState } from "react";
 import CreateQuestionLevel1 from "../Modal/CreateQuestionLevel1";
 
 const QuestionComponent = () => {
   const [questionData, setQuestionData] = useState<QuestionType[]>([]);
-  const [pertanyaan, setPertanyaan] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
   const [error, setError] = useState<boolean>(false);
+
+  const [formData, setFormData] = useState<QuestionTypeLevel1Form>({
+      pertanyaan: "",
+      kategori: "",
+    });
 
   const toggleDropdown = (id: number) => {
     setOpenDropdownId((prevId) => (prevId === id ? null : id));
@@ -50,16 +54,20 @@ const QuestionComponent = () => {
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPertanyaan(e.target.value);
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    e.preventDefault();
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const submitQuestion = async () => {
     setLoading(true);
     try {
-      await addQuestionLevel1(pertanyaan);
+      await addQuestionLevel1(formData.pertanyaan, formData.kategori); 
       setOpen(false);
       fetchQuestion();
+      setFormData({ pertanyaan: "", kategori: "" });
     } catch (error) {
       setError(true);
     } finally {
@@ -249,7 +257,12 @@ const QuestionComponent = () => {
         </div>
       </div>
       {open && (
-        <CreateQuestionLevel1 setOpen={setOpen} handleInputChange={handleInputChange} submitQuestion={submitQuestion} />
+        <CreateQuestionLevel1 
+          setOpen={setOpen}
+          handleInputChange={handleInputChange}
+          handleSubmit={submitQuestion}
+          formData={formData}
+        />
       )}
     </>
   );

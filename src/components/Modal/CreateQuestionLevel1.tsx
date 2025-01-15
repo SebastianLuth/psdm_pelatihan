@@ -1,15 +1,16 @@
 import { ChangeEvent, SetStateAction } from "react";
 
-type QuestionTypeLevel1 = {
-  setOpen: React.Dispatch<SetStateAction<boolean>>;
-  handleInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  submitQuestion: () => void;
+type QuestionTypeLevel3Form = {
+    setOpen : React.Dispatch<SetStateAction<boolean>>;
+    handleInputChange: (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+    handleSubmit: (event: React.FormEvent) => void; 
+    formData: {
+        kategori: string;
+        pertanyaan: string;
+    }
 };
-const CreateQuestionLevel1 = ({
-  setOpen,
-  handleInputChange,
-  submitQuestion,
-}: QuestionTypeLevel1) => {
+
+const CreateQuestionLevel1 = ({setOpen, handleInputChange, handleSubmit, formData} : QuestionTypeLevel3Form) => {
   return (
     <div className="fixed inset-0 z-50 flex h-screen items-center justify-center bg-gray-200 bg-opacity-50  antialiased backdrop-blur-sm">
       <div className="mx-auto flex w-11/12 max-w-2xl flex-col rounded-lg border border-gray-300 shadow-xl sm:w-5/6 lg:w-1/2">
@@ -35,24 +36,42 @@ const CreateQuestionLevel1 = ({
         </div>
 
         {/* Body */}
-        <div className="flex flex-col bg-gray-50 px-6 py-5">
-          <p className="mb-2 font-semibold text-gray-700">Pertanyaan</p>
+        <form className="mx-auto w-full bg-white p-10" onSubmit={handleSubmit}>
+          <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+            Kategori
+          </label>
+          <select
+            onChange={handleInputChange}
+            name="kategori"
+            value={formData.kategori}
+            id="countries"
+            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+          >
+            <option selected>Pilih Kategori</option>
+            <option value="mutu materi">Mutu Materi</option>
+            <option value="kesan">Kesan Terhadap Narasumber</option>
+            <option value="sarana">Sarana yang disediakan Pelatihan</option>
+            <option value="review materi">Review Implementasi Program Pembelajaran</option>
+            <option value="kesimpulan">Comment</option>
+          </select>
+          <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+            Pertanyaan
+          </label>
           <input
             type="text"
             placeholder="Type message..."
+            name="pertanyaan"
+            value={formData.pertanyaan}
             onChange={handleInputChange}
-            className="mb-5 h-36 rounded border border-gray-200 bg-white p-5 shadow-sm"
+            className="mb-5 h-18 w-full rounded border border-gray-200 bg-white p-5 shadow-sm"
           ></input>
-        </div>
-        {/* Footer */}
-        <div className="flex flex-row items-center justify-end rounded-bl-lg rounded-br-lg border-t border-gray-200 bg-white p-5">
-          <button
-            onClick={submitQuestion}
-            className="rounded bg-blue-500 px-4 py-2 font-semibold text-white"
-          >
-            Save
-          </button>
-        </div>
+
+          <div className="flex flex-row items-center justify-end rounded-bl-lg rounded-br-lg border-t border-gray-200 bg-white p-5">
+            <button className="rounded bg-blue-500 px-4 py-2 font-semibold text-white">
+              Save
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

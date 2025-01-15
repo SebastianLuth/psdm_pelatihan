@@ -1,6 +1,7 @@
 export interface QuestionEvaluation1 {
   id: number;
   pertanyaan: string;
+  kategori: string;
 }
 
 export interface EvaluationItem {

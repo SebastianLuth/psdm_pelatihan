@@ -29,20 +29,22 @@ export const getDetailQuestionLevel1 = async (id: number) => {
   }
 };
 
-export const addQuestionLevel1 = async (pertanyaan: string) => {
+export const addQuestionLevel1 = async (pertanyaan: string, kategori: string ) => {
   try {
     await axios.post(`${baseUrl}/api/evaluation/question`, {
-      pertanyaan,
+      question: pertanyaan,
+      category: kategori,
     });
   } catch (error) {
     throw error;
   }
 };
 
-export const updateQuestionLevel1 = async (id: number, pertanyaan: string) => {
+export const updateQuestionLevel1 = async (id: number, pertanyaan: string, kategori: string) => {
   try {
     await axios.put(`${baseUrl}/api/evaluation/question/${id}`, {
-      pertanyaan: pertanyaan,
+      question: pertanyaan,
+      category: kategori
     });
   } catch (error) {
     throw error;

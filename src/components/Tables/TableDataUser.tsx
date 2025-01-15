@@ -42,7 +42,7 @@ const TableDataUser: React.FC<TableDataUserProps> = ({ selectedUnitKerja }) => {
           Data User
         </h4>
         <div className="flex items-center justify-between py-4">
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-3"> 
             <span className="text-gray-700 dark:text-gray-300">Show</span>
             <select className="rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200">
               <option value="10">10</option>
@@ -73,7 +73,6 @@ const TableDataUser: React.FC<TableDataUserProps> = ({ selectedUnitKerja }) => {
               <th className="px-6 py-4">NIKSAP</th>
               <th className="px-6 py-4">Nama</th>
               <th className="px-6 py-4">Jabatan</th>
-              <th className="px-6 py-4 text-right">Action</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -93,31 +92,6 @@ const TableDataUser: React.FC<TableDataUserProps> = ({ selectedUnitKerja }) => {
                 </td>
                 <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
                   {user.jabatan}
-                </td>
-                <td className="px-6 py-4 text-right">
-                  <button className="mr-2 inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-green-400 to-green-600 px-4 py-2 text-sm font-medium text-white shadow-md hover:from-green-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-green-400">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M11 5h2m-1 14V5m9 4H4m5 0a1 1 0 000 2h6a1 1 0 000-2H9z"
-                      />
-                    </svg>
-                    <Link
-                      key={user.id}
-                      href={`/users_manajemen/users_data/${user.id}`}
-                    >
-                      {" "}
-                      <span>Edit</span>
-                    </Link>
-                  </button>
                 </td>
               </tr>
             ))}
