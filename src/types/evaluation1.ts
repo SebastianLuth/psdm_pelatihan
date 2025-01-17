@@ -14,6 +14,7 @@ export interface EvaluationItem {
   training_id: number;
   training_title: string;
   question_id: number;
+  question_category: string;
   question_text: string;
   answer: string | null;
   evaluation_question_text?: string | null;

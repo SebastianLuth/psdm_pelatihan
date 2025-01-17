@@ -5,6 +5,14 @@ import { UserTraining } from "@/types/training-types";
 import { getAllUserAndTheirTrainings } from "@/service/evaluation1";
 import { getAllUserAndTheirTrainingsEvaluation3 } from "@/service/evaluasi3";
 import { UserTrainingEvaluation3 } from "@/types/evaluasi3";
+import axios from "axios";
+
+interface StatusEvaluation3{
+  atasan_id : number;
+  bawahan_id : number;
+  is_completed : boolean | number;
+  pelatihan_id: number
+}
 
 const TableEvaluationTraining2 = () => {
   const { userData } = useAuth();
@@ -14,8 +22,22 @@ const TableEvaluationTraining2 = () => {
   const [trainingDataAdmin, setTrainingDataAdmin] = useState<UserTraining[]>(
     [],
   );
+
+  const [statusEvaluation3, setStatusEvaluation3] = useState<StatusEvaluation3[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+
+  const fetchStatusEvaluation3 = async () => {
+    try {
+      const result = await axios.get(`http://localhost:5000/api/evaluation3/status_evaluasi3`,{
+        withCredentials: true
+      });
+      setStatusEvaluation3(result.data.data);
+    } catch (error) {
+      setError(true);
+      return [];
+    }
+  };
 
   const fetchAllUserAndTheirTrainings = useCallback(async () => {
     try {
@@ -35,6 +57,10 @@ const TableEvaluationTraining2 = () => {
       setError(true);
     }
   };
+
+  useEffect(()=>{
+    fetchStatusEvaluation3();
+  }, [])
 
   useEffect(() => {
     fetchAllUserAndTheirTrainingsAdmin();
@@ -76,8 +102,12 @@ const TableEvaluationTraining2 = () => {
     }
   };
 
+  console.log("statusEvaluation3", statusEvaluation3);
+
+
   return (
     <>
+      
       {userData?.level === 1 && userData?.role === "user" && (
         <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
           <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white">
@@ -134,8 +164,22 @@ const TableEvaluationTraining2 = () => {
                               Number(training.participanId),
                             )
                           }
-                          className="mr-2 inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-green-400 to-green-600 px-4 py-2 text-sm font-medium text-white shadow-md hover:from-green-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-green-400"
-                        >
+                          className={`mr-2 inline-flex items-center space-x-2 rounded-lg px-4 py-2 text-sm font-medium text-white shadow-md focus:outline-none focus:ring-2 ${
+                            statusEvaluation3.some(
+                              (status) =>
+                                status.pelatihan_id === Number(training.id) &&
+                                status.bawahan_id === Number(training.participanId) &&
+                                status.is_completed === 1
+                            )
+                              ? "bg-gray-400 cursor-not-allowed"
+                              : "bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 focus:ring-green-400"
+                          }`}
+                          disabled={statusEvaluation3.some(
+                            (status) =>
+                              status.pelatihan_id === Number(training.id) &&
+                              status.bawahan_id === Number(training.participanId) &&
+                              status.is_completed === 1
+                          )}                        >
                           <span>Jawab Evaluasi</span>
                         </button>
                       </td>
@@ -148,7 +192,7 @@ const TableEvaluationTraining2 = () => {
         </div>
       )}
       <div className="flex flex-col">
-        {userData?.role === "admin" ? (
+        {userData?.role === "admin" && (
           <table className="min-w-full border-collapse text-left text-sm text-gray-700 dark:text-gray-300">
             <thead>
               <tr className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white">
@@ -216,33 +260,17 @@ const TableEvaluationTraining2 = () => {
                           d="M11 5h2m-1 14V5m9 4H4m5 0a1 1 0 000 2h6a1 1 0 000-2H9z"
                         />
                       </svg>
-                      <span>Jawab Evaluasi</span>
-                    </button>
-                    <button className="inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-red-400 to-red-600 px-4 py-2 text-sm font-medium text-white shadow-md hover:from-red-500 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-red-400">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
-                      <span>Delete</span>
+                      <span>Detail</span>
                     </button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-        ) : (
-          <div>Anda Belum berhak membuka halaman ini Maaf !</div>
-        )}
+      )}
+      {userData?.level !== 1 && userData?.role !== "user" && userData?.role !== "admin" && (
+      <p>Anda Belum Berhak Membuka Halaman Ini</p>
+      )}
       </div>
     </>
   );

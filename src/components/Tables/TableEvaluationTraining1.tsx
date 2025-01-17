@@ -142,7 +142,6 @@ const TableEvaluationTraining1 = () => {
             </table>
           )}
 
-          {/* Bermasalah */}
           {userData?.role === "user" && (
             <table className="dark: min-w-full border-collapse text-left text-sm text-gray-300 text-gray-700">
               <thead>

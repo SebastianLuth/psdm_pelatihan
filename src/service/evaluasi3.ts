@@ -58,18 +58,8 @@ export const getAllUserAndTheirTrainingsEvaluation3 = async (
     const result = await axios.get(
       `${baseUrl}/api/evaluation3?unit_kerja=${unitKerjaId}`
     );
-
-    // Hapus duplikat berdasarkan kombinasi user_id dan training_id
-    const uniqueData = Array.from(
-      new Map(
-        result.data.data.map((item: any) => [
-          `${item.user_id}-${item.training_id}`,
-          item,
-        ])
-      ).values()
-    );
-
-    const formattedData = uniqueData.map((training: any) => ({
+    const data = result.data.data
+    const formattedData = data.map((training: any) => ({
       id: training.training_id,
       judul: training.training_title,
       nama: training.name,

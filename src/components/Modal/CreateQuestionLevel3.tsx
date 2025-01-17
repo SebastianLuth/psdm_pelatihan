@@ -48,10 +48,9 @@ const CreateQuestionLevel3 = ({setOpen, handleInputChange, handleSubmit, formDat
             className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
           >
             <option selected>Pilih Kategori</option>
-            <option value="teknis">Teknis</option>
-            <option value="non teknis">Non Teknis</option>
-            <option value="personality">Personality</option>
-            <option value="leadership">Leadership</option>
+            <option value="pengetahuan">Pengetahuan</option>
+            <option value="kemampuan">Kemampuan</option>
+            <option value="sikap">Sikap</option>
           </select>
           <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
             Pertanyaan
