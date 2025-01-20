@@ -132,6 +132,7 @@ export const menuGroups = [
             { label: "Data Pelatihan", route: "/training/training_data", role: "admin"  },
             { label: "Laporan Evaluasi Pelatihan", route: "/training/report_evaluation", role : "all"  },
             { label: "Evaluasi Level 1", route: "/training/evaluation_training1" , role : "all" },
+            { label: "Evaluasi Free Text", route: "/training/evaluation_freetext" , role : "all" },
             { label: "Evaluasi Level  3 & 4", route: "/training/evaluation_training2",role : "all" },
           ],
           role : "admin"
