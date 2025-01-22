@@ -1,13 +1,8 @@
 // src/components/SelectGroup/SelectUnitKerja.tsx
 "use client"
 import { getUnitKerja } from "@/service/department"
-import axios from "axios"
+import { UnitKerja } from "@/types/department-type"
 import React, { useEffect, useState } from "react"
-
-interface UnitKerja {
-  id: number
-  unit_kerja: string
-}
 
 interface SelectUnitKerjaProps {
   onUnitKerjaChange: (unitKerjaId: string) => void
@@ -38,7 +33,7 @@ const SelectUnitKerja: React.FC<SelectUnitKerjaProps> = ({ onUnitKerjaChange }) 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value
     setSelectedOptionUnitKerja(value)
-    onUnitKerjaChange(value) // Update selectedUnitKerja in parent
+    onUnitKerjaChange(value)
     changeTextColor()
   }
 

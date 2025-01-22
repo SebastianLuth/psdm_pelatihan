@@ -1,7 +1,5 @@
 "use client";
 import { FormAddDepartment } from "@/components/FormElements/FormAddDepartment";
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import ProtectedRoute from "@/components/ProtectedRoute";
 import { addUnitKerja } from "@/service/department";
 import { useState } from "react";
 

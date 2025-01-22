@@ -25,7 +25,9 @@ export default function MyCalendar() {
 
   const featchAllEvent = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/training`);
+      const response = await axios.get(`http://localhost:5000/api/training`, {
+        withCredentials: true,
+      });
       const events = response.data.data.map((event: any, index: number) => ({
         id: event.id,
         title: event.judul,

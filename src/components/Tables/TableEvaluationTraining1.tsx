@@ -3,7 +3,10 @@ import { useAuth } from "@/context/AuthContext";
 import { TrainingType, UserTraining } from "@/types/training-types";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { getAllTrainingEvaluation1, getAllUserAndTheirTrainings } from "@/service/evaluation1";
+import {
+  getAllTrainingEvaluation1,
+  getAllUserAndTheirTrainings,
+} from "@/service/evaluation1";
 
 const TableEvaluationTraining1 = () => {
   const { userData } = useAuth();
@@ -16,31 +19,36 @@ const TableEvaluationTraining1 = () => {
 
   const fetchAllTraining = async () => {
     try {
-      const result = await getAllTrainingEvaluation1()
+      const result = await getAllTrainingEvaluation1();
+      console.log("ini result", result);
       setTrainingData(result);
     } catch (error) {
-      setError(true);    }
+      setError(true);
+    }
   };
 
   const fetchAllUserAndTheirTrainings = async () => {
     try {
-      const result = await getAllUserAndTheirTrainings()
+      const result = await getAllUserAndTheirTrainings();
       setTrainingDataAdmin(result);
     } catch (error) {
-      setError(true);    }
+      setError(true);
+    }
   };
-  
-  useEffect(() => {
-    fetchAllTraining();
-  }, []);
 
   useEffect(() => {
-    fetchAllUserAndTheirTrainings();
-  }, []);
+    if (userData?.role === "user") fetchAllTraining();
+  }, [userData?.role]);
 
-  const userTraining = trainingData.filter((training) =>
-    training.user_id === userData?.id
-  );
+  useEffect(() => {
+    if (userData?.role === "admin") fetchAllUserAndTheirTrainings();
+  }, [userData?.role]);
+
+    const userTraining = trainingData.filter(
+      (training) => {
+        return training.user_id == userData?.id
+      } 
+    );
 
   const handleEvaluationClick = (
     tglSelesai: string,
@@ -83,61 +91,69 @@ const TableEvaluationTraining1 = () => {
                 </tr>
               </thead>
               <tbody>
-                {trainingDataAdmin.map((training, key) => (
-                  <tr
-                    key={training.user_id}
-                    className="group transform transition-transform duration-200 hover:scale-[1.02] hover:bg-gray-50 dark:hover:bg-gray-800"
-                  >
-                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                      {key + 1}
-                    </td>
-                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                      {training.username}
-                    </td>
-                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                      {training.name}
-                    </td>
-                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                      {training.training_title}
-                    </td>
-                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                      {training.training_type}
-                    </td>
-                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                      {training.start_date} - {training.end_date}
-                    </td>
-                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                      {training.has_completed_evaluation
-                        ? "Selesai"
-                        : "Belum Selesai"}
-                    </td>
-                    <td className="flex px-6 py-4 text-right">
-                      <button className="mr-2 inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-green-400 to-green-600 px-4 py-2 text-sm font-medium text-white shadow-md hover:from-green-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-green-400">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M11 5h2m-1 14V5m9 4H4m5 0a1 1 0 000 2h6a1 1 0 000-2H9z"
-                          />
-                        </svg>
-                        <Link
-                          key={training.training_id}
-                          href={`/training/evaluation_training1/${training.user_id}/${training.training_id}`}
-                        >
-                          {" "}
-                          <span>Detail</span>
-                        </Link>
-                      </button>
+                {trainingDataAdmin.length === 0 ? (
+                  <tr>
+                    <td colSpan={8} className="text-center">
+                      Tidak ada data
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  trainingDataAdmin.map((training, key) => (
+                    <tr
+                      key={training.user_id}
+                      className="group transform transition-transform duration-200 hover:scale-[1.02] hover:bg-gray-50 dark:hover:bg-gray-800"
+                    >
+                      <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                        {key + 1}
+                      </td>
+                      <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                        {training.username}
+                      </td>
+                      <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                        {training.name}
+                      </td>
+                      <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                        {training.training_title}
+                      </td>
+                      <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                        {training.training_type}
+                      </td>
+                      <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                        {training.start_date} - {training.end_date}
+                      </td>
+                      <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                        {training.has_completed_evaluation
+                          ? "Selesai"
+                          : "Belum Selesai"}
+                      </td>
+                      <td className="flex px-6 py-4 text-right">
+                        <button className="mr-2 inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-green-400 to-green-600 px-4 py-2 text-sm font-medium text-white shadow-md hover:from-green-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-green-400">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M11 5h2m-1 14V5m9 4H4m5 0a1 1 0 000 2h6a1 1 0 000-2H9z"
+                            />
+                          </svg>
+                          <Link
+                            key={training.training_id}
+                            href={`/training/evaluation_training1/${training.user_id}/${training.training_id}`}
+                          >
+                            {" "}
+                            <span>Detail</span>
+                          </Link>
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           )}
@@ -155,61 +171,68 @@ const TableEvaluationTraining1 = () => {
                 </tr>
               </thead>
               <tbody>
-                {userTraining.map((training, key) => (
-                  <tr
-                    key={training.id}
-                    className="group transform transition-transform duration-200 hover:scale-[1.02] hover:bg-gray-50 dark:hover:bg-gray-800"
-                  >
-                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                      {key + 1}
-                    </td>
-                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                      {training.judul}
-                    </td>
-                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                      {training.jenis}
-                    </td>
-                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                      {training.tgl_mulai} - {training.tgl_selesai}
-                    </td>
-                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                      {training.lembaga || "Tidak ada lembaga"}
-                    </td>
-                    <td className="flex px-6 py-4 text-right">
-                      <button
-                        onClick={() =>
-                          handleEvaluationClick(
-                            training.tgl_selesai,
-                            training.id,
-                          )
-                        }
-                        className={`mr-2 inline-flex items-center space-x-2 rounded-lg px-4 py-2 text-sm font-medium text-white shadow-md focus:outline-none focus:ring-2 ${
-                          training.telah_evaluasi == true
-                            ? "bg-gray-400 cursor-not-allowed"
-                            : "bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 focus:ring-green-400"
-                        }`}
-                        disabled={training.telah_evaluasi == true}
-                      
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M11 5h2m-1 14V5m9 4H4m5 0a1 1 0 000 2h6a1 1 0 000-2H9z"
-                          />
-                        </svg>
-                        <span>Jawab Evaluasi</span>
-                      </button>
+                {userTraining.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} className="text-center">
+                      Tidak ada data
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  userTraining.map((training, key) => (
+                    <tr
+                      key={training.id}
+                      className="group transform transition-transform duration-200 hover:scale-[1.02] hover:bg-gray-50 dark:hover:bg-gray-800"
+                    >
+                      <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                        {key + 1}
+                      </td>
+                      <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                        {training.judul}
+                      </td>
+                      <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                        {training.jenis}
+                      </td>
+                      <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                        {training.tgl_mulai} - {training.tgl_selesai}
+                      </td>
+                      <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                        {training.lembaga || "Tidak ada lembaga"}
+                      </td>
+                      <td className="flex px-6 py-4 text-right">
+                        <button
+                          onClick={() =>
+                            handleEvaluationClick(
+                              training.tgl_selesai,
+                              training.id,
+                            )
+                          }
+                          className={`mr-2 inline-flex items-center space-x-2 rounded-lg px-4 py-2 text-sm font-medium text-white shadow-md focus:outline-none focus:ring-2 ${
+                            training.telah_evaluasi == true
+                              ? "cursor-not-allowed bg-gray-400"
+                              : "bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 focus:ring-green-400"
+                          }`}
+                          disabled={training.telah_evaluasi == true}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M11 5h2m-1 14V5m9 4H4m5 0a1 1 0 000 2h6a1 1 0 000-2H9z"
+                            />
+                          </svg>
+                          <span>Jawab Evaluasi</span>
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           )}

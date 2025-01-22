@@ -12,18 +12,8 @@ import { getAllDataBawahanInUnitKerja } from "@/service/management-users";
 import { TrainingType } from "@/types/training-types";
 import Swal from "sweetalert2";
 import { addTraining, getJenisPelatihanData } from "@/service/training";
-import axios from "axios";
-
-interface vendorType {
-  id?: number;
-  nama_lembaga: string;
-  alamat_lembaga: string;
-  layanan_utama: string;
-  telpon_lembaga: string;
-  email_lembaga: string;
-  website_lembaga: string;
-  pic_lembaga: string;
-}
+import { getAllVendorData } from "@/service/vendor";
+import { vendorType } from "@/types/vendor";
 
 const AddTraining = () => {
   const [trainingData, setTrainingData] = useState<Partial<TrainingType>>({});
@@ -43,9 +33,13 @@ const AddTraining = () => {
   // Get All Lembaga
   const fetchLembagaData = async () => {
     try {
-      const result = await axios.get(`http://localhost:5000/api/vendor`);
-      const data = result.data.data;
-      setLembagaData(data);
+      const result = await getAllVendorData();
+      setLembagaData(result.map((vendor: any) => {
+        return {
+          ...vendor,
+          nama: vendor.nama_lembaga,
+        };
+      }));
     } catch (error) {
       console.error("Error fetching jenis pelatihan data:", error);
     }
@@ -54,7 +48,7 @@ const AddTraining = () => {
   // Get all user by unit kerja
   const fetchAllUserByUnitKerja = useCallback(async () => {
     try {
-      if (!selectedUnitKerja) return; // Check if selectedUnitKerja is not empty
+      if (!selectedUnitKerja) return;
       const response = await getAllDataBawahanInUnitKerja(
         Number(selectedUnitKerja),
       );
@@ -124,7 +118,7 @@ const AddTraining = () => {
     fetchLembagaData();
   }, []);
 
-  console.log("ini lembaga data", lembagaData);
+  console.log(lembagaData, "ini lembaga data dari use state");
 
   return (
     <div className="max-w-6xl mx-auto bg-white p-12 shadow-md rounded-lg dark:border-strokedark dark:bg-boxdark">
@@ -217,7 +211,7 @@ const AddTraining = () => {
             >
               <option value="" disabled>Pilih Unit Kerja</option>
               {lembagaData.map(unit => (
-                <option key={unit.id} value={unit.nama_lembaga}>{unit.nama_lembaga}</option>
+                <option key={unit.id} value={unit.nama}>{unit.nama}</option>
               ))}
           </select>
         </div>
@@ -256,7 +250,7 @@ const AddTraining = () => {
 
         {/* Jumlah Anggaran */}
         <div>
-          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Jumlah Anggaran</label>
+          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Biaya Pelatihan</label>
           <input
             name="jumlah_anggaran"
             value={trainingData.jumlah_anggaran}

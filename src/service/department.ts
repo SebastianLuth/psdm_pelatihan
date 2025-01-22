@@ -33,6 +33,7 @@ export const getUnitKerja = async () => {
         const response = await axios.get(`${baseUrl}/api/unitkerja`, {
             withCredentials: true,
         });
+        
         return response.data.data;
     } catch (error) {
         console.error("Error fetching unit kerja:", error);
@@ -53,7 +54,8 @@ export const deleteUnitKerja = async (unitKerjaId: number) => {
 // Featch Detail Unit Kerja
 export const getDetailUnitKerja = async (departmentId: number) => {
     try {
-        const {data} = await axios.get(`${baseUrl}/api/unitkerja/${departmentId}`, {
+        const {data} = await axios.get(`${baseUrl}/api/unitkerja/${departmentId}`, 
+            {
             withCredentials: true
         });
         return data.data;

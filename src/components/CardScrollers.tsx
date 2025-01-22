@@ -45,6 +45,9 @@ const ScrollableCards: React.FC = () => {
     try {
       const response = await axios.get(
         `http://localhost:5000/api/budget/count_budget?tahun_anggaran=${year}`,
+        {
+          withCredentials: true,
+        },
       );
       const data = response.data.data;
       setCountBudgetData({
@@ -159,7 +162,9 @@ const ScrollableCards: React.FC = () => {
           <div className="col-span-1 rounded-lg bg-blue-500 p-6 pb-0 text-white shadow-lg md:col-span-3">
             <div className="flex items-center md:items-start">
               <div className="flex flex-col items-center justify-center">
-                <h1 className="text-xl font-bold">{userData?.nama}</h1>
+                <h1 className="text-xl font-bold">
+                  {userData?.nama?.split(" ").slice(0, 2).join(" ")}
+                </h1>{" "}
                 <p className="text-xs">Selamat datang di N4TALENT</p>
                 <div className="mt-3 flex flex-col justify-center space-y-4 md:flex-row md:justify-start md:space-x-6 md:space-y-0">
                   <div className="rounded-lg bg-blue-800 p-4 text-center">

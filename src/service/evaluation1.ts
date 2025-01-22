@@ -42,7 +42,9 @@ export const submitAnswerEvaluation1 = async (
 
 export const getAllTrainingEvaluation1 = async () => {
   try {
-    const response = await axios.get(`${baseUrl}/api/training`);
+    const response = await axios.get(`${baseUrl}/api/training`, {
+      withCredentials: true,
+    });
     const formattedData = response.data.data.map((training: TrainingType) => ({
       ...training,
       tgl_mulai: format(new Date(training.tgl_mulai), "dd MMMM yyyy"),
@@ -56,13 +58,16 @@ export const getAllTrainingEvaluation1 = async () => {
 
 export const getAllUserAndTheirTrainings = async () => {
   try {
-    const response = await axios.get(`${baseUrl}/api/evaluation`);
+    const response = await axios.get(`${baseUrl}/api/evaluation`, {
+      withCredentials: true,
+    });
 
     const formattedData = response.data.data.map((training: UserTraining) => ({
       ...training,
       start_date: format(new Date(training.start_date), "dd MMMM yyyy"),
       end_date: format(new Date(training.end_date), "dd MMMM yyyy"),
     }));
+
 
     return formattedData;
   } catch (error) {

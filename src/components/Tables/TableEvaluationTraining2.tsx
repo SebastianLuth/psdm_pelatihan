@@ -93,13 +93,7 @@ const TableEvaluationTraining2 = () => {
   ) => {
     const trainingEndDate = new Date(tglSelesai);
     const currentDate = new Date();
-
-    if (currentDate < trainingEndDate) {
-      alert("Evaluasi belum dapat dilakukan karena pelatihan belum selesai.");
-    } else {
-      alert("Evaluasi sudah dapat dilakukan.");
-      window.location.href = `/training/evaluation_training2/${trainingId}/${participanId}/details`;
-    }
+    window.location.href = `/training/evaluation_training2/${trainingId}/${participanId}/details`;
   };
 
   console.log("statusEvaluation3", statusEvaluation3);

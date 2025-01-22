@@ -1,25 +1,16 @@
 "use client";
+import { getAllVendorData } from "@/service/vendor";
+import { vendorType } from "@/types/vendor";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
-interface vendorType {
-  id?: number;
-  nama: string;
-  alamat_lembaga: string;
-  layanan_utama: string;
-  telpon_lembaga: string;
-  email_lembaga: string;
-  website_lembaga: string;
-  pic_lembaga: string;
-}
 const TableVendorDataComponent = () => {
   const [vendorData, setVendorData] = useState<vendorType[]>([]);
 
   const fetchAllVendorData = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/vendor`);
-      const data = response.data.data;
+      const data = await getAllVendorData();
       setVendorData(
         data.map((item: any) => {
           return {
@@ -75,7 +66,7 @@ const TableVendorDataComponent = () => {
     <div className="relative overflow-hidden rounded-xl border border-gray-300 bg-white/70 shadow-xl backdrop-blur-lg dark:border-gray-700 dark:bg-gray-900/70">
       <div className="px-6 py-5">
         <h4 className="text-2xl font-semibold text-gray-800 dark:text-gray-100">
-          Semua Data Anggaran
+          Semua Data Lembaga/Vendor
         </h4>
         <div className="flex items-center justify-between py-4">
           <div className="flex items-center space-x-3">

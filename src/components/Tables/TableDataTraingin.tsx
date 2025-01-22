@@ -4,7 +4,7 @@ import { TrainingType } from "@/types/training-types";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getAllTraining } from "@/service/training";
-import axios from "axios";
+import axios, { all } from "axios";
 import Swal from "sweetalert2";
 
 const TableDataTraingin = () => {
@@ -22,20 +22,19 @@ const TableDataTraingin = () => {
   const handleDeleteTraining = async (trainingId: number | undefined) => {
     try {
       const result = await Swal.fire({
-            title: "Apakah Anda yakin?",
-            text:
-              "Data Anggaran ini akan dihapus secara permanen dan data-data pelatihannya juga akan dihapus!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Ya, hapus!",
-            cancelButtonText: "Batal",
-          });
-      
-          if (result.isConfirmed) {
-            await axios.delete(`http://localhost:5000/api/training/${trainingId}`);
-          }
+        title: "Apakah Anda yakin?",
+        text: "Data Anggaran ini akan dihapus secara permanen dan data-data pelatihannya juga akan dihapus!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya, hapus!",
+        cancelButtonText: "Batal",
+      });
+
+      if (result.isConfirmed) {
+        await axios.delete(`http://localhost:5000/api/training/${trainingId}`);
+      }
       fetchAllTraining();
     } catch (error) {
       setError(true);
@@ -93,82 +92,90 @@ const TableDataTraingin = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-              {allTraining.map((training, index) => (
-                <tr
-                  key={training.id}
-                  className="group transform transition-transform duration-200 hover:scale-[1.02] hover:bg-gray-50 dark:hover:bg-gray-800"
-                >
-                  <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                    {index + 1}
-                  </td>
-                  <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                    {training.judul}
-                  </td>
-                  <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                    {training.jenis}
-                  </td>
-                  <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                    {training.lembaga}
-                  </td>
-                  <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                    {training.lokasi}
-                  </td>
-                  <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                    {training.tgl_mulai}
-                  </td>
-                  <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                    {training.tgl_selesai}
-                  </td>
-                  <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                    {training.metode}
-                  </td>
-                  <td className="flex px-6 py-4 text-right">
-                    <button className="mr-2 inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-green-400 to-green-600 px-4 py-2 text-sm font-medium text-white shadow-md hover:from-green-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-green-400">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M11 5h2m-1 14V5m9 4H4m5 0a1 1 0 000 2h6a1 1 0 000-2H9z"
-                        />
-                      </svg>
-                      <Link
-                        key={training.id}
-                        href={`/training/training_data/${training.id}`}
-                      >
-                        {" "}
-                        <span>Detail</span>
-                      </Link>
-                    </button>
-                    <button
-                      onClick={() => handleDeleteTraining(training.id)}
-                      className="inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-red-400 to-red-600 px-4 py-2 text-sm font-medium text-white shadow-md hover:from-red-500 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-red-400"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
-                      <span>Delete</span>
-                    </button>
+              {allTraining.length === 0 ? (
+                <tr>
+                  <td colSpan={9} className="px-6 py-4 text-center">
+                    Tidak ada data
                   </td>
                 </tr>
-              ))}
+              ) : (
+                allTraining.map((training, index) => (
+                  <tr
+                    key={training.id}
+                    className="group transform transition-transform duration-200 hover:scale-[1.02] hover:bg-gray-50 dark:hover:bg-gray-800"
+                  >
+                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                      {index + 1}
+                    </td>
+                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                      {training.judul}
+                    </td>
+                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                      {training.jenis}
+                    </td>
+                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                      {training.lembaga}
+                    </td>
+                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                      {training.lokasi}
+                    </td>
+                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                      {training.tgl_mulai}
+                    </td>
+                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                      {training.tgl_selesai}
+                    </td>
+                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                      {training.metode}
+                    </td>
+                    <td className="flex px-6 py-4 text-right">
+                      <button className="mr-2 inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-green-400 to-green-600 px-4 py-2 text-sm font-medium text-white shadow-md hover:from-green-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-green-400">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M11 5h2m-1 14V5m9 4H4m5 0a1 1 0 000 2h6a1 1 0 000-2H9z"
+                          />
+                        </svg>
+                        <Link
+                          key={training.id}
+                          href={`/training/training_data/${training.id}`}
+                        >
+                          {" "}
+                          <span>Detail</span>
+                        </Link>
+                      </button>
+                      <button
+                        onClick={() => handleDeleteTraining(training.id)}
+                        className="inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-red-400 to-red-600 px-4 py-2 text-sm font-medium text-white shadow-md hover:from-red-500 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-red-400"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                        <span>Delete</span>
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

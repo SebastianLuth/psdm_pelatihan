@@ -14,7 +14,6 @@ export const getAllTraining = async () => {
       tgl_mulai: format(new Date(training.tgl_mulai), "dd MMMM yyyy"),
       tgl_selesai: format(new Date(training.tgl_selesai), "dd MMMM yyyy"),
     }));
-    console.log(formattedData);
     return formattedData;
   } catch (error) {
     throw error;
@@ -43,7 +42,9 @@ export const addTraining = async (
       jumlah_peserta: jumlah_peserta,
       peserta: peserta,
     };
-    const result = await axios.post(`${baseUrl}/api/training`, payload);
+    const result = await axios.post(`${baseUrl}/api/training`, payload, {
+      withCredentials: true,
+    });
     if (result.status === 201) {
       await Swal.fire({
         title: "Success!",

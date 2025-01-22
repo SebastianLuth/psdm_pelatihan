@@ -1,17 +1,8 @@
 "use client";
+import { submitVendorData } from "@/service/vendor";
+import { vendorType } from "@/types/vendor";
 import axios from "axios";
 import { useState } from "react";
-
-interface vendorType {
-  id?: number;
-  nama: string;
-  alamat_lembaga: string;
-  layanan_utama: string;
-  telpon_lembaga: string;
-  email_lembaga: string;
-  website_lembaga: string;
-  pic_lembaga: string;
-}
 
 const FormAddDataVendorComponent = () => {
   const [success, setSuccess] = useState<boolean>(false);
@@ -37,10 +28,7 @@ const FormAddDataVendorComponent = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        `http://localhost:5000/api/vendor`,
-        formData
-      )
+      await submitVendorData(formData);
       setSuccess(true);
       setFormData({
         nama: "",

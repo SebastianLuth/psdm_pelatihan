@@ -76,25 +76,35 @@ const TableDataUser: React.FC<TableDataUserProps> = ({ selectedUnitKerja }) => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-            {users.map((user, index) => (
-              <tr
-                key={user.id}
-                className="group transform transition-transform duration-200 hover:scale-[1.02] hover:bg-gray-50 dark:hover:bg-gray-800"
-              >
-                <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                  {index + 1}
-                </td>
-                <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                  {user.username}
-                </td>
-                <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                  {user.nama}
-                </td>
-                <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                  {user.jabatan}
-                </td>
-              </tr>
-            ))}
+            {
+              users.length === 0 ? (
+                <tr className="bg-white">
+                  <td colSpan={4} className="px-6 py-4 text-center">
+                    Tidak ada data
+                  </td>
+                </tr>
+              ) : (
+                users.map((user, index) => (
+                  <tr
+                    key={user.id}
+                    className="group transform transition-transform duration-200 hover:scale-[1.02] hover:bg-gray-50 dark:hover:bg-gray-800"
+                  >
+                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                      {index + 1}
+                    </td>
+                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                      {user.username}
+                    </td>
+                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                      {user.nama}
+                    </td>
+                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                      {user.jabatan}
+                    </td>
+                  </tr>
+                ))
+              )
+            }
           </tbody>
         </table>
       </div>
