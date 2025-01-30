@@ -49,7 +49,7 @@ const FormAddDataVendorComponent = () => {
     <>
       <div className="mx-auto max-w-4xl rounded-lg bg-white p-12 shadow-md dark:border-strokedark dark:bg-boxdark">
         <h2 className="mb-4 text-2xl font-semibold text-gray-800 dark:text-white">
-          Tambah Anggaran
+          Tambah Vendor / Lembaga Penyedia
         </h2>
         
         <form onSubmit={handleSubmit}>
@@ -97,7 +97,7 @@ const FormAddDataVendorComponent = () => {
 
           <div className="mb-5">
             <label className="mb-1 block font-medium text-gray-600 dark:text-white">
-              Layanan Utama
+              No Telepon Lembaga
             </label>
             <input
               type="text"

@@ -37,7 +37,13 @@ const TableReportEvaluation1: React.FC = () => {
         e.preventDefault();
         try {
             // Logika untuk mengunduh file Excel
-            const response =await axios.get(`http://localhost:5000/api/evaluation/export?startDate=${formDate.startDate}&endDate=${formDate.endDate}`, { responseType: 'blob' });
+            const response =await axios.get(
+                `http://localhost:5000/api/evaluation/export?startDate=${formDate.startDate}&endDate=${formDate.endDate}`,
+                { 
+                    responseType: 'blob',
+                    withCredentials: true
+                 }
+            );
 
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
@@ -55,7 +61,13 @@ const TableReportEvaluation1: React.FC = () => {
         e.preventDefault();
         try {
             // Logika untuk mengunduh file Excel
-            const response =await axios.get(`http://localhost:5000/api/evaluation3/export?startDate=${formDateEvaluation3.startDate}&endDate=${formDateEvaluation3.endDate}`, { responseType: 'blob' });
+            const response =await axios.get(
+                `http://localhost:5000/api/evaluation3/export?startDate=${formDateEvaluation3.startDate}&endDate=${formDateEvaluation3.endDate}`, 
+                { 
+                    responseType: 'blob', 
+                    withCredentials: true
+                }
+            );
 
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');

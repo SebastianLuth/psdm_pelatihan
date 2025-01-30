@@ -5,6 +5,7 @@ import { UnitKerja } from "@/types/department-type";
 import Swal from "sweetalert2";
 import { useState } from "react";
 import { useRouter } from 'next/navigation';
+import { Progress } from "@radix-ui/react-progress";
 
 // Fungsi fetcher untuk SWR
 const fetcher = async () => {
@@ -22,7 +23,7 @@ const TableDataUnitKerja = () => {
 
 
   if (error) return <div>Error loading data...</div>;
-  if (!data) return <div>Loading...</div>;
+  if (!data) return <Progress value={data} className="w-[60%]" />;
 
   // Data yang akan ditampilkan
   const dataToDisplay = data.slice(0, limit);

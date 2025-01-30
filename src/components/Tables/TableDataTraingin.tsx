@@ -82,7 +82,7 @@ const TableDataTraingin = () => {
               <tr className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white">
                 <th className="px-6 py-4">No</th>
                 <th className="px-6 py-4">Nama Pelatihan</th>
-                <th className="px-6 py-4">Jenis Pelatihan</th>
+                <th className="px-6 py-4">RKAP Pelatihan</th>
                 <th className="px-6 py-4">Lembaga</th>
                 <th className="px-6 py-4">Lokasi</th>
                 <th className="px-6 py-4">Tanggal Mulai</th>

@@ -1,7 +1,7 @@
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ScrollableCards from "@/components/CardScrollers";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import MyCalendar from "@/app/calendar/page";
+import MyCalendar from "@/components/calendar/page";
 
 export const metadata = {
   title: "N4TALENT | Dashboard PSDM Pelatihan Karyawan",

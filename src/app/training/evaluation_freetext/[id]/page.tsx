@@ -5,6 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 import axios from "axios";
 import { useParams } from "next/navigation";
 import React, { use, useCallback, useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 interface trainingData {
   id: string;
@@ -57,7 +58,10 @@ const FreeTextDetailPage: React.FC = () => {
       }, {
         withCredentials: true
       })
+      Swal.fire("Berhasil", "Data berhasil disimpan!", "success");
+      window.location.href = `/training/evaluation_freetext/`
     } catch (error) {
+      Swal.fire("Gagal", "Terjadi kesalahan saat menyimpan data.", "error");
       console.error("Error submitting form:", error);
     }
   }

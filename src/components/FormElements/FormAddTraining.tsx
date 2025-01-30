@@ -91,8 +91,22 @@ const AddTraining = () => {
       const jumlah_peserta = selectedParticipants.length;
       const peserta = selectedParticipants.map((id) => ({ id }));
       await addTraining(jumlah_peserta, peserta, trainingData);
-      setTrainingData({});
+      setTrainingData({
+        jumlah_peserta: 0,
+        jumlah_anggaran: 0,
+        tgl_mulai: "",
+        tgl_selesai: "",
+        metode: "",
+        lokasi: "",
+        lembaga: "",
+        kompetensi: "",
+        rkap_type: "",
+        jenis: "",
+        judul: "",
+        jam_pelajaran: 0
+      });
       setSelectedParticipants([]);
+      window.location.reload();
     } catch (error: any) {
       const errorMessage =
         error.response?.data.message ||

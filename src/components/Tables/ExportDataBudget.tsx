@@ -13,8 +13,11 @@ const ExportDataBudget: React.FC = () => {
     const handleExportFileBudget = async (): Promise<void> => {
         try {
             const response = await axios.get(
-                `http://localhost:5000/api/budget/export?tahun_anggaran=${tahunAnggaran}`, 
-                { responseType: 'blob' } 
+                `http://localhost:5000/api/budget/export?tahun_anggaran=${tahunAnggaran}`,
+                { 
+                    responseType: 'blob', 
+                    withCredentials: true
+                } 
             );
             
             const url = window.URL.createObjectURL(new Blob([response.data]));
