@@ -7,18 +7,19 @@ import {
 import { QuestionType, QuestionTypeLevel1Form } from "@/types/question-type";
 import { useEffect, useState } from "react";
 import CreateQuestionLevel1 from "../Modal/CreateQuestionLevel1";
+import SkeletonTable from "../Skeleton/SkeletonTable";
 
 const QuestionComponent = () => {
   const [questionData, setQuestionData] = useState<QuestionType[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
   const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
   const [error, setError] = useState<boolean>(false);
 
   const [formData, setFormData] = useState<QuestionTypeLevel1Form>({
-      pertanyaan: "",
-      kategori: "",
-    });
+    pertanyaan: "",
+    kategori: "",
+  });
 
   const toggleDropdown = (id: number) => {
     setOpenDropdownId((prevId) => (prevId === id ? null : id));
@@ -43,8 +44,8 @@ const QuestionComponent = () => {
   };
 
   const fetchQuestion = async () => {
-    setLoading(true);
     try {
+      setLoading(true);
       const result = await getQuestionLevel1();
       setQuestionData(result);
     } catch (error) {
@@ -64,7 +65,7 @@ const QuestionComponent = () => {
   const submitQuestion = async () => {
     setLoading(true);
     try {
-      await addQuestionLevel1(formData.pertanyaan, formData.kategori); 
+      await addQuestionLevel1(formData.pertanyaan, formData.kategori);
       setOpen(false);
       fetchQuestion();
       setFormData({ pertanyaan: "", kategori: "" });
@@ -81,7 +82,7 @@ const QuestionComponent = () => {
   useEffect(() => {}, [openDropdownId]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <SkeletonTable title="Pertanyaan" />;
   }
 
   return (
@@ -257,7 +258,7 @@ const QuestionComponent = () => {
         </div>
       </div>
       {open && (
-        <CreateQuestionLevel1 
+        <CreateQuestionLevel1
           setOpen={setOpen}
           handleInputChange={handleInputChange}
           handleSubmit={submitQuestion}

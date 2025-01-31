@@ -28,7 +28,7 @@ const EvaluationDetailReportTrainingPage = () => {
       formData.append("report_evaluation", selectedFile);
 
       await axios.post(
-        `http://localhost:8080/api/v1/evaluation_training/${training_id}/upload`,
+        `http://localhost:5000/api/v1/evaluation_training/${training_id}/upload`,
         formData,
         {
           headers: {

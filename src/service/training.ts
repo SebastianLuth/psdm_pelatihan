@@ -20,6 +20,22 @@ export const getAllTraining = async () => {
   }
 };
 
+export const getTrainingById = async (trainingId: number) => {
+  try {
+    const result = await axios.get(`${baseUrl}/api/training/${trainingId}`)
+    const data = result.data.data.training.map((item: any) => {
+      return {
+        ...item,
+        tgl_mulai: format(new Date(item.tgl_mulai), "dd MMMM yyyy"),
+        tgl_selesai: format(new Date(item.tgl_selesai), "dd MMMM yyyy"),
+      }
+    })
+    return data ; 
+  } catch (error) {
+    throw error;
+  }
+}
+
 export const getJenisPelatihanData = async () => {
   try {
     const response = await axios.get(`${baseUrl}/api/budget`, {

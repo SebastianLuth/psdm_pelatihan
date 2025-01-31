@@ -58,6 +58,7 @@ const FormAddBudget = () => {
   };
 
   return (
+    <>
     <div className="max-w-4xl mx-auto bg-white p-12 shadow-md rounded-lg dark:border-strokedark dark:bg-boxdark">
       <h2 className="mb-4 text-2xl font-semibold text-gray-800 dark:text-white">
         Tambah Anggaran
@@ -148,6 +149,7 @@ const FormAddBudget = () => {
         </div>
       </form>
     </div>
+    </>
   );
 };
 

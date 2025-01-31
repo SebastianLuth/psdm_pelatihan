@@ -8,6 +8,12 @@ export interface FreeTextEvaluation {
     is_completed: boolean | number;
 }
 
+export interface freetextData {
+  konseptualiasasi_pembelajaran : string;
+  rencana_tindak_lanjut : string;
+  narasumber : string;
+}
+
 export interface FreeTextEvaluationForAdmin {
     pelatihan_id: number;
     judul_pelatihan: string;

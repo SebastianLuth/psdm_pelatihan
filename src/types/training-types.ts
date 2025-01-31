@@ -16,6 +16,22 @@ export interface TrainingType {
   telah_evaluasi?: boolean;
 }
 
+export interface trainingData {
+  id: string;
+  jam_pelajaran : number;
+  rkap_type : string;
+  judul : string;
+  jumlah_anggaran : number;
+  jumlah_peserta : number;
+  kompetensi : string;
+  lembaga : string;
+  lokasi : string;
+  metode : string;
+  jenis : string;
+  tgl_mulai : string;
+  tgl_selesai : string;
+}
+
 export interface trainingFundAbsorption {
   user_id: number;
   judul_pelatihan : string;

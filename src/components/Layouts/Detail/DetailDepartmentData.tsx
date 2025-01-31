@@ -1,5 +1,6 @@
 "use client";
 import { FormAddDepartment } from "@/components/FormElements/FormAddDepartment";
+import FormSkeleton from "@/components/Skeleton/FormSkeleton";
 import { getDetailUnitKerja, updateUnitKerja } from "@/service/department";
 import { UnitKerja } from "@/types/department-type";
 import { useParams } from "next/navigation";
@@ -9,15 +10,19 @@ export default function DepartmentDataIdComponent() {
   const [newUnitKerja, setUnitKerja] = useState<string>("");
   const [detailUnitKerja, setDetailUnitKerja] = useState<UnitKerja[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [success, setSuccess] = useState<boolean>(false);
 
   const { departmentId } = useParams();
   const fetchDetailUnitKerja = useCallback(async () => {
     try {
+      setIsLoading(true);
       const response = await getDetailUnitKerja(Number(departmentId));
       setDetailUnitKerja(response);
     } catch (error) {
       setError("Gagal memuat data unit kerja. Silakan coba lagi.");
+    } finally {
+      setIsLoading(false);
     }
   }, [departmentId]);
 
@@ -44,13 +49,19 @@ export default function DepartmentDataIdComponent() {
   }, [fetchDetailUnitKerja]);
 
   return (
-    <FormAddDepartment
-      mode="update"
-      detailUnitKerja={detailUnitKerja}
-      defaultValue={newUnitKerja}
-      onUpdateUnitKerja={handleUpdateUnitKerja}
-      success={success}
-      error={error}
-    />
+    <>
+      {isLoading === true ? (
+        <FormSkeleton />
+      ) : (
+        <FormAddDepartment
+          mode="update"
+          detailUnitKerja={detailUnitKerja}
+          defaultValue={newUnitKerja}
+          onUpdateUnitKerja={handleUpdateUnitKerja}
+          success={success}
+          error={error}
+        />
+      )}
+    </>
   );
 }

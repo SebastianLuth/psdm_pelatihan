@@ -8,6 +8,8 @@ interface dateType {
 }
 
 const TableReportEvaluation2: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error , setError] = useState(false);
   const [formDate, setFormDate] = useState<dateType>({
     startDate: "",
     endDate: "",

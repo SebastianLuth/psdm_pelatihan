@@ -7,6 +7,7 @@ import {
   deleteQuestionLevel3,
   getQuestionLevel3,
 } from "@/service/question";
+import SkeletonTable from "../Skeleton/SkeletonTable";
 
 const QuestionEvaluationLevel3Component = () => {
   const [questionData, setQuestionData] = useState<QuestionType[]>([]);
@@ -71,6 +72,9 @@ const QuestionEvaluationLevel3Component = () => {
   useEffect(() => {
     fetchQuestionLevel3();
   }, []);
+
+  if(loading) return <SkeletonTable title="Pertanyaan Evaluasi 3"/>
+  
   return (
     <>
       <div className="mx-auto min-w-full max-w-6xl p-4 dark:border-gray-700 dark:bg-gray-900/70">

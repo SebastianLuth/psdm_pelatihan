@@ -3,17 +3,17 @@ import useSWR from "swr";
 import { deleteUnitKerja, getUnitKerja } from "@/service/department";
 import { UnitKerja } from "@/types/department-type";
 import Swal from "sweetalert2";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
-import { Progress } from "@radix-ui/react-progress";
+import SkeletonTable from "../Skeleton/SkeletonTable";
 
-// Fungsi fetcher untuk SWR
 const fetcher = async () => {
   return await getUnitKerja();
 };
 
 const TableDataUnitKerja = () => {
   const [limit, setLimit] = useState<number>(100);
+  const [isLoading, setIsLoading] = useState(true);
 
   const { data, error, mutate } = useSWR<UnitKerja[]>("/unitKerja", fetcher, {
     refreshInterval: 10800000,
@@ -21,12 +21,18 @@ const TableDataUnitKerja = () => {
 
   const router = useRouter();
 
+   // Set loading menjadi false setelah data berhasil diambil
+   useEffect(() => {
+    if (data || error) {
+      setIsLoading(false);
+    }
+  }, [data, error]);
 
   if (error) return <div>Error loading data...</div>;
-  if (!data) return <Progress value={data} className="w-[60%]" />;
+  if (isLoading) return <SkeletonTable title="Unit Kerja"/>;
 
   // Data yang akan ditampilkan
-  const dataToDisplay = data.slice(0, limit);
+  const dataToDisplay = data?.slice(0, limit);
 
   // Fungsi Hapusan unit kerja
   const handleDeleteUnitKerja = async (unitKerjaId: number) => {
@@ -114,7 +120,7 @@ const TableDataUnitKerja = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-            {dataToDisplay.map((unit, index) => (
+            {dataToDisplay?.map((unit, index) => (
               <tr
                 key={unit.id}
                 className="group transform transition-transform duration-200 hover:scale-[1.02] hover:bg-gray-50 dark:hover:bg-gray-800"

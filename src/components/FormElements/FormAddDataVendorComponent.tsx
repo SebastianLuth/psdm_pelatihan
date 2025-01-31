@@ -1,7 +1,6 @@
 "use client";
 import { submitVendorData } from "@/service/vendor";
 import { vendorType } from "@/types/vendor";
-import axios from "axios";
 import { useState } from "react";
 
 const FormAddDataVendorComponent = () => {

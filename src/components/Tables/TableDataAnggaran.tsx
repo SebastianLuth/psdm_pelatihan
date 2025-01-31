@@ -7,6 +7,7 @@ import React from "react";
 import { debounce } from "lodash";
 import { useRouter } from 'next/navigation';
 import Swal from "sweetalert2";
+import SkeletonTable from "../Skeleton/SkeletonTable";
 const ErrorFallback = ({ error, resetErrorBoundary }: { error: Error, resetErrorBoundary: () => void }) => (
   <div role="alert">
     <p>Something went wrong:</p>
@@ -93,6 +94,9 @@ const TableDataAnggaran: React.FC = () => {
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback} onReset={fetchAllBudget}>
       <Suspense fallback={<div>Loading...</div>}>
+      { loading === true ? (
+        <SkeletonTable title="Anggaran" />
+      ) : (
         <div className="relative overflow-hidden rounded-xl border border-gray-300 bg-white/70 shadow-xl backdrop-blur-lg dark:border-gray-700 dark:bg-gray-900/70">
           <div className="px-6 py-5">
             <h4 className="text-2xl font-semibold text-gray-800 dark:text-gray-100">
@@ -219,6 +223,8 @@ const TableDataAnggaran: React.FC = () => {
             </table>
           </div>
         </div>
+      )
+    }
       </Suspense>
     </ErrorBoundary>
   );
