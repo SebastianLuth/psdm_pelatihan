@@ -68,7 +68,6 @@ export const getAllUserAndTheirTrainings = async () => {
       end_date: format(new Date(training.end_date), "dd MMMM yyyy"),
     }));
 
-
     return formattedData;
   } catch (error) {
     throw error;
@@ -81,6 +80,24 @@ export const getEvaluationData = async (userId: number, trainingId: number) => {
       `${baseUrl}/api/evaluation/${userId}/${trainingId}`
     );
     return response.data.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const DownloadExcelEvaluation1 = async (
+  startDate: string,
+  endDate: string
+) => {
+  try {
+    const response = await axios.get(
+      `${baseUrl}/api/evaluation/export?startDate=${startDate}&endDate=${endDate}`,
+      {
+        responseType: "blob",
+        withCredentials: true,
+      }
+    );
+    return response.data;
   } catch (error) {
     throw error;
   }

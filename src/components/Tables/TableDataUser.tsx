@@ -1,7 +1,7 @@
 "use client";
 import { getAllDataBawahanInUnitKerja } from "@/service/management-users";
 import Link from "next/link";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { ChangeEvent, useCallback, useEffect, useState } from "react";
 
 interface User {
   id: number;
@@ -16,6 +16,9 @@ interface TableDataUserProps {
 
 const TableDataUser: React.FC<TableDataUserProps> = ({ selectedUnitKerja }) => {
   const [users, setUsers] = useState<User[]>([]);
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const [limit, setLimit] = useState<number>(10);
 
   // Get all user by unit kerja
   const fetchAllUserByUnitKerja = useCallback(async () => {
@@ -35,33 +38,61 @@ const TableDataUser: React.FC<TableDataUserProps> = ({ selectedUnitKerja }) => {
     }
   }, [selectedUnitKerja, fetchAllUserByUnitKerja]);
 
+  const debouncedSearch = (query: string) => {
+    setSearchQuery(query);
+  }
+
+  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+    debouncedSearch(event.target.value);
+  }
+
+  const handleLimitChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setLimit(Number(event.target.value));
+  }
+
+  const filteredUsersData = users.filter((user) => {
+    return (
+      user.username.toString().includes(searchQuery) ||
+      user.nama.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.jabatan.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  });
+
   return (
     <div className="relative overflow-hidden rounded-xl border border-gray-300 bg-white/70 shadow-xl backdrop-blur-lg dark:border-gray-700 dark:bg-gray-900/70">
       <div className="px-6 py-5">
         <h4 className="text-2xl font-semibold text-gray-800 dark:text-gray-100">
           Data User
         </h4>
-        <div className="flex items-center justify-between py-4">
+        <div className="flex items-center justify-between py-4 space-x-4">
           <div className="flex items-center space-x-3"> 
             <span className="text-gray-700 dark:text-gray-300">Show</span>
-            <select className="rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200">
+            <select 
+            onChange={handleLimitChange}
+            value={limit}
+            className="rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+            >
+              <option value="5">5</option>
               <option value="10">10</option>
               <option value="25">25</option>
               <option value="50">50</option>
               <option value="100">100</option>
             </select>
-            <span className="text-gray-700 dark:text-gray-300">entries</span>
           </div>
-          <div className="flex items-center">
-            <span className="mr-2 text-gray-700 dark:text-gray-300">
-              Search:
-            </span>
+          <div className="flex-grow items-center">
             <input
+              onChange={handleSearchChange}
               type="text"
-              className="rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+              className="w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
               placeholder="Search..."
             />
           </div>
+          <Link
+            href={"/users_manajemen/add_users"}
+            className="inline-block rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition duration-200 hover:bg-indigo-700 hover:shadow-md"
+          >
+            Tambahkan User
+          </Link>
         </div>
       </div>
 
@@ -77,14 +108,14 @@ const TableDataUser: React.FC<TableDataUserProps> = ({ selectedUnitKerja }) => {
           </thead>
           <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
             {
-              users.length === 0 ? (
+              filteredUsersData.length === 0 ? (
                 <tr className="bg-white">
                   <td colSpan={4} className="px-6 py-4 text-center">
                     Tidak ada data
                   </td>
                 </tr>
               ) : (
-                users.map((user, index) => (
+                filteredUsersData.map((user, index) => (
                   <tr
                     key={user.id}
                     className="group transform transition-transform duration-200 hover:scale-[1.02] hover:bg-gray-50 dark:hover:bg-gray-800"

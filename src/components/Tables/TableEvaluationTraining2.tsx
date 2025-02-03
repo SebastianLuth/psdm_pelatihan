@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { UserTraining } from "@/types/training-types";
 import { getAllUserAndTheirTrainings } from "@/service/evaluation1";
-import { getAllUserAndTheirTrainingsEvaluation3 } from "@/service/evaluasi3";
+import { getAllUserAndTheirTrainingsEvaluation3, getStatusEvaluation3 } from "@/service/evaluasi3";
 import { UserTrainingEvaluation3 } from "@/types/evaluasi3";
 import axios from "axios";
 
@@ -29,13 +29,14 @@ const TableEvaluationTraining2 = () => {
 
   const fetchStatusEvaluation3 = async () => {
     try {
-      const result = await axios.get(`http://localhost:5000/api/evaluation3/status_evaluasi3`,{
-        withCredentials: true
-      });
-      setStatusEvaluation3(result.data.data);
+      setLoading(true);
+      const result = await getStatusEvaluation3();
+      setStatusEvaluation3(result);
     } catch (error) {
       setError(true);
       return [];
+    } finally {
+      setLoading(false);
     }
   };
 

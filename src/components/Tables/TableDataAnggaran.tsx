@@ -8,6 +8,7 @@ import { debounce } from "lodash";
 import { useRouter } from 'next/navigation';
 import Swal from "sweetalert2";
 import SkeletonTable from "../Skeleton/SkeletonTable";
+import Link from "next/link";
 const ErrorFallback = ({ error, resetErrorBoundary }: { error: Error, resetErrorBoundary: () => void }) => (
   <div role="alert">
     <p>Something went wrong:</p>
@@ -102,31 +103,32 @@ const TableDataAnggaran: React.FC = () => {
             <h4 className="text-2xl font-semibold text-gray-800 dark:text-gray-100">
               Semua Data Anggaran
             </h4>
-            <div className="flex items-center justify-between py-4">
+            <div className="flex items-center justify-between space-x-4 mt-5" >
               <div className="flex items-center space-x-3">
                 <span className="text-gray-700 dark:text-gray-300">Show</span>
                 <select 
                 onChange={handleLimitChange}
                 value={limit}
                 className="rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200">
+                  <option value="5">5</option>
                   <option value="10">10</option>
                   <option value="25">25</option>
                   <option value="50">50</option>
                   <option value="100">100</option>
                 </select>
-                <span className="text-gray-700 dark:text-gray-300">entries</span>
               </div>
-              <div className="flex items-center">
-                <span className="mr-2 text-gray-700 dark:text-gray-300">
-                  Search:
-                </span>
+              <div className="flex-grow items-center">
                 <input
                   type="text"
-                  className="rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+                  className="w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
                   placeholder="Search..."
                   onChange={handleSearchChange}
                 />
               </div>
+              <Link href={'/budget/add_budget'} 
+              className="inline-block rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition duration-200 hover:bg-indigo-700 hover:shadow-md"> 
+              Tambahkan RKAP Anggaran
+              </Link>
             </div>
           </div>
 
@@ -175,7 +177,7 @@ const TableDataAnggaran: React.FC = () => {
                       <td className="px-4 py-4 text-gray-800 dark:text-gray-100">
                         {budget.tahun_anggaran}
                       </td>
-                      <td className="px-4 py-4 text-right">
+                      <td className="flex space-x-2 px-4 py-4 text-right">
                         <button
                          onClick={() => handleDetail(budget.id)}
                          className="mr-2 inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-green-400 to-green-600 px-4 py-2 text-sm font-medium text-white shadow-md hover:from-green-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-green-400">

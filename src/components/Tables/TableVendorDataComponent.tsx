@@ -1,14 +1,18 @@
 "use client";
 import { deleteVendorData, getAllVendorData } from "@/service/vendor";
 import { vendorType } from "@/types/vendor";
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import SkeletonTable from "../Skeleton/SkeletonTable";
+import Link from "next/link";
+import { debounce } from "lodash";
 
 const TableVendorDataComponent = () => {
   const [vendorData, setVendorData] = useState<vendorType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [limit, setLimit] = useState<number>(10);
 
   const fetchAllVendorData = async () => {
     try {
@@ -67,22 +71,47 @@ const TableVendorDataComponent = () => {
     fetchAllVendorData();
   }, []);
 
+  const debouncedSearch = debounce((query: string) => {
+    setSearchQuery(query);
+  }, 300);
+
+  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+    debouncedSearch(event.target.value);
+  };
+
+  const handleLimitChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setLimit(Number(event.target.value));
+  };
+
+  const filteredVendorData = vendorData
+    .filter(
+      (vendor) =>
+        vendor.nama.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        vendor.layanan_utama
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase()) ||
+        vendor.alamat_lembaga.toLowerCase().includes(searchQuery.toLowerCase()),
+    )
+    .slice(0, limit);
+
   return (
     <>
       {isLoading === true ? (
         <SkeletonTable title="Lembaga/Vendor" />
       ) : (
         <div className="relative overflow-hidden rounded-xl border border-gray-300 bg-white/70 shadow-xl backdrop-blur-lg dark:border-gray-700 dark:bg-gray-900/70">
+          {/* Header */}
           <div className="px-6 py-5">
             <h4 className="text-2xl font-semibold text-gray-800 dark:text-gray-100">
               Semua Data Lembaga/Vendor
             </h4>
-            <div className="flex items-center justify-between py-4">
+            <div className="mt-10 flex items-center justify-between space-x-4">
+              {/* Label */}
               <div className="flex items-center space-x-3">
                 <span className="text-gray-700 dark:text-gray-300">Show</span>
                 <select
-                  // onChange={handleLimitChange}
-                  // value={limit}
+                  onChange={handleLimitChange}
+                  value={limit}
                   className="rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
                 >
                   <option value="10">10</option>
@@ -90,21 +119,24 @@ const TableVendorDataComponent = () => {
                   <option value="50">50</option>
                   <option value="100">100</option>
                 </select>
-                <span className="text-gray-700 dark:text-gray-300">
-                  entries
-                </span>
+               
               </div>
-              <div className="flex items-center">
-                <span className="mr-2 text-gray-700 dark:text-gray-300">
-                  Search:
-                </span>
+              {/* Search */}
+              <div className="flex-grow items-center ">
                 <input
                   type="text"
-                  className="rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+                  className="w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 "
                   placeholder="Search..."
-                  //   onChange={handleSearchChange}
+                  onChange={handleSearchChange}
                 />
               </div>
+              {/* Add Vendor */}
+              <Link
+                href={"/budget/add_vendor"}
+               className="inline-block rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition duration-200 hover:bg-indigo-700 hover:shadow-md"
+              >
+                Tambahkan Data Vendor
+              </Link>
             </div>
           </div>
 
@@ -115,23 +147,24 @@ const TableVendorDataComponent = () => {
               <thead>
                 <tr className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white">
                   <th className="px-4 py-4">No</th>
-                  <th className="px-4 py-4">Jenis Anggaran</th>
-                  <th className="px-4 py-4">Total Anggaran</th>
-                  <th className="px-4 py-4">Sisa Anggaran</th>
-                  <th className="px-4 py-4">Tahun Anggaran</th>
+                  <th className="px-4 py-4">Lembaga</th>
+                  <th className="px-4 py-4">Alamat Lembaga</th>
+                  <th className="px-4 py-4">No Telpon Lembaga</th>
+                  <th className="px-4 py-4">Email Lembaga</th>
+                  <th className="px-4 py-4">Layanan Utama Lembaga</th>
                   <th className="px-4 py-4 text-center">Action</th>
                 </tr>
               </thead>
 
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                {vendorData.length === 0 ? (
+                {filteredVendorData.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="px-4 py-4 text-center">
                       Tidak ada data
                     </td>
                   </tr>
                 ) : (
-                  vendorData.map((vendor, index) => (
+                  filteredVendorData.map((vendor, index) => (
                     <tr
                       key={vendor.id}
                       className="group transform transition-transform duration-200 hover:scale-[1.02] hover:bg-gray-50 dark:hover:bg-gray-800"
@@ -144,6 +177,9 @@ const TableVendorDataComponent = () => {
                       </td>
                       <td className="px-4 py-4 text-gray-800 dark:text-gray-100">
                         {vendor.alamat_lembaga}
+                      </td>
+                      <td className="px-4 py-4 text-gray-800 dark:text-gray-100">
+                        {vendor.telpon_lembaga}
                       </td>
                       <td className="px-4 py-4 text-gray-800 dark:text-gray-100">
                         {vendor.email_lembaga}

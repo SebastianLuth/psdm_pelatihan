@@ -105,8 +105,6 @@ export const menuGroups = [
           label: "Anggaran Biaya",
           route: "#",
           children: [
-            { label: "Tambah Anggaran", route: "/budget/add_budget" },
-            { label: "Tambah Vendor", route: "/budget/add_vendor" },
             { label: "Data Anggaran", route: "/budget/budget_data" },
             { label: "Data Vendor", route: "/budget/vendor_data" },
           ],
@@ -128,11 +126,9 @@ export const menuGroups = [
           label: "Pelatihan",
           route: "#",
           children: [
-            { label: "Tambah Pelatihan", route: "/training/add_training", role : "admin" },
             { label: "Data Pelatihan", route: "/training/training_data", role: "admin"  },
-            { label: "Laporan Evaluasi Pelatihan", route: "/training/report_evaluation", role : "all"  },
             { label: "Evaluasi Level 1", route: "/training/evaluation_training1" , role : "all" },
-            { label: "Evaluasi Free Text", route: "/training/evaluation_freetext" , role : "all" },
+            { label: "Evaluasi Feedback Peserta", route: "/training/evaluation_freetext" , role : "all" },
             { label: "Evaluasi Level  3 & 4", route: "/training/evaluation_training2",role : "all" },
           ],
           role : "admin"

@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useAuth } from "@/context/AuthContext";
 import axios from "axios";
 import * as echarts from "echarts";
+import { getCountBudgetPerYears } from "@/service/budget";
 
 interface CountBudgetData {
   tahun: number;
@@ -43,13 +44,7 @@ const ScrollableCards: React.FC = () => {
 
   const fetchCountBudgetPerYears = useCallback(async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:5000/api/budget/count_budget?tahun_anggaran=${year}`,
-        {
-          withCredentials: true,
-        },
-      );
-      const data = response.data.data;
+      const data = await getCountBudgetPerYears(year);
       setCountBudgetData({
         tahun: data.tahun,
         totalAnggaran: data.total_anggaran,

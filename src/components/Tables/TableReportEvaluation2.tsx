@@ -1,4 +1,5 @@
 'use client'
+import { DownloadExcelRincianBiaya } from "@/service/training";
 import axios from "axios";
 import React, { useState } from "react";
 
@@ -26,9 +27,8 @@ const TableReportEvaluation2: React.FC = () => {
     e.preventDefault();
     try {
         // Logika untuk mengunduh file Excel
-        const response =await axios.get(`http://localhost:5000/api/training/export?startDate=${formDate.startDate}&endDate=${formDate.endDate}`, { responseType: 'blob' });
-
-        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const response =await DownloadExcelRincianBiaya(formDate.startDate, formDate.endDate);
+        const url = window.URL.createObjectURL(new Blob([response]));
         const link = document.createElement('a');
         link.href = url;
         link.setAttribute('download', 'Data_Evaluasi_Level1.xlsx'); 
@@ -36,7 +36,7 @@ const TableReportEvaluation2: React.FC = () => {
         link.click();
         link.remove();
     } catch (error) {
-        console.log('eror nih entah dimana pun salahnya')
+        setError(true);
     }
 }
 

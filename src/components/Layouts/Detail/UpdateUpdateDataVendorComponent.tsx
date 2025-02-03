@@ -122,7 +122,7 @@ const UpdateDataVendorComponent = () => {
 
             <div className="mb-5">
               <label className="mb-1 block font-medium text-gray-600 dark:text-white">
-                Layanan Utama
+                Nomor Telepon
               </label>
               <input
                 type="text"

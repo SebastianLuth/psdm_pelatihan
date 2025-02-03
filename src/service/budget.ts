@@ -68,3 +68,35 @@ export const getDetailBudget = async (budgetId: number) => {
     throw error;
   }
 };
+
+export const getCountBudgetPerYears = async (year: number) => {
+  try {
+    const response = await axios.get(
+      `${baseUrl}/api/budget/count_budget?tahun_anggaran=${year}`,
+      {
+        withCredentials: true,
+      },
+    );
+    const data = response.data.data;
+    return data;
+  }
+  catch (error) {
+    throw error;
+  }
+}
+
+
+export const ExportFileBudget = async (tahunAnggaran: number) => {
+  try {
+      const response = await axios.get(
+          `${baseUrl}/api/budget/export?tahun_anggaran=${tahunAnggaran}`,
+          { 
+              responseType: 'blob', 
+              withCredentials: true
+          } 
+      );
+      return response.data;
+  } catch (error) {
+      throw error;
+  }
+};

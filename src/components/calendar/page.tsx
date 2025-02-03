@@ -8,6 +8,7 @@ import { colorsBarCalendar, Event } from "@/types/dashboar-tipe";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { useAuth } from "@/context/AuthContext";
 import axios from "axios";
+import { getAllTraining } from "@/service/training";
 
 moment.locale("en-GB");
 const localizer = momentLocalizer(moment);
@@ -19,14 +20,10 @@ export default function MyCalendar() {
   const [showPopover, setShowPopover] = useState(false);
   const [view, setView] = useState<View>(Views.MONTH);
   
-  const { userData } = useAuth();
-
   const fetchAllEvent = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/training", {
-        withCredentials: true,
-      });
-      const events = response.data.data.map((event: any, index: number) => ({
+      const response = await getAllTraining();
+      const events = response.map((event: any, index: number) => ({
         id: event.id,
         title: event.judul,
         start: new Date(event.tgl_mulai),

@@ -22,7 +22,7 @@ import Swal from "sweetalert2";
 import IntegratedComponent from "@/components/Chart/TrainingFundPieChartUser";
 import { trainingFundAbsorption } from "@/types/training-types";
 import { useAuth } from "@/context/AuthContext";
-import axios from "axios";
+import { getTrainingFundAbsorptionUser } from "@/service/auth";
 
 const UserDetailComponent = () => {
   const [trainingFundAbsorption, setTrainingFundAbsorption] = useState<trainingFundAbsorption[]>([]);
@@ -33,6 +33,7 @@ const UserDetailComponent = () => {
   const [dataAllUserByUnitKerja, setDataAllUserByUnitKerja] = useState<User[]>(
     [],
   );
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
   const [editingStatus, setEditingStatus] = useState(false);
@@ -47,10 +48,13 @@ const UserDetailComponent = () => {
 
   const fetchDetailUser = useCallback(async () => {
     try {
+      setIsLoading(true);
       const response = await getDetailUser(Number(userId));
       setUser(response);
     } catch (error) {
-      console.error("Error fetching user data:", error);
+      setError("Terjadi kesalahan saat mengambil data pengguna.");
+    } finally {
+      setIsLoading(false);
     }
   }, [userId]);
 
@@ -69,7 +73,7 @@ const UserDetailComponent = () => {
       getBawahan();
       setShowModal(false);
     } catch (error) {
-      console.error("Error adding bawahan:", error);
+      setError(`Terjadi kesalahan saat menambahkan bawahan: ${error}.`);
     }
   };
 
@@ -80,10 +84,10 @@ const UserDetailComponent = () => {
         const response = await getAllDataBawahanInUnitKerja(unitKerjaId);
         setDataAllUserByUnitKerja(response);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        setError("Terjadi kesalahan saat mengambil data pengguna.");
       }
     } else {
-      console.error("ID unit kerja not found");
+      setError("Terjadi kesalahan saat mengambil data pengguna.");
     }
   }, [user?.unit_kerja]);
 
@@ -92,7 +96,7 @@ const UserDetailComponent = () => {
       const response = await getBawahanByAtasan(user?.username);
       setAllBawahan(response);
     } catch (error) {
-      console.error("Error fetching bawahan data:", error);
+      setError(`Terjadi kesalahan saat mengambil data bawahan: ${error}.`);
     }
   }, [user?.username]);
 
@@ -115,7 +119,7 @@ const UserDetailComponent = () => {
       }
       getBawahan();
     } catch (error) {
-      console.error("Failed to delete bawahan:", error);
+      setError(`Terjadi kesalahan saat menghapus bawahan: ${error}.`);
     }
   };
 
@@ -152,7 +156,6 @@ const UserDetailComponent = () => {
       // Perbarui data pengguna
       fetchDetailUser();
     } catch (error) {
-      console.error("Gagal memperbarui data pengguna:", error);
       Swal.fire("Gagal", "Terjadi kesalahan saat memperbarui data.", "error");
     }
   };
@@ -169,12 +172,15 @@ const UserDetailComponent = () => {
 
   const fetchTrainingFundAbsorption = useCallback(async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/user/${userId}/profil_budget_user`);
-      setTrainingFundAbsorption(response.data.data);
-      totalAllBudgetTrainingPerUser(response.data.data);
-      totalHoursTrainingPerUser(response.data.data);
+      setIsLoading(true);
+      const data = await getTrainingFundAbsorptionUser(Number(userId));
+      setTrainingFundAbsorption(data);
+      totalAllBudgetTrainingPerUser(data);
+      totalHoursTrainingPerUser(data);
     } catch (error) {
-      console.error("Error fetching training data:", error);
+      setError("Terjadi kesalahan saat mengambil data pengguna.");
+    } finally {
+      setIsLoading(false);
     }
   }, [userId]);
   
@@ -268,7 +274,7 @@ const UserDetailComponent = () => {
           {/* pie char */}
           <div className="flex flex-col col-span-3 mt-20">
           <div className="flex flex-wrap">
-              <div className="p-6 bg-white font-bold text-xl shadow-[2px_1px_7px_3px_rgba(0,_0,_0,_0.35)] box-shadow: 2px 3px 3px 6px rgba(0, 0, 0, 0.35) z-10">Total Pelatihan Yang telah di serap</div>
+              <div className="p-6 bg-white font-bold text-xl shadow-[2px_1px_7px_3px_rgba(0,_0,_0,_0.35)] box-shadow: 2px 3px 3px 6px rgba(0, 0, 0, 0.35) z-10">Total Pelatihan Yang Telah Anda Serap</div>
               <div className="p-6 bg-blue-500 text-white font-bold text-xl shadow-[2px_1px_7px_3px_rgba(0,_0,_0,_0.35)] box-shadow: 2px 3px 3px 6px rgba(0, 0, 0, 0.35) z-5">RP. {totalBudgetAbsorptionPerUser.toLocaleString("id-ID")}</div>
           </div>
           <p className="p-0 mt-3">Total Jam Pelajaran <b>| {totalHourAbsorptionPerUser}</b></p>

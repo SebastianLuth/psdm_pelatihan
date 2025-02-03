@@ -1,17 +1,20 @@
 "use client";
 
 import { TrainingType } from "@/types/training-types";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import Link from "next/link";
-import { getAllTraining } from "@/service/training";
-import axios, { all } from "axios";
+import { deleteTrainingById, getAllTraining } from "@/service/training";
 import Swal from "sweetalert2";
 import SkeletonTable from "../Skeleton/SkeletonTable";
 
 const TableDataTraingin = () => {
   const [allTraining, setAllTraining] = useState<TrainingType[]>([]);
+  
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [limit, setLimit] = useState<number>(10);
+  const [searchQuery, setSearchQuery] = useState("");
+
   const fetchAllTraining = async () => {
     try {
       setIsLoading(true);
@@ -39,7 +42,7 @@ const TableDataTraingin = () => {
       });
 
       if (result.isConfirmed) {
-        await axios.delete(`http://localhost:5000/api/training/${trainingId}`);
+        deleteTrainingById(Number(trainingId));
       }
       fetchAllTraining();
     } catch (error) {
@@ -52,6 +55,31 @@ const TableDataTraingin = () => {
   useEffect(() => {
     fetchAllTraining();
   }, []);
+
+  const debouncedSearch = (query: string) => {
+    setSearchQuery(query);
+  }
+
+  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+    debouncedSearch(event.target.value);
+  }
+
+  const handleLimitChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setLimit(Number(event.target.value));
+  };
+
+  const filteredTrainingData = allTraining
+    .filter(
+      (training) =>
+        training.judul.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        training.jenis
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase()) ||
+        training.lokasi.toLowerCase().includes(searchQuery.toLowerCase()),
+    )
+    .slice(0, limit);
+
+
   return (
     <>
       {isLoading === true ? (
@@ -62,29 +90,34 @@ const TableDataTraingin = () => {
             <h4 className="text-2xl font-semibold text-gray-800 dark:text-gray-100">
               Data Pelatihan
             </h4>
-            <div className="flex items-center justify-between py-4">
+            <div className="flex items-center justify-between py-4 space-x-4">
               <div className="flex items-center space-x-3">
                 <span className="text-gray-700 dark:text-gray-300">Show</span>
-                <select className="rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200">
+                <select 
+                onChange={handleLimitChange}
+                value={limit}
+                className="rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+                >
+                  <option value="5">5</option>
                   <option value="10">10</option>
                   <option value="25">25</option>
                   <option value="50">50</option>
                   <option value="100">100</option>
                 </select>
-                <span className="text-gray-700 dark:text-gray-300">
-                  entries
-                </span>
               </div>
-              <div className="flex items-center">
-                <span className="mr-2 text-gray-700 dark:text-gray-300">
-                  Search:
-                </span>
+              <div className="flex-grow items-center">
                 <input
+                  onChange={handleSearchChange}
                   type="text"
-                  className="rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+                  className="w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
                   placeholder="Search..."
                 />
               </div>
+
+              <Link
+                href="/training/add_training"
+                className="inline-block rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition duration-200 hover:bg-indigo-700 hover:shadow-md"
+              > Tambahkan Pelatihan</Link>
             </div>
           </div>
           {/* Table */}
@@ -105,14 +138,14 @@ const TableDataTraingin = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                {allTraining.length === 0 ? (
+                {filteredTrainingData.length === 0 ? (
                   <tr>
                     <td colSpan={9} className="px-6 py-4 text-center">
                       Tidak ada data
                     </td>
                   </tr>
                 ) : (
-                  allTraining.map((training, index) => (
+                  filteredTrainingData.map((training, index) => (
                     <tr
                       key={training.id}
                       className="group transform transition-transform duration-200 hover:scale-[1.02] hover:bg-gray-50 dark:hover:bg-gray-800"

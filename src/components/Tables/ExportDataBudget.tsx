@@ -1,4 +1,5 @@
 'use client'
+import { ExportFileBudget } from '@/service/budget';
 import { tahunOptions } from '@/types/budget-types';
 import axios from 'axios';
 import React from 'react';
@@ -12,15 +13,9 @@ const ExportDataBudget: React.FC = () => {
     
     const handleExportFileBudget = async (): Promise<void> => {
         try {
-            const response = await axios.get(
-                `http://localhost:5000/api/budget/export?tahun_anggaran=${tahunAnggaran}`,
-                { 
-                    responseType: 'blob', 
-                    withCredentials: true
-                } 
-            );
+            const response = await ExportFileBudget(Number(tahunAnggaran));
             
-            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const url = window.URL.createObjectURL(new Blob([response]));
             const link = document.createElement('a');
             link.href = url;
             link.setAttribute('download', 'Data_Anggaran.xlsx'); 

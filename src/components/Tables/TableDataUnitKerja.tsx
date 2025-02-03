@@ -3,15 +3,17 @@ import useSWR from "swr";
 import { deleteUnitKerja, getUnitKerja } from "@/service/department";
 import { UnitKerja } from "@/types/department-type";
 import Swal from "sweetalert2";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 import SkeletonTable from "../Skeleton/SkeletonTable";
+import Link from "next/link";
 
 const fetcher = async () => {
   return await getUnitKerja();
 };
 
 const TableDataUnitKerja = () => {
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [limit, setLimit] = useState<number>(100);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -28,11 +30,10 @@ const TableDataUnitKerja = () => {
     }
   }, [data, error]);
 
+  console.log(data);
+
   if (error) return <div>Error loading data...</div>;
   if (isLoading) return <SkeletonTable title="Unit Kerja"/>;
-
-  // Data yang akan ditampilkan
-  const dataToDisplay = data?.slice(0, limit);
 
   // Fungsi Hapusan unit kerja
   const handleDeleteUnitKerja = async (unitKerjaId: number) => {
@@ -69,10 +70,22 @@ const TableDataUnitKerja = () => {
     router.push(`/department/department_data/${unitKerjaId}`);
   };
 
-  const selectTotalDataToView = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedLimit = Number(e.target.value);
-    setLimit(selectedLimit);
-  };
+  const debouncedSearch = (query: string) => {
+    setSearchQuery(query);
+  }
+
+  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+    debouncedSearch(event.target.value);
+  }
+
+  const handleLimitChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setLimit(Number(event.target.value));
+  }
+
+  // Data yang akan ditampilkan
+  const filteredUnitKerjaData = data
+  ? data.filter((unit) => unit.unit_kerja.toLowerCase().includes(searchQuery.toLowerCase()))
+  : [];
 
   return (
     <div className="relative overflow-hidden rounded-xl border border-gray-300 bg-white/70 shadow-xl backdrop-blur-lg dark:border-gray-700 dark:bg-gray-900/70">
@@ -80,33 +93,38 @@ const TableDataUnitKerja = () => {
         <h4 className="text-2xl font-semibold text-gray-800 dark:text-gray-100">
           Data Unit Kerja
         </h4>
-        <div className="flex items-center justify-between py-4">
+        <div className="flex items-center justify-between py-4 space-x-4">
           {/* Dropdown */}
           <div className="flex items-center space-x-3">
             <span className="text-gray-700 dark:text-gray-300">Show</span>
             <select
               className="rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
-              onChange={selectTotalDataToView}
+              onChange={handleLimitChange}
+              value={limit}
               defaultValue={100}
             >
+              <option value="5">5</option>
               <option value="10">10</option>
               <option value="25">25</option>
               <option value="50">50</option>
               <option value="100">100</option>
             </select>
-            <span className="text-gray-700 dark:text-gray-300">entries</span>
           </div>
           {/* Search */}
-          <div className="flex items-center">
-            <span className="mr-2 text-gray-700 dark:text-gray-300">
-              Search:
-            </span>
+          <div className="flex-grow items-center">
             <input
+              onChange={handleSearchChange}
               type="text"
-              className="rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+              className="w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
               placeholder="Search..."
             />
           </div>
+          <Link
+            href={"/department/add_department"}
+            className="inline-block rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition duration-200 hover:bg-indigo-700 hover:shadow-md"
+          >
+            Tambahkan Unit Kerja
+          </Link>
         </div>
       </div>
 
@@ -120,7 +138,7 @@ const TableDataUnitKerja = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-            {dataToDisplay?.map((unit, index) => (
+            {filteredUnitKerjaData?.map((unit, index) => (
               <tr
                 key={unit.id}
                 className="group transform transition-transform duration-200 hover:scale-[1.02] hover:bg-gray-50 dark:hover:bg-gray-800"

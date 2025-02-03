@@ -36,6 +36,14 @@ export const getTrainingById = async (trainingId: number) => {
   }
 }
 
+export const deleteTrainingById = async (trainingId: number) => {
+  try {
+    await axios.delete(`${baseUrl}/api/training/${trainingId}`);
+  } catch (error) {
+    throw error;
+  }
+}
+
 export const getJenisPelatihanData = async () => {
   try {
     const response = await axios.get(`${baseUrl}/api/budget`, {
@@ -146,3 +154,24 @@ export const deleteDetailCostTraining = async (trainingId: number) => {
     throw error;
   }
 };
+
+export const getAdminTrainingReportAllUser = async () => {
+  try {
+    const result = await axios.get(`
+      ${baseUrl}/api/training/checking-report
+      `)
+    return result.data.data.peserta;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export  const DownloadExcelRincianBiaya = async (startDate: string, endDate: string) => {
+  try {
+      // Logika untuk mengunduh file Excel
+      const response =await axios.get(`${baseUrl}/api/training/export?startDate=${startDate}&endDate=${endDate}`, { responseType: 'blob' });
+      return response.data
+  } catch (error) {
+      throw error
+  }
+}

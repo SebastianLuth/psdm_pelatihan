@@ -90,3 +90,32 @@ export const getAllEvaluationData = async (
     throw error;
   }
 };
+
+export const getStatusEvaluation3 = async () => {
+  try {
+    const result = await axios.get(`${baseUrl}/api/evaluation3/status_evaluasi3`,{
+      withCredentials: true
+    });
+    return result.data.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const DownloadExcelEvaluation3 = async (
+  startDate: string,
+  endDate: string
+) => {
+  try {
+    const response =await axios.get(
+      `http://localhost:5000/api/evaluation3/export?startDate=${startDate}&endDate=${endDate}`, 
+      { 
+          responseType: 'blob', 
+          withCredentials: true
+      }
+  );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

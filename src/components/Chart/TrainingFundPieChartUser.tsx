@@ -17,7 +17,7 @@ const IntegratedComponent: React.FC<trainingFundAbsorptionProps> = ({trainingFun
 
   const options = {
     title: {
-      text: "Training Fund Absorption",
+      text: "Penyerapan Anggaran Pelatihan Anda",
       subtext: "Distribusi Anggaran",
       left: "center",
       textStyle: {

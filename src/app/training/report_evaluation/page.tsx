@@ -3,6 +3,7 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { useAuth } from "@/context/AuthContext";
 import { getAllTrainingEvaluation1 } from "@/service/evaluation1";
+import { getAdminTrainingReportAllUser } from "@/service/training";
 import { TrainingType } from "@/types/training-types";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -23,6 +24,7 @@ const EvaluationReportTrainingPage = () => {
   const { userData } = useAuth();
   const [trainingData, setTrainingData] = useState<TrainingType[]>([]);
   const [adminTrainingData, setAdminTrainingData] = useState<adminTrainingDataReportEvalution[]>([])
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
 
   const handleEvaluationClick = (
@@ -53,13 +55,10 @@ const EvaluationReportTrainingPage = () => {
   
   const fetchAdminTrainingReportAllUser = async () => {
     try {
-      const result = await axios.get(`
-        http://localhost:5000/api/training/checking-report
-        `)
-      console.log("ini data admin" , result.data.data.peserta)
-      setAdminTrainingData(result.data.data.peserta);
+      const result = await getAdminTrainingReportAllUser()
+      setAdminTrainingData(result);
     } catch (error) {
-      console.error("Error fetching admin training data:", error);
+      setError(true);
     }
   }
   

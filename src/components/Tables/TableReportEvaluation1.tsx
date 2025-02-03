@@ -1,5 +1,6 @@
 'use client'
-import axios from 'axios';
+import { DownloadExcelEvaluation3 } from '@/service/evaluasi3';
+import { DownloadExcelEvaluation1 } from '@/service/evaluation1';
 import React, { useState } from 'react';
 
 interface dateType {
@@ -17,6 +18,9 @@ const TableReportEvaluation1: React.FC = () => {
         startDate: '',
         endDate: '',
     });
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [error , setError] = useState(false);
 
     const handleChangeForm = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -36,16 +40,10 @@ const TableReportEvaluation1: React.FC = () => {
     const handleDownloadExcel = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            // Logika untuk mengunduh file Excel
-            const response =await axios.get(
-                `http://localhost:5000/api/evaluation/export?startDate=${formDate.startDate}&endDate=${formDate.endDate}`,
-                { 
-                    responseType: 'blob',
-                    withCredentials: true
-                 }
-            );
+            setIsLoading(true);
+            const response =await DownloadExcelEvaluation1(formDate.startDate, formDate.endDate);
 
-            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const url = window.URL.createObjectURL(new Blob([response]));
             const link = document.createElement('a');
             link.href = url;
             link.setAttribute('download', 'Data_Evaluasi_Level1.xlsx'); 
@@ -53,23 +51,19 @@ const TableReportEvaluation1: React.FC = () => {
             link.click();
             link.remove();
         } catch (error) {
-            console.log('eror nih entah dimana pun salahnya')
+            setError(true);
+        } finally {
+            setIsLoading(false);
         }
     }
 
     const handleDownloadExcelEvaluation3 = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            // Logika untuk mengunduh file Excel
-            const response =await axios.get(
-                `http://localhost:5000/api/evaluation3/export?startDate=${formDateEvaluation3.startDate}&endDate=${formDateEvaluation3.endDate}`, 
-                { 
-                    responseType: 'blob', 
-                    withCredentials: true
-                }
-            );
+            setIsLoading(true);
+            const response =await DownloadExcelEvaluation3(formDateEvaluation3.startDate, formDateEvaluation3.endDate);
 
-            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const url = window.URL.createObjectURL(new Blob([response]));
             const link = document.createElement('a');
             link.href = url;
             link.setAttribute('download', 'Data_Evaluasi_Level1.xlsx'); 
@@ -77,7 +71,9 @@ const TableReportEvaluation1: React.FC = () => {
             link.click();
             link.remove();
         } catch (error) {
-            console.log('eror nih entah dimana pun salahnya')
+            setError(true);
+        } finally {
+            setIsLoading(false);
         }
     }
     return (

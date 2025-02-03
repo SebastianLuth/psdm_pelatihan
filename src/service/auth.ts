@@ -64,3 +64,12 @@ export const logoutAuth = async () => {
     console.error("Error Logout user data:", error);
   }
 };
+
+export const getTrainingFundAbsorptionUser = async (userId: number) => {
+  try {
+    const response = await axios.get(`${baseUrl}/api/user/${userId}/profil_budget_user`);
+    return response.data.data;
+  } catch (error) {
+    throw error;
+  }
+}
