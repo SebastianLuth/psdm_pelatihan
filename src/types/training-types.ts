@@ -121,17 +121,17 @@ export type TrainingTypeDetail = {
 
 export type DetailCostType = {
   pelatihan_id: number;
-  akomodasi: number;
+  konsumsi: number;
   fasilitator_ex: number;
-  perdiem: number;
-  sekretariat: number;
+  pesawat: number;
+  penginapan: number;
   name: string;
   value: number;
 };
 
 export type DetailCostTypeUpload = {
-  akomodasi: number;
+  konsumsi: number;
   fasilitator_ex: number;
-  perdiem: number;
-  sekretariat: number;
+  pesawat: number;
+  penginapan: number;
 };

@@ -28,6 +28,7 @@ export default function TrainingDataIdComponent() {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const { trainingId } = useParams();
+  const [setStatusRincianBiaya, setSetStatusRincianBiaya] = useState<number>();
   const [error, setError] = useState<boolean>(false);
 
   const [updateDetailCost, setUpdateDetailCost] = useState<DetailCostType[]>();
@@ -62,15 +63,18 @@ export default function TrainingDataIdComponent() {
   const fetchDetailTrainingCost = useCallback(async () => {
     try {
       const result = await getDetailTrainingCost(Number(trainingId));
+      
       // Map the API response to a format suitable for chartOptions
       const mappedCostDetails = result
         .map((item: DetailCostType) => [
-          { name: "Akomodasi", value: item.akomodasi },
+          { name: "Konsumsi", value: item.konsumsi },
           { name: "Fasilitator Eksternal", value: item.fasilitator_ex },
-          { name: "Per Diem", value: item.perdiem },
-          { name: "Sekretariat", value: item.sekretariat },
+          { name: "Pesawat", value: item.pesawat },
+          { name: "Penginapan", value: item.penginapan },
         ])
         .flat();
+
+      setSetStatusRincianBiaya(result[0].status)  
       setDetailTrainingCost(mappedCostDetails);
     } catch (error) {
       setError(true);
@@ -198,20 +202,20 @@ export default function TrainingDataIdComponent() {
         throw new Error("Data detail cost tidak tersedia.");
       }
       const payload: DetailCostTypeUpload = {
-        akomodasi:
+        konsumsi:
           updateDetailCost.find(
-            (item) => item.name.toLowerCase() === "akomodasi",
+            (item) => item.name.toLowerCase() === "konsumsi",
           )?.value || 0,
         fasilitator_ex:
           updateDetailCost.find(
             (item) => item.name.toLowerCase() === "fasilitator eksternal",
           )?.value || 0,
-        perdiem:
-          updateDetailCost.find((item) => item.name.toLowerCase() === "perdiem")
+        pesawat:
+          updateDetailCost.find((item) => item.name.toLowerCase() === "pesawat")
             ?.value || 0,
-        sekretariat:
+        penginapan:
           updateDetailCost.find(
-            (item) => item.name.toLowerCase() === "sekretariat",
+            (item) => item.name.toLowerCase() === "penginapan",
           )?.value || 0,
       };
       await updateDetailCostTraining(Number(trainingId), payload);
@@ -307,7 +311,13 @@ export default function TrainingDataIdComponent() {
         <div className="mt-6 flex justify-end space-x-4">
           <button
             onClick={toggleModal}
-            className="rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+            className={`mr-2 inline-flex items-center space-x-2 rounded-lg px-4 py-2 text-sm font-medium text-white shadow-md focus:outline-none focus:ring-2 ${
+              setStatusRincianBiaya == 1
+                ? "cursor-not-allowed bg-gray-400"
+                : "bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 focus:ring-green-400"
+            }`}
+            disabled={setStatusRincianBiaya == 1}
+
           >
             Tambah Biaya
           </button>
