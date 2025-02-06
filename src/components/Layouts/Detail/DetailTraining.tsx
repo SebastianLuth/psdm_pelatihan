@@ -254,19 +254,19 @@ export default function TrainingDataIdComponent() {
         {/* Section: Cards */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           <div className="rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 p-6 text-white shadow-lg">
-            <h3 className="text-lg font-semibold">Total Biaya</h3>
-            <p className="text-2xl font-bold">
+            <h3 className="text-xl font-semibold">Total Biaya</h3>
+            <p className="text-base font-bold mt-2">
               Rp {trainingData?.jumlah_anggaran || 0}
             </p>
           </div>
           <div className="rounded-lg bg-gradient-to-r from-green-500 to-green-600 p-6 text-white shadow-lg">
-            <h3 className="text-lg font-semibold">Tanggal Pelatihan</h3>
-            <p className="text-2xl font-bold">{tanggalPelatihan} </p>
+            <h3 className="text-xl font-semibold">Tanggal Pelatihan</h3>
+            <p className="text-base font-bold mt-2">{tanggalPelatihan} </p>
             <p className="mt-2 text-sm">Lokasi : {trainingData?.lokasi}</p>
           </div>
           <div className="rounded-lg bg-gradient-to-r from-purple-500 to-purple-600 p-6 text-white shadow-lg">
-            <h3 className="text-lg font-semibold">Jenis & Metode</h3>
-            <p className="text-2xl font-bold">Jenis : {trainingData?.jenis}</p>
+            <h3 className="text-xl font-semibold">Jenis & Metode</h3>
+            <p className="text-base font-bold mt-2">Jenis : {trainingData?.jenis}</p>
             <p className="mt-2 text-sm">Metode: {trainingData?.metode}</p>
           </div>
         </div>
@@ -323,13 +323,13 @@ export default function TrainingDataIdComponent() {
           </button>
           <button
             onClick={toggleModalEdit}
-            className="rounded-lg bg-yellow-500 px-4 py-2 text-white hover:bg-yellow-600"
+            className="mr-2 inline-flex items-center space-x-2 rounded-lg px-4 py-2 text-sm font-medium text-white shadow-md focus:outline-none focus:ring-2 bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 focus:ring-yellow-400"
           >
             Edit Biaya
           </button>
           <button
             onClick={() => handleDeleteDetailCost()}
-            className="rounded-lg bg-red-500 px-4 py-2 text-white hover:bg-red-600"
+            className="mr-2 inline-flex items-center space-x-2 rounded-lg px-4 py-2 text-sm font-medium text-white shadow-md focus:outline-none focus:ring-2 bg-red-500 hover:bg-red-600"
           >
             Hapus
           </button>

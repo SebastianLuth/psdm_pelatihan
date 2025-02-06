@@ -10,7 +10,7 @@ export const metadata = {
 
 const AddDepartmentPage = () => {
   return (
-    <ProtectedRoute allowedRoles={["admin"]}>
+    <ProtectedRoute allowedRoles={["admin", "super admin"]}>
       <DefaultLayout>
         <AddDepartmentComponent />
       </DefaultLayout>

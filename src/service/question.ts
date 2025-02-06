@@ -3,7 +3,9 @@ const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export const deleteQuestionLevel1 = async (id: number) => {
   try {
-    await axios.delete(`${baseUrl}/api/evaluation/question/${id}`);
+    await axios.delete(`${baseUrl}/api/evaluation/question/${id}`, {
+      withCredentials: true,
+    });
   } catch (error) {
     throw error;
   }
@@ -11,7 +13,9 @@ export const deleteQuestionLevel1 = async (id: number) => {
 
 export const getQuestionLevel1 = async () => {
   try {
-    const response = await axios.get(`${baseUrl}/api/evaluation/question`);
+    const response = await axios.get(`${baseUrl}/api/evaluation/question`, {
+      withCredentials: true,
+    });
     return response.data.data;
   } catch (error) {
     throw error;
@@ -21,7 +25,9 @@ export const getQuestionLevel1 = async () => {
 export const getDetailQuestionLevel1 = async (id: number) => {
   try {
     const response = await axios.get(
-      `${baseUrl}/api/evaluation/question/${id}`
+      `${baseUrl}/api/evaluation/question/${id}`, {
+        withCredentials: true
+      }
     );
     return response.data.data;
   } catch (error) {
@@ -34,6 +40,8 @@ export const addQuestionLevel1 = async (pertanyaan: string, kategori: string ) =
     await axios.post(`${baseUrl}/api/evaluation/question`, {
       question: pertanyaan,
       category: kategori,
+    }, {
+      withCredentials: true
     });
   } catch (error) {
     throw error;
@@ -45,6 +53,8 @@ export const updateQuestionLevel1 = async (id: number, pertanyaan: string, kateg
     await axios.put(`${baseUrl}/api/evaluation/question/${id}`, {
       question: pertanyaan,
       category: kategori
+    }, {
+      withCredentials: true
     });
   } catch (error) {
     throw error;
@@ -53,7 +63,11 @@ export const updateQuestionLevel1 = async (id: number, pertanyaan: string, kateg
 
 export const getQuestionLevel3 = async () => {
   try {
-    const response = await axios.get(`${baseUrl}/api/evaluation3/question`);
+    const response = await axios.get(`${baseUrl}/api/evaluation3/question`,
+      {
+        withCredentials: true
+      }
+    );
     return response.data.data;
   } catch (error) {
     throw error;
@@ -68,6 +82,8 @@ export const addQuestionLevel3 = async (
     await axios.post(`${baseUrl}/api/evaluation3/question`, {
       pertanyaan: pertanyaan,
       kategori: kategori,
+    }, {
+      withCredentials: true
     });
   } catch (error) {
     throw error;
@@ -76,7 +92,11 @@ export const addQuestionLevel3 = async (
 
 export const deleteQuestionLevel3 = async (id: number) => {
   try {
-    await axios.delete(`${baseUrl}/api/evaluation3/question/${id}`);
+    await axios.delete(`${baseUrl}/api/evaluation3/question/${id}`, 
+      {
+        withCredentials: true
+      }
+    );
   } catch (error) {
     throw error;
   }
@@ -85,7 +105,9 @@ export const deleteQuestionLevel3 = async (id: number) => {
 export const getDetailQuestionLevel3 = async (id: number) => {
   try {
     const response = await axios.get(
-      `${baseUrl}/api/evaluation3/question/${id}`
+      `${baseUrl}/api/evaluation3/question/${id}`, {
+        withCredentials: true
+      }
     );
     return response.data.data;
   } catch (error) {
@@ -102,6 +124,8 @@ export const updateQuestionLevel3 = async (
     await axios.put(`${baseUrl}/api/evaluation3/question/${id}`, {
       pertanyaan: pertanyaan,
       kategori: kategori,
+    }, {
+      withCredentials: true
     });
   } catch (error) {
     throw error;

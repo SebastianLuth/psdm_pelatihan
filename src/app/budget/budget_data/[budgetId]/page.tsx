@@ -11,7 +11,7 @@ export const metadata = {
 
 const BudgetDataId = () => {
   return (
-    <ProtectedRoute allowedRoles={['admin']}>
+    <ProtectedRoute allowedRoles={['admin', 'super admin']}>
       <DefaultLayout>
         <DetailBudgetComponent />
       </DefaultLayout>

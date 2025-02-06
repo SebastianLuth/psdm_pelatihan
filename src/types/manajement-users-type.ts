@@ -75,8 +75,8 @@ export interface User {
     username: number | string,
     nomor_hp: string,
     jabatan: string,
-    unit_kerja: number,
-    level: number,
+    unit_kerja: number | string,
+    level: number | string,
     role: string,
     password: string,
   }

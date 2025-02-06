@@ -42,9 +42,9 @@ const TableDataTraingin = () => {
       });
 
       if (result.isConfirmed) {
-        deleteTrainingById(Number(trainingId));
+        await deleteTrainingById(Number(trainingId));
+        await fetchAllTraining();
       }
-      fetchAllTraining();
     } catch (error) {
       setError(true);
     } finally {

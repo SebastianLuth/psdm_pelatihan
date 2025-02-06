@@ -11,7 +11,7 @@ export const metadata = {
 
 const QuestionEvaluationLevel3Page = () => {
   return (
-    <ProtectedRoute>
+    <ProtectedRoute allowedRoles={["super admin"]}>
       <DefaultLayout>
         <QuestionEvaluationLevel3Component />
       </DefaultLayout>

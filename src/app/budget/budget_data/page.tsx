@@ -11,7 +11,7 @@ export const metadata = {
 const DataBudgetPage = () => {
     return (
         <>
-        <ProtectedRoute allowedRoles={['admin']}>
+        <ProtectedRoute allowedRoles={['admin', 'super admin']}>
         <DefaultLayout>
             <TableDataAnggaran/>
         </DefaultLayout>

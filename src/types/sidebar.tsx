@@ -68,6 +68,34 @@ export const menuGroups = [
               className="fill-current"
               width="18"
               height="18"
+              viewBox="0 0 18 18"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9.0002 7.79065C11.0814 7.79065 12.7689 6.1594 12.7689 4.1344C12.7689 2.1094 11.0814 0.478149 9.0002 0.478149C6.91895 0.478149 5.23145 2.1094 5.23145 4.1344C5.23145 6.1594 6.91895 7.79065 9.0002 7.79065ZM9.0002 1.7719C10.3783 1.7719 11.5033 2.84065 11.5033 4.16252C11.5033 5.4844 10.3783 6.55315 9.0002 6.55315C7.62207 6.55315 6.49707 5.4844 6.49707 4.16252C6.49707 2.84065 7.62207 1.7719 9.0002 1.7719Z"
+                fill=""
+              />
+              <path
+                d="M10.8283 9.05627H7.17207C4.16269 9.05627 1.71582 11.5313 1.71582 14.5406V16.875C1.71582 17.2125 1.99707 17.5219 2.3627 17.5219C2.72832 17.5219 3.00957 17.2407 3.00957 16.875V14.5406C3.00957 12.2344 4.89394 10.3219 7.22832 10.3219H10.8564C13.1627 10.3219 15.0752 12.2063 15.0752 14.5406V16.875C15.0752 17.2125 15.3564 17.5219 15.7221 17.5219C16.0877 17.5219 16.3689 17.2407 16.3689 16.875V14.5406C16.2846 11.5313 13.8377 9.05627 10.8283 9.05627Z"
+                fill=""
+              />
+            </svg>
+          ),
+          label: "Manajemen User",
+          route: "#",
+          children: [
+            { label: "Tambah User Baru", route: "/users_manajemen/add_users" },
+            { label: "Data User", route: "/users_manajemen/users_data", role : "all" },
+          ],
+          role : "super admin"
+        },
+        {
+          icon: (
+            <svg
+              className="fill-current"
+              width="18"
+              height="18"
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -88,6 +116,33 @@ export const menuGroups = [
             { label: "Data Unit Kerja", route: "/department/department_data" },
           ],
           role : "admin"
+        },
+        {
+          icon: (
+            <svg
+              className="fill-current"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M3 22V6a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v16h3V11a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v11h2a1 1 0 0 1 1 1v1H2v-1a1 1 0 0 1 1-1h0z" />
+              <rect x="4" y="8" width="2" height="2" rx="0.5" />
+              <rect x="4" y="12" width="2" height="2" rx="0.5" />
+              <rect x="4" y="16" width="2" height="2" rx="0.5" />
+              <rect x="12" y="12" width="2" height="2" rx="0.5" />
+              <rect x="12" y="16" width="2" height="2" rx="0.5" />
+              <rect x="20" y="16" width="2" height="2" rx="0.5" />
+            </svg>
+          ),
+          label: "Unit Kerja",
+          route: "#",
+          children: [
+            { label: "Tambah Unit Kerja", route: "/department/add_department" },
+            { label: "Data Unit Kerja", route: "/department/department_data" },
+          ],
+          role : "super admin"
         },
         {
           icon: (
@@ -120,6 +175,27 @@ export const menuGroups = [
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
+              <path d="M3 7C3 6.45 3.45 6 4 6H19C19.55 6 20 6.45 20 7V17C20 17.55 19.55 18 19 18H4C3.45 18 3 17.55 3 17V7ZM5 8V16H18V8H5ZM12 10C11.45 10 11 10.45 11 11C11 11.55 11.45 12 12 12C12.55 12 13 11.55 13 11C13 10.45 12.55 10 12 10Z" />
+            </svg>
+          ),
+          label: "Anggaran Biaya",
+          route: "#",
+          children: [
+            { label: "Data Anggaran", route: "/budget/budget_data" },
+            { label: "Data Vendor", route: "/budget/vendor_data" },
+          ],
+          role : "super admin"
+        },
+        {
+          icon: (
+            <svg
+              className="fill-current"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
               <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM12 7C10.34 7 9 8.34 9 10H11C11 9.45 11.45 9 12 9C12.55 9 13 9.45 13 10C13 11.1 12.1 12 11 12V15H13V13.1C14.16 12.63 15 11.42 15 10C15 8.34 13.66 7 12 7Z" />
             </svg>
           ),
@@ -132,6 +208,29 @@ export const menuGroups = [
             { label: "Evaluasi Level  3 & 4", route: "/training/evaluation_training2",role : "all" },
           ],
           role : "admin"
+        },
+        {
+          icon: (
+            <svg
+              className="fill-current"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM12 7C10.34 7 9 8.34 9 10H11C11 9.45 11.45 9 12 9C12.55 9 13 9.45 13 10C13 11.1 12.1 12 11 12V15H13V13.1C14.16 12.63 15 11.42 15 10C15 8.34 13.66 7 12 7Z" />
+            </svg>
+          ),
+          label: "Pelatihan",
+          route: "#",
+          children: [
+            { label: "Data Pelatihan", route: "/training/training_data", role: "admin"  },
+            { label: "Evaluasi Level 1", route: "/training/evaluation_training1" , role : "all" },
+            { label: "Evaluasi Feedback Peserta", route: "/training/evaluation_freetext" , role : "all" },
+            { label: "Evaluasi Level  3 & 4", route: "/training/evaluation_training2",role : "all" },
+          ],
+          role : "super admin"
         },
         {
           icon: (
@@ -177,6 +276,49 @@ export const menuGroups = [
             { label: "Laporan Anggaran Pelatihan", route: "/report/download_pelatihan" },
           ],
           role : "admin"
+        },
+        {
+          icon: (
+            <svg
+              className="fill-current"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M6 2H14L20 8V20C20 21.1 19.1 22 18 22H6C4.9 22 4 21.1 4 20V4C4 2.9 4.9 2 6 2ZM13 9V3.5L18.5 9H13ZM6 13H18V15H6V13ZM6 17H18V19H6V17ZM6 9H11V11H6V9Z" />
+            </svg>
+          ),
+          label: "Laporan",
+          route: "#",
+          children: [
+            { label: "Download Laporan Anggaran RKAP", route: "/report/download_budget" },
+            { label: "Laporan Anggaran Evaluasi 1 & 3", route: "/report/download_evaluation" },
+            { label: "Laporan Anggaran Pelatihan", route: "/report/download_pelatihan" },
+          ],
+          role : "super admin"
+        },
+        {
+          icon: (
+            <svg
+              className="fill-current"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM12 7C10.34 7 9 8.34 9 10H11C11 9.45 11.45 9 12 9C12.55 9 13 9.45 13 10C13 11.1 12.1 12 11 12V15H13V13.1C14.16 12.63 15 11.42 15 10C15 8.34 13.66 7 12 7Z" />
+            </svg>
+          ),
+          label: "Pertanyaan",
+          route: "#",
+          children: [
+            { label: "Data Pertanyaan Level 1", route: "/question", role: "super admin"  },
+            { label: "Data Pertanyaan Level 3", route: "/question_level3", role: "super admin"  },
+          ],
+          role : "super admin"
         },
       ],
     },

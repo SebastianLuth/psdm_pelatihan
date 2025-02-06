@@ -12,7 +12,8 @@ export type UserData = {
     foto_profil: string;
     token : string;
     refresh_token: string;
-    company_id: number
+    company_id: number;
+    company_name: string;
   };
   
   export type AuthContextType = {

@@ -11,7 +11,7 @@ export const metadata = {
 
 const QuestionPage = () => {
   return (
-    <ProtectedRoute allowedRoles={["admin"]}>
+    <ProtectedRoute allowedRoles={["super admin"]}>
       <DefaultLayout>
         <QuestionComponent />
       </DefaultLayout>

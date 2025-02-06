@@ -78,7 +78,7 @@ const EvaluastionFreeTextComponent = () => {
   }, [userData]);
 
   useEffect(() => {
-    if (userData?.role === "admin") fetchAllDataFreeTextForAdmin();
+    if (userData?.role === "admin" || userData?.role === "super admin") fetchAllDataFreeTextForAdmin();
   }, [userData]);
 
   const userTraining = trainingData.filter(
@@ -206,7 +206,7 @@ const EvaluastionFreeTextComponent = () => {
             </table>
           )}
 
-          {userData?.role === "admin" && (
+          {(userData?.role === "admin" || userData?.role === "super admin") && (
             <table className="dark: min-w-full border-collapse text-left text-sm text-gray-300 text-gray-700">
               <thead>
                 <tr className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white">

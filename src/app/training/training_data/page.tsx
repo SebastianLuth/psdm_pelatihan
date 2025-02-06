@@ -9,7 +9,7 @@ export const metadata = {
 }
 const TrainingDataPage = () => {
     return (
-        <ProtectedRoute allowedRoles={['admin']}>
+        <ProtectedRoute allowedRoles={['admin', 'super admin']}>
         <DefaultLayout>
             <TableDataTraingin/>
         </DefaultLayout>

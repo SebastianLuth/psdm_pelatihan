@@ -11,7 +11,7 @@ export const metadata = {
 
 export default function TrainingDataId() {
   return (
-    <ProtectedRoute>
+    <ProtectedRoute allowedRoles={["admin", "super admin"]}>
       <DefaultLayout>
         <TrainingDataIdComponent />
       </DefaultLayout>

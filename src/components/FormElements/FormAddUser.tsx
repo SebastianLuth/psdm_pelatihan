@@ -11,9 +11,9 @@ const FormDataUser = () => {
     username : "",
     nomor_hp: "",
     jabatan: "",
-    unit_kerja: 1,
-    level: 6,
-    role: "user",
+    unit_kerja: "",
+    level: "",
+    role: "",
     password: "",
   });
   
@@ -152,6 +152,7 @@ const FormDataUser = () => {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               required
             >
+              <option value={""} disabled>Pilih Level Jabatan</option>
               {LevelJabatanOptions.map(level => (
                 <option key={level.value} value={level.value}>{level.label}</option>
               ))}
@@ -170,6 +171,7 @@ const FormDataUser = () => {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               required
             >
+              <option value={""} disabled>Pilih Role</option>
               {RoleOptions.map(role => (
                 <option key={role.value} value={role.value}>{role.label}</option>
               ))}
@@ -190,7 +192,7 @@ const FormDataUser = () => {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               required
             >
-              <option value="" disabled>Pilih Unit Kerja</option>
+              <option value={""} disabled>Pilih Unit Kerja</option>
               {dataAllUnitKerja.map(unit => (
                 <option key={unit.id} value={unit.id}>{unit.unit_kerja}</option>
               ))}

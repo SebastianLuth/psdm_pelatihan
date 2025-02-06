@@ -100,3 +100,17 @@ export const ExportFileBudget = async (tahunAnggaran: number) => {
       throw error;
   }
 };
+
+export const ExportFileBudgetForSuperAdmin = async (tahunAnggaran: number, companyOtherRegional: number) => {
+  try {
+        const response = await axios.get(`${baseUrl}/api/budget/super-admin/export?tahun_anggaran=${tahunAnggaran}&&company_id=${companyOtherRegional}`, 
+          { 
+              responseType: 'blob', 
+              withCredentials: true
+          } 
+        );
+      return response.data;
+  } catch (error) {
+      throw error;
+  }
+};

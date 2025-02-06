@@ -12,7 +12,7 @@ export const metadata = {
 const AssessmentReportPage = () => {
     return (
         <>
-            <ProtectedRoute allowedRoles={['admin']}>
+            <ProtectedRoute allowedRoles={['admin', 'super admin']}>
             <DefaultLayout>
                 <ExportDataBudget/>
             </DefaultLayout>

@@ -3,7 +3,6 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import CardDataStats from "./CardDataStats";
 import Image from "next/image";
 import { useAuth } from "@/context/AuthContext";
-import axios from "axios";
 import * as echarts from "echarts";
 import { getCountBudgetPerYears } from "@/service/budget";
 
@@ -151,7 +150,7 @@ const ScrollableCards: React.FC = () => {
   }, [countBudgetData, renderChart]);
   return (
     <>
-      {userData?.role === "admin" && (
+      {(userData?.role === "admin" || userData?.role === "super admin") && (
         <div className="grid grid-cols-8 gap-4 p-4 md:grid-cols-7">
           {/* Say Hay TO admin */}
           <div className="col-span-1 rounded-lg bg-blue-500 p-6 pb-0 text-white shadow-lg md:col-span-3">

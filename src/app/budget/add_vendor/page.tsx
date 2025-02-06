@@ -10,7 +10,7 @@ export const metadata = {
 
 const AddVendorPage = () => {
     return (
-        <ProtectedRoute allowedRoles={['admin']}>
+        <ProtectedRoute allowedRoles={['admin', 'super admin']}>
             <DefaultLayout>
                 <FormAddDataVendorComponent/>
             </DefaultLayout>

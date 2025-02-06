@@ -41,7 +41,7 @@ const TableEvaluationTraining1 = () => {
   }, [userData?.role]);
 
   useEffect(() => {
-    if (userData?.role === "admin") fetchAllUserAndTheirTrainings();
+    if (userData?.role === "admin" || userData?.role === "super admin") fetchAllUserAndTheirTrainings();
   }, [userData?.role]);
 
     const userTraining = trainingData.filter(
@@ -76,7 +76,7 @@ const TableEvaluationTraining1 = () => {
         </p>
 
         <div className="flex flex-col">
-          {userData?.role === "admin" && (
+          {(userData?.role === "admin" || userData?.role === "super admin") && (
             <table className="min-w-full border-collapse text-left text-sm text-gray-700 dark:text-gray-300">
               <thead>
                 <tr className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white">

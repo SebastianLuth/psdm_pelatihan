@@ -10,7 +10,7 @@ export const metadata = {
 const AddBudgetPage = () => {
   return (
     <>
-      <ProtectedRoute allowedRoles={["admin"]}>
+      <ProtectedRoute allowedRoles={["admin", "super admin"]}>
         <DefaultLayout>
           <FormAddBudget />
         </DefaultLayout>

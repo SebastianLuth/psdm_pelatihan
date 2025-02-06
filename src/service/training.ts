@@ -38,7 +38,9 @@ export const getTrainingById = async (trainingId: number) => {
 
 export const deleteTrainingById = async (trainingId: number) => {
   try {
-    await axios.delete(`${baseUrl}/api/training/${trainingId}`);
+    await axios.delete(`${baseUrl}/api/training/${trainingId}`, {
+      withCredentials: true,
+    });
   } catch (error) {
     throw error;
   }
@@ -95,7 +97,9 @@ export const getTrainingData = async (trainingId: number) => {
 export const getDetailTrainingCost = async (trainingId: number) => {
   try {
     const response = await axios.get(
-      `${baseUrl}/api/training/${trainingId}/cost-details`
+      `${baseUrl}/api/training/${trainingId}/cost-details`, {
+        withCredentials: true
+      }
     );
     return response.data.data;
   } catch (error) {
@@ -115,6 +119,7 @@ export const uploadFileTrainingCost = async (
         headers: {
           "Content-Type": "multipart/form-data",
         },
+        withCredentials: true,
       }
     );
   } catch (error) {
@@ -129,7 +134,9 @@ export const updateDetailCostTraining = async (
   try {
     await axios.put(
       `${baseUrl}/api/training/${trainingId}/cost-details`,
-      payload
+      payload, {
+        withCredentials: true
+      }
     );
   } catch (error) {
     throw error;
@@ -139,7 +146,9 @@ export const updateDetailCostTraining = async (
 export const deleteDetailCostTraining = async (trainingId: number) => {
   try {
     const response = await axios.delete(
-      `${baseUrl}/api/training/${trainingId}/cost-details`
+      `${baseUrl}/api/training/${trainingId}/cost-details`, {
+        withCredentials: true
+      }
     );
     if (response.status === 200) {
       await Swal.fire({
@@ -159,7 +168,9 @@ export const getAdminTrainingReportAllUser = async () => {
   try {
     const result = await axios.get(`
       ${baseUrl}/api/training/checking-report
-      `)
+      `, {
+        withCredentials: true
+      })
     return result.data.data.peserta;
   } catch (error) {
     throw error;

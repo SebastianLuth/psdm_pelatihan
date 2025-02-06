@@ -12,7 +12,7 @@ export const metadata = {
 const Training1Page = () => {
   return (
     <>
-      <ProtectedRoute>
+      <ProtectedRoute >
         <DefaultLayout>
           <TableEvaluationTraining1 />
         </DefaultLayout>
