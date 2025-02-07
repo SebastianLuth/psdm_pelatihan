@@ -19,7 +19,11 @@ const TableDataTraingin = () => {
     try {
       setIsLoading(true);
       const result = await getAllTraining();
-      setAllTraining(result);
+      setAllTraining(result.map((training: TrainingType) => ({
+        ...training,
+        tgl_mulai: new Date(training.tgl_mulai).toLocaleDateString(),
+        tgl_selesai: new Date(training.tgl_selesai).toLocaleDateString(),
+      })));
     } catch (error) {
       setError(true);
     } finally {

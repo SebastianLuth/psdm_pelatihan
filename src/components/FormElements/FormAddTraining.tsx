@@ -90,6 +90,7 @@ const AddTraining = () => {
     try {
       const jumlah_peserta = selectedParticipants.length;
       const peserta = selectedParticipants.map((id) => ({ id }));
+      
       await addTraining(jumlah_peserta, peserta, trainingData);
       setTrainingData({
         jumlah_peserta: 0,

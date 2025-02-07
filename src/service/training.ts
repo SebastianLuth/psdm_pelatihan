@@ -1,7 +1,7 @@
 import { DetailCostTypeUpload, TrainingType } from "@/types/training-types";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export const getAllTraining = async () => {
@@ -11,8 +11,8 @@ export const getAllTraining = async () => {
     });
     const formattedData = result.data.data.map((training: TrainingType) => ({
       ...training,
-      tgl_mulai: format(new Date(training.tgl_mulai), "dd MMMM yyyy"),
-      tgl_selesai: format(new Date(training.tgl_selesai), "dd MMMM yyyy"),
+      tgl_mulai: parseISO(training.tgl_mulai), 
+      tgl_selesai: parseISO(training.tgl_selesai), 
     }));
     return formattedData;
   } catch (error) {

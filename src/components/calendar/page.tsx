@@ -6,8 +6,6 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import EventSummaryPopover from "@/components/event-summary-popover";
 import { colorsBarCalendar, Event } from "@/types/dashboar-tipe";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import { useAuth } from "@/context/AuthContext";
-import axios from "axios";
 import { getAllTraining } from "@/service/training";
 
 moment.locale("en-GB");
