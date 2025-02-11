@@ -249,8 +249,7 @@ export const menuGroups = [
           route: "#",
           children: [
             { label: "Evaluasi Level 1", route: "/training/evaluation_training1"  },
-            { label: "Laporan Evaluasi Pelatihan", route: "/training/report_evaluation" },
-            { label: "Evaluasi Free Text", route: "/training/evaluation_freetext" },
+            { label: "Evaluasi Feedback Peserta", route: "/training/evaluation_freetext" },
             { label: "Evaluasi Level  3 & 4", route: "/training/evaluation_training2" },
           ],
           role : "user"

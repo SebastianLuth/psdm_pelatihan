@@ -13,6 +13,7 @@ import {
   getAllDataFreeTextTrainingbyUser,
 } from "@/service/free-text";
 import SkeletonTable from "../Skeleton/SkeletonTable";
+import Swal from "sweetalert2";
 
 const EvaluastionFreeTextComponent = () => {
   const { userData } = useAuth();
@@ -93,11 +94,25 @@ const EvaluastionFreeTextComponent = () => {
     const currentDate = new Date();
 
     if (currentDate < trainingEndDate) {
-      alert("Evaluasi belum dapat dilakukan karena pelatihan belum selesai.");
-    } else {
-      alert("Evaluasi sudah dapat dilakukan.");
-      window.location.href = `/training/evaluation_freetext/${trainingId}`;
-    }
+          Swal.fire({
+            icon: "warning",
+            title: "Evaluasi Belum Dapat Dilakukan",
+            text: "Pelatihan belum selesai, silakan coba lagi nanti.",
+            confirmButtonColor: "#f39c12",
+          });
+        } else {
+          Swal.fire({
+            icon: "success",
+            title: "Evaluasi Tersedia",
+            text: "Evaluasi FeedBack Peserta sudah dapat dilakukan.",
+            confirmButtonText: "Mulai Evaluasi",
+            confirmButtonColor: "#28a745",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              router.push(`/training/evaluation_freetext/${trainingId}`);
+            }
+          });
+        }
   };
 
   if (loading) return <SkeletonTable title="Evaluasi Pelatihan Free Text" />;

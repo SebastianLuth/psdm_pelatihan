@@ -6,6 +6,7 @@ import {
   submitAnswerEvaluation1,
 } from "@/service/evaluation1";
 import { QuestionEvaluation1 } from "@/types/evaluation1";
+import Swal from "sweetalert2";
 
 const EvaluasiTraining1Component = () => {
   const router = useRouter();
@@ -63,9 +64,17 @@ const EvaluasiTraining1Component = () => {
       setLoading(true);
       const result = await submitAnswerEvaluation1(Number(trainingId), answers);
       if (result === true) {
-        alert("Jawaban berhasil dikirim!");
         setAnswers({});
-        router.push("/training/evaluation_training1/");
+        Swal.fire({
+          icon: "success",
+          title: "Jawaban berhasil dikirim!",
+          confirmButtonText: "Kembali kehalaman data evaluasi",
+          confirmButtonColor: "#28a745",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            router.push("/training/evaluation_training1/");
+          }
+        });
       }
     } catch (error) {
       setError(true);
@@ -169,7 +178,7 @@ const EvaluasiTraining1Component = () => {
               </div>
             ) : (
               <textarea
-                className="w-full rounded border border-gray-300 p-2"
+                className="w-full rounded border border-gray-300 p-2 resize-none"
                 rows={4}
                 placeholder="Tulis kesimpulan Anda..."
                 value={answers[question.id] || ""}
@@ -182,7 +191,11 @@ const EvaluasiTraining1Component = () => {
           <button
             type="button"
             onClick={handlePrevCategory}
-            className="rounded bg-gray-500 px-4 py-2 text-white hover:bg-gray-600"
+            className={`rounded px-4 py-2 text-white transition
+               ${Object.keys(questions).indexOf(currentCategory) === 0
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-gray-500 hover:bg-gray-600"
+            }`}
             disabled={Object.keys(questions).indexOf(currentCategory) === 0}
           >
             Sebelumnya
@@ -190,7 +203,12 @@ const EvaluasiTraining1Component = () => {
           <button
             type="button"
             onClick={handleNextCategory}
-            className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+            className={`rounded px-4 py-2 text-white transition ${
+              Object.keys(questions).indexOf(currentCategory) ===
+              Object.keys(questions).length - 1
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-blue-500 hover:bg-blue-600"
+            }`}
             disabled={
               Object.keys(questions).indexOf(currentCategory) ===
               Object.keys(questions).length - 1
@@ -202,7 +220,16 @@ const EvaluasiTraining1Component = () => {
         <button
           type="submit"
           onClick={handleSubmit}
-          className="mt-4 w-full rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600"
+          className={`mt-4 w-full rounded px-4 py-2 text-white transition ${
+            Object.keys(questions).indexOf(currentCategory) ===
+            Object.keys(questions).length - 1
+              ? "bg-green-500 hover:bg-blue-600"
+              : "bg-gray-400 cursor-not-allowed"
+          }`}
+          disabled={
+            Object.keys(questions).indexOf(currentCategory) !==
+            Object.keys(questions).length - 1
+          }
         >
           Kirim Jawaban
         </button>

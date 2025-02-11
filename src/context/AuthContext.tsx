@@ -5,6 +5,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import { useRouter } from 'next/navigation';
 import { getDataUserAuth, loginAuth, logoutAuth, refreshTokenAuth } from "@/service/auth";
 import { AuthContextType, UserData } from "@/types/auth-type";
 const AuthContext = createContext<AuthContextType>({
@@ -22,6 +23,17 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isError, setIsError] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const router = useRouter();
+
+  let idleTimeout: NodeJS.Timeout | null = null;
+
+  const resetIdleTimer = () =>{
+    if (idleTimeout) clearTimeout(idleTimeout);
+    idleTimeout = setTimeout(() => {
+      console.warn("User Inactive, Logging Out");
+      logout();
+    }, 15 * 60 * 1000);
+  }
 
   const refreshAccessToken = async () => {
     setIsLoading(true);
@@ -33,6 +45,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       console.error("Failed to refresh access token:", error);
       setErrorMessage("Failed to refresh access token");
       setIsError(true);
+      await logout();
     } finally {
       setIsLoading(false);
     }
@@ -55,6 +68,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       setUserData(null);
       setErrorMessage("Failed to fetch user data");
       setIsError(true);
+      await logout();
     } finally {
       setIsLoading(false);
     }
@@ -73,7 +87,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         return;
       }
       await fetchUserData();
-      window.location.href = "/";  
+      router.push("/");  
     } catch (error) {
       console.error("Failed to login:", error);
       setErrorMessage("Failed to login");
@@ -102,12 +116,27 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   useEffect(() => {
     fetchUserData();
-    const interval = setInterval(
-      () => {
-        refreshAccessToken();
-      }, 10 * 60 * 1000,);
-    return () => clearInterval(interval);
-  }, []);
+
+    // Reset Timer when there are activities
+    const events = ["mousemove", "keydown", "click", "scroll"];
+    events.forEach((event) => {
+      window.addEventListener(event, resetIdleTimer);
+    })
+
+    //Interval for refresh the token
+    const interval = setInterval(() => {
+      refreshAccessToken();
+    }, 15 * 60 * 1000);
+
+    resetIdleTimer();
+
+    return () => {
+      clearInterval(interval);
+      events.forEach((event) => window.removeEventListener(event, resetIdleTimer));
+      if (idleTimeout) clearTimeout(idleTimeout);
+    };
+// eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
 
   return (
     <AuthContext.Provider

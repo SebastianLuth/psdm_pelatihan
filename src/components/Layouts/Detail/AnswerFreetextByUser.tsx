@@ -8,10 +8,24 @@ import Swal from "sweetalert2";
 import { getTrainingById } from "@/service/training";
 import { submitFreeTextEvaluation } from "@/service/free-text";
 import FormSkeleton from "@/components/Skeleton/FormSkeleton";
+import { format } from "date-fns";
+import { id as localeID } from "date-fns/locale";
+
+
+const formatTanggal = (tgl_mulai: string , tgl_selesai: string) => {
+  if (!tgl_mulai || !tgl_selesai) return "-"; 
+
+  const mulai = format(new Date(tgl_mulai), "d MMMM yyyy", { locale: localeID });
+  const selesai = format(new Date(tgl_selesai), "d MMMM yyyy", { locale: localeID });
+
+  return mulai.split(" ")[1] === selesai.split(" ")[1]
+    ? `${mulai.split(" ")[0]} - ${selesai}`
+    : `${mulai} - ${selesai}`;
+};
 
 const FreeTextDetailComponent: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
   const userData = useAuth().userData;
   const [trainingData, setTrainingData] = useState<trainingData | null>(null);
   const [formData, setFormData] = useState<freetextData>({
@@ -19,31 +33,35 @@ const FreeTextDetailComponent: React.FC = () => {
     rencana_tindak_lanjut : "",
     narasumber : "",
   });
-  const pelatihanId = useParams().id
+  const { id: pelatihanId } = useParams<{ id: string }>();
+
   const fetchTrainingById = useCallback(async () => {
+    if (!pelatihanId) return;
     try {
       setIsLoading(true);
       const result = await getTrainingById(Number(pelatihanId))
-      setTrainingData(result)
+      console.log("ini result", result)
+      setTrainingData(result.data.training);
     } catch (error) {
-      setError(true);
+      setIsError(true);
     } finally {
       setIsLoading(false);
+      setIsError(false);
     }
   },[pelatihanId])
 
   const handleSubmit = async (e: React.FormEvent) => {
     try {
       e.preventDefault();
-      setIsLoading(true);
       await submitFreeTextEvaluation(Number(pelatihanId), formData.konseptualiasasi_pembelajaran, formData.rencana_tindak_lanjut, formData.narasumber);
       Swal.fire("Berhasil", "Data berhasil disimpan!", "success");
       window.location.href = `/training/evaluation_freetext/`
     } catch (error) {
-      Swal.fire("Gagal", "Terjadi kesalahan saat menyimpan data.", "error");
-      setError(true);
+      Swal.fire("Gagal", "Terjadi kesalahan saat menyimpan data.");
+      setIsError(true);
     } finally {
       setIsLoading(false);
+      setIsError(false);
     }
   }
 
@@ -62,14 +80,14 @@ const FreeTextDetailComponent: React.FC = () => {
     fetchTrainingById()
   }, [fetchTrainingById, pelatihanId])
   
-  if (isLoading) return <FormSkeleton/>
-  if (error) return <div>Maaf Terjadi Kesalahan Sistem, Coba diulangi</div>
-
+  if (isLoading) return <><FormSkeleton/></>
+  if (isError) return <>Maaf Sedang Ada Kendala Sistem</>
   return (
         <div className="m-10 mt-5 flex flex-col rounded-lg bg-white p-20 pt-10 shadow-lg dark:bg-black dark:bg-opacity-50 dark:text-white">
           <h2 className="p-2 text-2xl font-semibold text-blue-500">
-            FREE TEXT
+            Feedback Peserta
           </h2>
+          <p className="p-2 text-sm text-muted-foreground">Mohon Untuk Mengisi Form Dibawah ini</p>
 
           <form onSubmit={handleSubmit}>
           {/* started */}
@@ -97,7 +115,7 @@ const FreeTextDetailComponent: React.FC = () => {
                   <td className="p-2">:</td>
                   <td className="w-3/4 p-2">
                     <input
-                      value={trainingData?.tgl_mulai + " - " + trainingData?.tgl_selesai}
+                      value={formatTanggal(trainingData?.tgl_mulai ?? "", trainingData?.tgl_selesai ?? "")}
                       type="text"
                       className="w-full border-b-2 border-gray-300 p-2 text-gray-500 outline-none focus:border-blue-500 focus:ring-0"
                       readOnly
@@ -125,7 +143,7 @@ const FreeTextDetailComponent: React.FC = () => {
                   <td className="p-2">:</td>
                   <td className="w-3/4 p-2">
                     <input
-                      value={userData?.company_id}
+                      value={userData?.company_name ?? ""}
                       type="text"
                       className="w-full border-b-2 border-gray-300 p-2 text-gray-500 outline-none focus:border-blue-500 focus:ring-0"
                     />

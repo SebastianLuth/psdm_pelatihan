@@ -69,6 +69,7 @@ const ExportDataBudget: React.FC = () => {
         try {
             setIsLoading(true);
             const result =  await getAllCompany();
+            console.log(result)
             setCompany(result)
         } catch (error) {
             Swal.fire("Gagal!", "Terjadi kesalahan saat mengambil data perusahaan.", "error");

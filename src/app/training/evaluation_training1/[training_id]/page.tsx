@@ -2,13 +2,14 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import EvaluasiTraining1Component from "@/components/Layouts/Detail/AnswerQuestionEvaluasi1";
 
-export const metada = {
+export const metadata = {
   title: "N4TALENT | Jawab Evaluasi Pelatihan Lv 1",
   description:
     "Jawab Evaluasi Level 1 untuk para user yang mengikuti pelatihan",
   keywords:
     "PTPN4, anggaran RKAP, detail data anggaran, manajemen keuangan, pelatihan karyawan, pengembangan kompetensi",
 };
+
 
 const EvaluasiTraining1Page = () => {
   return (

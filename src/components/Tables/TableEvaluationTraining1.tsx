@@ -7,6 +7,8 @@ import {
   getAllTrainingEvaluation1,
   getAllUserAndTheirTrainings,
 } from "@/service/evaluation1";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 const TableEvaluationTraining1 = () => {
   const { userData } = useAuth();
@@ -16,11 +18,12 @@ const TableEvaluationTraining1 = () => {
   );
   const [loadng, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const router = useRouter();
 
   const fetchAllTraining = async () => {
     try {
       const result = await getAllTrainingEvaluation1();
-      console.log("ini result", result);
+      
       setTrainingData(result);
     } catch (error) {
       setError(true);
@@ -36,6 +39,12 @@ const TableEvaluationTraining1 = () => {
     }
   };
 
+  const userTraining = trainingData.filter(
+    (training) => {
+      return training.user_id == userData?.id
+    } 
+  );
+
   useEffect(() => {
     if (userData?.role === "user") fetchAllTraining();
   }, [userData?.role]);
@@ -44,24 +53,33 @@ const TableEvaluationTraining1 = () => {
     if (userData?.role === "admin" || userData?.role === "super admin") fetchAllUserAndTheirTrainings();
   }, [userData?.role]);
 
-    const userTraining = trainingData.filter(
-      (training) => {
-        return training.user_id == userData?.id
-      } 
-    );
 
   const handleEvaluationClick = (
     tglSelesai: string,
-    trainingId: number | undefined,
+    trainingId: number | undefined
   ) => {
     const trainingEndDate = new Date(tglSelesai);
     const currentDate = new Date();
-
+  
     if (currentDate < trainingEndDate) {
-      alert("Evaluasi belum dapat dilakukan karena pelatihan belum selesai.");
+      Swal.fire({
+        icon: "warning",
+        title: "Evaluasi Belum Dapat Dilakukan",
+        text: "Pelatihan belum selesai, silakan coba lagi nanti.",
+        confirmButtonColor: "#f39c12",
+      });
     } else {
-      alert("Evaluasi sudah dapat dilakukan.");
-      window.location.href = `/training/evaluation_training1/${trainingId}`;
+      Swal.fire({
+        icon: "success",
+        title: "Evaluasi Tersedia",
+        text: "Evaluasi sudah dapat dilakukan.",
+        confirmButtonText: "Mulai Evaluasi",
+        confirmButtonColor: "#28a745",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          router.push(`/training/evaluation_training1/${trainingId}`);
+        }
+      });
     }
   };
 

@@ -101,8 +101,7 @@ export interface Role {
   value: string;
 }
 
-export const RoleOptions: Role[] = [
-  { value: "admin", label: "Admin" },
+export const RoleOptions: Role [] = [
   { value: "user", label: "User" },
 ];
 
