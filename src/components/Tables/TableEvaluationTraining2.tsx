@@ -42,13 +42,14 @@ const TableEvaluationTraining2 = () => {
 
   const fetchAllUserAndTheirTrainings = useCallback(async () => {
     try {
-      const unitKerja = userData?.unit_kerja ? userData?.unit_kerja : "";
-      const result = await getAllUserAndTheirTrainingsEvaluation3(unitKerja);
+      const unitKerjaId = userData?.unit_kerja_id ? userData?.unit_kerja_id : 0; 
+      const result = await getAllUserAndTheirTrainingsEvaluation3(unitKerjaId);
+
       setTrainingData(result || []);
     } catch (error) {
       setError(true);
     }
-  }, [userData?.unit_kerja]);
+  }, [userData?.unit_kerja_id]);
 
   const fetchAllUserAndTheirTrainingsAdmin = async () => {
     try {
@@ -68,8 +69,13 @@ const TableEvaluationTraining2 = () => {
   }, [userData]);
 
   useEffect(() => {
-    fetchAllUserAndTheirTrainings();
-  }, [fetchAllUserAndTheirTrainings]);
+    if (
+      userData?.level === 1 && 
+      (userData.role !== "admin" && userData.role !== "super admin")
+    ) {
+      fetchAllUserAndTheirTrainings();
+    }
+      }, [fetchAllUserAndTheirTrainings, userData?.level, userData?.role]);
 
   const handleEvaluationClick = (
     tglSelesai: string,

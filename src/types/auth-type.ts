@@ -5,6 +5,7 @@ export type UserData = {
     nama: string;
     nomor_hp: string;
     unit_kerja: string;
+    unit_kerja_id  : number;
     jabatan: string;
     level: number;
     role: string;
@@ -14,6 +15,7 @@ export type UserData = {
     refresh_token: string;
     company_id: number;
     company_name: string;
+
   };
   
   export type AuthContextType = {

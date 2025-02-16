@@ -102,6 +102,7 @@ const TableReportEvaluation2: React.FC = () => {
 
   useEffect(() => {
     if(userData?.role === "super admin")  fetchAllCompany()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
