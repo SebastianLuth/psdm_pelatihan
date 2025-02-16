@@ -9,3 +9,21 @@ export interface vendorType {
     pic_lembaga: string;
     company_id?: number
   }
+
+
+export interface CompanyType {
+    id: number;
+    nama: string;
+    alamat : string;
+    nomor_hp : string;
+    email : string;
+    created_at : string;
+    update_at : string;
+}
+
+
+export interface downloadType {
+  startDate: string;
+  endDate: string;
+  company_id?: number | string;
+}

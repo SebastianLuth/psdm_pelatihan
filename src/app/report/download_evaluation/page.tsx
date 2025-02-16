@@ -11,7 +11,7 @@ export const metadata = {
 
 const Evaluation1Page = () => {
     return (
-        <ProtectedRoute allowedRoles={['admin']}>
+        <ProtectedRoute allowedRoles={['admin', 'super admin']}>
         <DefaultLayout>
             <TableReportEvaluation1/>
         </DefaultLayout>

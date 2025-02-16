@@ -13,9 +13,9 @@ const AssessmentReportPage = () => {
     return (
         <>
             <ProtectedRoute allowedRoles={['admin', 'super admin']}>
-            <DefaultLayout>
-                <ExportDataBudget/>
-            </DefaultLayout>
+                <DefaultLayout>
+                    <ExportDataBudget/>
+                </DefaultLayout>
             </ProtectedRoute>
         </>
     );

@@ -173,7 +173,29 @@ export const getAdminTrainingReportAllUser = async () => {
 export  const DownloadExcelRincianBiaya = async (startDate: string, endDate: string) => {
   try {
       // Logika untuk mengunduh file Excel
-      const response =await axios.get(`${baseUrl}/api/training/export?startDate=${startDate}&endDate=${endDate}`, { responseType: 'blob' });
+      const response =await axios.get(`
+        ${baseUrl}/api/training/export?startDate=${startDate}&endDate=${endDate}`, 
+        { 
+          withCredentials: true,
+          responseType: 'blob'
+         }
+      );
+      return response.data
+  } catch (error) {
+      throw error
+  }
+}
+
+export  const DownloadExcelRincianBiayaOtherRegional = async (startDate: string, endDate: string, company_id: number) => {
+  try {
+      // Logika untuk mengunduh file Excel
+      const response =await axios.get(`
+        ${baseUrl}/api/training/super-admin/export?startDate=${startDate}&endDate=${endDate}&company_id=${company_id}
+        `, 
+        { 
+          withCredentials: true,
+          responseType: 'blob' 
+        });
       return response.data
   } catch (error) {
       throw error

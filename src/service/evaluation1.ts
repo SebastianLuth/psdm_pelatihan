@@ -102,3 +102,22 @@ export const DownloadExcelEvaluation1 = async (
     throw error;
   }
 };
+
+export const DownloadExcelEvaluation1OtherRegional = async (
+  startDate: string,
+  endDate: string,
+  company_id: number
+) => {
+  try {
+    const response =await axios.get(
+      `http://localhost:5000/api/evaluation/super-admin/export?startDate=${startDate}&endDate=${endDate}&company_id=${company_id}`, 
+      { 
+          responseType: 'blob', 
+          withCredentials: true
+      }
+  );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

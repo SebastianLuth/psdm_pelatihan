@@ -3,18 +3,9 @@ import { useAuth } from '@/context/AuthContext';
 import { ExportFileBudget, ExportFileBudgetForSuperAdmin } from '@/service/budget';
 import { getAllCompany } from '@/service/company';
 import { tahunOptions } from '@/types/budget-types';
+import { CompanyType } from '@/types/vendor';
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
-
-interface CompanyType {
-    id: number;
-    nama: string;
-    alamat : string;
-    nomor_hp : string;
-    email : string;
-    created_at : string;
-    update_at : string;
-}
 
 const ExportDataBudget: React.FC = () => {
     const [tahunAnggaran, setTahunAnggaran] = useState<string>("");

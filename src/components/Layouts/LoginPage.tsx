@@ -5,9 +5,6 @@ import { useCallback, useEffect, useState } from "react";
 import { AiOutlineWarning } from "react-icons/ai";
 import ButtonLoading from "../buttons/ButtonLoading";
 
-import dynamic from "next/dynamic";
-const ParticlesJsBackground = dynamic(() => import('@/components/ParticlesJsBackground'), { ssr: false });
-
 const LoginPageLayout = (): JSX.Element => {
     const [formData, setFormData] = useState<{ username: number | null; password: string }>({
         username: null,
@@ -54,7 +51,7 @@ const handleLogin = useCallback(
     <>
       <section className="relative min-h-screen overflow-hidden bg-gray-50">
         <Image
-          src="/assets/bg-website2.webp"
+          src="/images/bg-login.png"
           alt="background"
           layout="fill"
           objectFit="cover"
@@ -63,7 +60,7 @@ const handleLogin = useCallback(
         />
         <div className="mx-auto flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
           <div className="relative z-50 w-full rounded-lg bg-white shadow sm:max-w-md md:mt-0 xl:p-0">
-            <div className="mt-10 flex justify-center text-2xl font-semibold text-gray-900 ">
+            <div className="mt-10 flex justify-center text-xl font-semibold text-gray-900 ">
               <Image
                 width={70}
                 height={70}
@@ -71,9 +68,9 @@ const handleLogin = useCallback(
                 alt="logo ptpn4"
               />
             </div>
-            <div className="space-y-4 p-6 sm:p-8 md:space-y-6">
-              <h1 className="text-center text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl ">
-                Selamat Datang di N4TALENT
+            <div className="space-y-2 p-6 sm:p-8 md:space-y-6">
+              <h1 className="text-center text-xl leading-tight tracking-tight text-gray-900 md:text-2xl ">
+                Selamat Datang di <span className="text-bold"> N4TALENT </span>
               </h1>
               <form className="space-y-4 md:space-y-6" onSubmit={handleLogin}>
                 <div>
@@ -115,14 +112,14 @@ const handleLogin = useCallback(
                 <button
                   type="submit"
                   disabled={!formData.username || !formData.password}
-                  className="led:cursor-not-allowed flex w-full justify-center rounded-lg bg-green-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-300 "
+                  className="led:cursor-not-allowed flex w-full justify-center rounded-lg bg-blue-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-green-300 "
                 >
                   {isLoading ? <ButtonLoading /> : "Masuk"}
                 </button>
               </form>
             </div>
             <div className="mb-6">
-              <div className="flex flex-col text-center text-sm text-gray-600 sm:block ">
+              <div className="flex flex-col text-center text-xs text-gray-600 sm:block ">
                 <span>
                   N4TALENT © {new Date().getFullYear()} PT Perkebunan Nusantara IV -
                   SDM{" "}
@@ -131,7 +128,6 @@ const handleLogin = useCallback(
             </div>
           </div>
           <div className="relative z-10">
-            <ParticlesJsBackground />
           </div>
         </div>
       </section>

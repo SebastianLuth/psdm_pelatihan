@@ -20,7 +20,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     <aside
       className={`z-100 fixed left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-gradient-to-r from-blue-700 to-blue-500 duration-300 ease-linear dark:bg-boxdark shadow-[10px_0px_10px_8px_rgba(0,_0,_0,_0.1)] rounded-tr-lg ${
         sidebarOpen ? "translate-x-0" : "-translate-x-full lg:-translate-x-72.5"
-      }`}
+      }
+      before:absolute before:inset-0 before:bg-[url('/images/bg-blur-sawit.png')] before:bg-cover before:bg-center before:z-[-2]
+      after:absolute after:inset-0 after:bg-gradient-to-r after:from-blue-700 after:to-blue-500 after:opacity-80 after:z-[-1]`}
     >
       {/* <!-- SIDEBAR HEADER --> */}
       <div className="flex items-center justify-between gap-2 px-6 py-4 lg:py-6.5 lg:justify-center">
