@@ -5,7 +5,7 @@ import { useState } from "react";
 type CreateBawahanModalProps = {
   dataAllUserByUnitKerja: User[];
   onClose: () => void;
-  onAddBawahan: (username: number, nama: string) => void;
+  onAddBawahan: (evaluator_id: number, nama: string) => void;
   success?: boolean;
   error?: string | null | undefined;
 };
@@ -87,7 +87,7 @@ export default function CreateBawahanModal({
                           <button
                             className="rounded bg-emerald-500 px-4 py-2 text-xs font-semibold text-white hover:bg-emerald-600"
                             onClick={() =>
-                              onAddBawahan(user.username, user.nama)
+                              onAddBawahan(user.id, user.nama)
                             }
                           >
                             Tambah

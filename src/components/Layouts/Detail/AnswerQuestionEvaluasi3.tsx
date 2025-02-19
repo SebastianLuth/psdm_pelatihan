@@ -12,7 +12,8 @@ export interface QuestionEvaluation3 {
 const Evaluasi3TrainingComponent = () => {
   const router = useRouter();
   const trainingId = useParams().training_id;
-  const participantId = useParams().participan_id;
+  const userId = useParams().participan_id;
+
   const [questions, setQuestions] = useState<Record<string, QuestionEvaluation3[]>>({});
   const [currentCategory, setCurrentCategory] = useState<string>("");
   const [answers, setAnswers] = useState<Record<number, string>>({});
@@ -48,7 +49,7 @@ const Evaluasi3TrainingComponent = () => {
       setLoading(true);
       const result = await submitAnswerEvaluation3(
         Number(trainingId),
-        Number(participantId),
+        Number(userId),
         answers,
       );
       if (result === true) {
@@ -85,8 +86,6 @@ const Evaluasi3TrainingComponent = () => {
   useEffect(() => {
     if (trainingId) fetchQuestions();
   }, [trainingId, fetchQuestions]);
-
-  console.log("ini question", questions)
 
   return (
     <div className="mx-auto max-w-4xl p-6">

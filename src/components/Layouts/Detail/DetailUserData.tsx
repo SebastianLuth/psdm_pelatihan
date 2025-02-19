@@ -4,32 +4,37 @@ import DropdownSettingProfile from "@/components/Dropdowns/DropdownSettingProfil
 import CreateBawahanModal from "@/components/Modal/CreateBawahan";
 import { TableListBawahan } from "@/components/Tables/TableListBawahan";
 import {
-  addBawahan,
+  addEvaluator,
   deleteBawahan,
   getAllDataBawahanInUnitKerja,
-  getBawahanByAtasan,
   getDetailUser,
+  getEvaluator,
   updateUser,
 } from "@/service/management-users";
 import {
   BawahanUser,
+  EvaluatorData,
   FinalData,
   unitKerjaList,
   User,
 } from "@/types/manajement-users-type";
-import { useCallback, useEffect, useState } from "react";
+import { use, useCallback, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import IntegratedComponent from "@/components/Chart/TrainingFundPieChartUser";
 import { trainingFundAbsorption } from "@/types/training-types";
 import { useAuth } from "@/context/AuthContext";
 import { getTrainingFundAbsorptionUser } from "@/service/auth";
+import { useParams } from "next/navigation";
+
 
 const UserDetailComponent = () => {
   const [trainingFundAbsorption, setTrainingFundAbsorption] = useState<trainingFundAbsorption[]>([]);
+
   const [user, setUser] = useState<User | null>(null);
-  const userId = useAuth().userData?.id;
+
   const [showModal, setShowModal] = useState(false);
-  const [allBawahan, setAllBawahan] = useState<BawahanUser[]>([]);
+
+  const [allBawahan, setAllBawahan] = useState<EvaluatorData[]>([]);
   const [dataAllUserByUnitKerja, setDataAllUserByUnitKerja] = useState<User[]>(
     [],
   );
@@ -40,11 +45,9 @@ const UserDetailComponent = () => {
   const [totalBudgetAbsorptionPerUser, setTotalBudgetAbsorptionPerUser] = useState<number>(0);
   const [totalHourAbsorptionPerUser, setTotalHourAbsorptionPerUser] = useState<number>(0);
 
-
-  const getUnitKerjaId = (unitKerjaName: string) => {
-    const unitKerja = unitKerjaList.find((item) => item.name === unitKerjaName);
-    return unitKerja ? unitKerja.id : null;
-  };
+  const {userData} = useAuth();
+  const isRouteExist =  useParams().userId ;
+  const userId = isRouteExist  ? isRouteExist : userData?.id.toString();
 
   const fetchDetailUser = useCallback(async () => {
     try {
@@ -58,19 +61,18 @@ const UserDetailComponent = () => {
     }
   }, [userId]);
 
-  const handleAddBawahan = async (username: number, nama: string) => {
+  const handleAddEvaluator = async (evaluator_id : number , nama: string) => {
     try {
       setSuccess(false);
       setError(null);
-      const atasan = user?.username;
-      const result = await addBawahan(atasan, username, nama);
+      const result = await addEvaluator(Number(userId), evaluator_id, nama);
       if (result.success) {
         setSuccess(true);
       } else {
         setError(result.message);
         return;
       }
-      getBawahan();
+      fetchAllEvaluator();
       setShowModal(false);
     } catch (error) {
       setError(`Terjadi kesalahan saat menambahkan bawahan: ${error}.`);
@@ -78,7 +80,7 @@ const UserDetailComponent = () => {
   };
 
   const fetchAllDataBawahan = useCallback(async () => {
-    const unitKerjaId = getUnitKerjaId(user?.unit_kerja ?? "");
+    const unitKerjaId = user?.unit_kerja_id 
     if (unitKerjaId) {
       try {
         const response = await getAllDataBawahanInUnitKerja(unitKerjaId);
@@ -89,18 +91,18 @@ const UserDetailComponent = () => {
     } else {
       setError("Terjadi kesalahan saat mengambil data pengguna.");
     }
-  }, [user?.unit_kerja]);
+  }, [user?.unit_kerja_id]);
 
-  const getBawahan = useCallback(async () => {
+  const fetchAllEvaluator = useCallback(async () => {
     try {
-      const response = await getBawahanByAtasan(user?.username);
+      const response = await getEvaluator(Number(userId));
       setAllBawahan(response);
     } catch (error) {
       setError(`Terjadi kesalahan saat mengambil data bawahan: ${error}.`);
     }
-  }, [user?.username]);
+  }, [userId]);
 
-  const handleDeleteBawahan = async (bawahan_username: number) => {
+  const handleDeleteBawahan = async (user_id: number, evaluator_id : number) => {
     try {
       const result = await Swal.fire({
         title: "Apakah Anda yakin?",
@@ -114,10 +116,10 @@ const UserDetailComponent = () => {
       });
 
       if (result.isConfirmed) {
-        await deleteBawahan(user?.username, bawahan_username);
+        await deleteBawahan(user_id, evaluator_id);
         await Swal.fire("Terhapus!", "Bawahan telah dihapus.", "success");
       }
-      getBawahan();
+      fetchAllEvaluator();
     } catch (error) {
       setError(`Terjadi kesalahan saat menghapus bawahan: ${error}.`);
     }
@@ -136,7 +138,7 @@ const UserDetailComponent = () => {
     updatedUser: Partial<User>,
     foto_profil: File | null,
   ) => {
-    const unitKerjaId = getUnitKerjaId(user?.unit_kerja ?? "");
+    const unitKerjaId = user?.unit_kerja_id;
     try {
       const finalData: FinalData = {
         nama: updatedUser.nama || user?.nama,
@@ -144,7 +146,7 @@ const UserDetailComponent = () => {
         nomor_hp: updatedUser.nomor_hp || user?.nomor_hp,
         level: updatedUser.level || user?.level,
         role: updatedUser.role || user?.role,
-        unit_kerja: updatedUser.unit_kerja || unitKerjaId,
+        unit_kerja: updatedUser.unit_kerja ?? unitKerjaId ?? null,
       };
 
       // Kirim data ke API menggunakan FormData
@@ -195,9 +197,9 @@ const UserDetailComponent = () => {
 
   useEffect(() => {
     if (user?.username) {
-      getBawahan();
+      fetchAllEvaluator();
     }
-  }, [user?.username, getBawahan]);
+  }, [user?.username, fetchAllEvaluator]);
 
   useEffect(() => {
     if (user?.unit_kerja) {
@@ -236,27 +238,46 @@ const UserDetailComponent = () => {
             handleSubmit={handleSubmit}
           />
           {/* Profile Section End */}
-          <div className="col-span-2 space-y-6">
+          <div className="col-span-2 space-y-4">
             {/* List Bawahan */}
             <div className="w-full rounded-2xl bg-white p-6 shadow-lg">
-              <div className="mb-4 flex items-center justify-between">
-                <h3 className="text-xl font-semibold text-gray-800">
-                  List Bawahan
-                </h3>
-                <button
-                  onClick={() => setShowModal(true)}
-                  className="rounded-lg bg-blue-500 px-4 py-2 text-white transition hover:bg-blue-600"
-                >
-                  Tambah Bawahan
-                </button>
-              </div>
+              {
+                userData?.role === "admin" || userData?.role === "super admin"  ? (
+                  <div className="mb-4 flex items-center justify-between g">
+                    <h3 className="text-xl font-semibold text-gray-800">
+                      List Evaluator
+                    </h3>
+                    <div className="flex gap-2">
+                    <button
+                      onClick={() => setShowModal(true)}
+                      className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-white text-sm font-medium shadow-md transition duration-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 active:scale-95"
+                      >
+                      Tambah Evaluator
+                    </button>
+
+                    <button
+                      onClick={() => setShowModal(true)}
+                      className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-white text-sm font-medium shadow-md transition duration-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 active:scale-95"
+                      >
+                      Tambah Kolega
+                    </button>
+                    </div>
+                    
+                  </div>
+                ) : (
+                  <h3 className="text-xl font-semibold text-gray-800 p-4">
+                  List Evaluator
+                  </h3>
+                )
+              }
+              
               {/* Modal add bawahan */}
               {showModal ? (
                 <>
                   <CreateBawahanModal
                     dataAllUserByUnitKerja={dataAllUserByUnitKerja}
                     onClose={handleCloseModal}
-                    onAddBawahan={handleAddBawahan}
+                    onAddBawahan={handleAddEvaluator}
                     success={success}
                     error={error}
                   />

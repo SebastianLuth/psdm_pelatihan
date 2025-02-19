@@ -20,7 +20,7 @@ export const getQuestions3 = async (trainingId: number) => {
 
 export const submitAnswerEvaluation3 = async (
   trainingId: number,
-  participantId: number,
+  userId: number,
   answers: any
 ) => {
   try {
@@ -29,7 +29,7 @@ export const submitAnswerEvaluation3 = async (
       jawaban,
     }));
     await axios.post(
-      `${baseUrl}/api/evaluation3/question/submit/${trainingId}/${participantId}`,
+      `${baseUrl}/api/evaluation3/question/submit/${trainingId}/${userId}`,
       { answers: answerArray },
       {
         withCredentials: true,
@@ -42,29 +42,38 @@ export const submitAnswerEvaluation3 = async (
 };
 
 export const getAllUserAndTheirTrainingsEvaluation3 = async (
-  unit_kerja: number
 ): Promise<UserTrainingEvaluation3[] | undefined> => {
   try {
   
 
     const result = await axios.get(
-      `${baseUrl}/api/evaluation3?unit_kerja=${unit_kerja}`,
+      `${baseUrl}/api/evaluation3`,
       {
         withCredentials: true,
       }
 
     );
     const data = result.data.data
-    const formattedData = data.map((training: any) => ({
-      id: training.training_id,
-      judul: training.training_title,
-      nama: training.name,
-      jenis: training.training_type,
-      tgl_mulai: format(new Date(training.start_date), "dd MMMM yyyy"),
-      tgl_selesai: format(new Date(training.end_date), "dd MMMM yyyy"),
-      lembaga: training.training_location,
-      hasCompletedEvaluation: training.has_completed_evaluation,
-      participanId: training.user_id,
+    const formattedData = data.map((training: UserTrainingEvaluation3) => ({
+      id : training.id,
+      evaluator_id: training.evaluator_id,
+      evaluator_name: training.evaluator_name,
+      evaluator_niksap: training.evaluator_niksap,
+      evaluator_jabatan: training.evaluator_jabatan,
+      pelatihan_id: training.pelatihan_id,
+      judul_pelatihan: training.judul_pelatihan,
+      RKAP_type_pelatihan: training.RKAP_type_pelatihan,
+      metode_pelatihan: training.metode_pelatihan,
+      lembaga_pelatihan: training.lembaga_pelatihan,
+      lokasi_pelatihan: training.lokasi_pelatihan,
+      tgl_mulai_pelatihan: format(new Date(training.tgl_mulai_pelatihan), "dd MMMM yyyy"),
+      tgl_selesai_pelatihan: format(new Date(training.tgl_selesai_pelatihan), "dd MMMM yyyy"),
+      user_id: training.user_id,
+      nama_peserta: training.nama_peserta,
+      niksap_peserta: training.niksap_peserta,
+      jabatan_peserta: training.jabatan_peserta,
+      nomor_hp_peserta: training.nomor_hp_peserta,
+      unit_kerja_peserta: training.unit_kerja_peserta
     }));
     return formattedData;
   } catch (error) {

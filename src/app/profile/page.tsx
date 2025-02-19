@@ -4,13 +4,13 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 
 export const metadata = {
   title: "N4TALENT | Detail User",
-  description: "Detail User ",
+  description: "Profile User ",
   keywords: "PTPN4, anggaran RKAP, detail data anggaran, manajemen keuangan, pelatihan karyawan, pengembangan kompetensi",
 }
 
 const UserDetailPage = () => {
   return (
-    <ProtectedRoute allowedRoles={["admin", "super admin"]}>
+    <ProtectedRoute>
       <DefaultLayout>
         <UserDetailComponent />
       </DefaultLayout>

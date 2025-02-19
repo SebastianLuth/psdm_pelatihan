@@ -1,8 +1,8 @@
-import { BawahanUser } from "@/types/manajement-users-type";
+import {  EvaluatorData } from "@/types/manajement-users-type";
 
 type TableListBawahanProps = {
-    allBawahan : BawahanUser[];
-    onDeleteBawahan : (bawahan_username : number) => void
+    allBawahan : EvaluatorData[];
+    onDeleteBawahan : (user_id : number, evaluator_id : number) => void
 }
 
 
@@ -20,17 +20,17 @@ export function TableListBawahan({allBawahan, onDeleteBawahan}: TableListBawahan
         </tr>
       </thead>
       <tbody>
-        {allBawahan.map((bawahan, index) => (
+        {allBawahan.map((evaluator, index) => (
           <tr key={index} className="border-t border-gray-200 hover:bg-gray-50">
             <td className="px-4 py-3 text-center">{index + 1}</td>
             <td className="cursor-pointer px-4 py-3 text-center text-blue-600 hover:underline">
-              {bawahan.bawahan_username}
+              {evaluator.evaluator_username}
             </td>
-            <td className="px-4 py-3">{bawahan.nama}</td>
+            <td className="px-4 py-3">{evaluator.evaluator_name}</td>
             <td className="px-4 py-3 text-center">
               <button
                 className="rounded-md bg-red-500 px-3 py-1 text-white transition hover:bg-red-600"
-                onClick={() => onDeleteBawahan(bawahan.bawahan_username)}
+                onClick={() => onDeleteBawahan(evaluator.user_id, evaluator.evaluator_id )}
               >
                 Delete
               </button>

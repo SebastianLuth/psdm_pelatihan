@@ -1,3 +1,20 @@
+export type EvaluatorData = {
+  user_id : number;
+  "user_username": number;
+  "user_name": string;
+  "user_phone": string;
+  "user_unit_kerja_id": number;
+  "user_unit_kerja": string;
+  "user_jabatan": string;
+  "evaluator_id": number;
+  "evaluator_username": number;
+  "evaluator_name": string;
+  "evaluator_phone": string;
+  "evaluator_unit_kerja_id": number;
+  "evaluator_unit_kerja": string;
+  "evaluator_jabatan": string;
+}
+
 export const unitKerjaList = [
     { id: 1, name: "AKUNTANSI DAN KEUANGAN" },
     { id: 2, name: "DIVISI SATUAN PENGAWASAN INTERN" },
@@ -61,6 +78,7 @@ export interface User {
   nama: string;
   nomor_hp: string;
   unit_kerja: string;
+  unit_kerja_id : number;
   jabatan: string;
   level: number;
   role: string;

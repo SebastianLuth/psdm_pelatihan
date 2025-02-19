@@ -104,6 +104,7 @@ const TableDataUser: React.FC<TableDataUserProps> = ({ selectedUnitKerja }) => {
               <th className="px-6 py-4">NIKSAP</th>
               <th className="px-6 py-4">Nama</th>
               <th className="px-6 py-4">Jabatan</th>
+              <th className="px-6 py-4">action</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -131,6 +132,28 @@ const TableDataUser: React.FC<TableDataUserProps> = ({ selectedUnitKerja }) => {
                     </td>
                     <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
                       {user.jabatan}
+                    </td>
+                    <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                    <Link
+                        href={`/users_manajemen/users_data/${user.id}`}
+                        className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={2}
+                          stroke="currentColor"
+                          className="w-5 h-5"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M15 12H9m6 0a3 3 0 1 0 0-6m0 6a3 3 0 1 1 0 6M9 12a3 3 0 1 1 0-6m0 6a3 3 0 1 0 0 6"
+                          />
+                        </svg>
+                        Detail
+                      </Link>
                     </td>
                   </tr>
                 ))

@@ -39,17 +39,17 @@ export const getDetailUser = async (userId: number) => {
   }
 };
 
-export const addBawahan = async (
-  atasan_username: number | undefined,
-  bawahan_username: number | undefined,
+export const addEvaluator = async (
+  user_id: number,
+  evaluator_id: number,
   nama: string | undefined
 ) => {
   try {
     await axios.post(
-      `${baseUrl}/api/atasan/`,
+      `${baseUrl}/api/evaluator/`,
       {
-        atasan_username,
-        bawahan_username,
+        user_id,
+        evaluator_id,
       },
       {
         withCredentials: true,
@@ -85,12 +85,12 @@ export const getAllDataBawahanInUnitKerja = async (unitKerjaId: number) => {
   } catch (error) {}
 };
 
-export const getBawahanByAtasan = async (
-  atasan_username: number | undefined
+export const getEvaluator = async (
+  evaluator_id : number
 ) => {
   try {
     const response = await axios.get(
-      `${baseUrl}/api/atasan?atasan_username=${atasan_username}`,
+      `${baseUrl}/api/evaluator?user_id=${evaluator_id}`,
       {
         withCredentials: true,
       }
@@ -105,14 +105,14 @@ export const getBawahanByAtasan = async (
 };
 
 export const deleteBawahan = async (
-  atasan_username: number | undefined,
-  bawahan_username: number | undefined
+  user_id: number | undefined,
+  evaluator_id: number | undefined
 ) => {
   try {
-    await axios.delete(`${baseUrl}/api/atasan/`, {
+    await axios.delete(`${baseUrl}/api/evaluator/`, {
       data: {
-        atasan_username,
-        bawahan_username,
+        user_id,
+        evaluator_id,
       },
       withCredentials: true,
     });

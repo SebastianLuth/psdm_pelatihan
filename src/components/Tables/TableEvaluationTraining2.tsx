@@ -5,12 +5,11 @@ import { UserTraining } from "@/types/training-types";
 import { getAllUserAndTheirTrainings } from "@/service/evaluation1";
 import { getAllUserAndTheirTrainingsEvaluation3, getStatusEvaluation3 } from "@/service/evaluasi3";
 import { UserTrainingEvaluation3 } from "@/types/evaluasi3";
-import axios from "axios";
 
 interface StatusEvaluation3{
-  atasan_id : number;
-  bawahan_id : number;
-  is_completed : boolean | number;
+  evaluator_id : number;
+  user_id : number;
+  status : boolean | number;
   pelatihan_id: number
 }
 
@@ -42,14 +41,13 @@ const TableEvaluationTraining2 = () => {
 
   const fetchAllUserAndTheirTrainings = useCallback(async () => {
     try {
-      const unitKerjaId = userData?.unit_kerja_id ? userData?.unit_kerja_id : 0; 
-      const result = await getAllUserAndTheirTrainingsEvaluation3(unitKerjaId);
-
+      const result = await getAllUserAndTheirTrainingsEvaluation3();
+      console.log("ini resultnya ", result)
       setTrainingData(result || []);
     } catch (error) {
       setError(true);
     }
-  }, [userData?.unit_kerja_id]);
+  }, []);
 
   const fetchAllUserAndTheirTrainingsAdmin = async () => {
     try {
@@ -69,13 +67,9 @@ const TableEvaluationTraining2 = () => {
   }, [userData]);
 
   useEffect(() => {
-    if (
-      userData?.level === 1 && 
-      (userData.role !== "admin" && userData.role !== "super admin")
-    ) {
-      fetchAllUserAndTheirTrainings();
-    }
-      }, [fetchAllUserAndTheirTrainings, userData?.level, userData?.role]);
+    if (userData?.role === "user") fetchAllUserAndTheirTrainings();
+    
+    }, [fetchAllUserAndTheirTrainings, userData?.level, userData?.role]);
 
   const handleEvaluationClick = (
     tglSelesai: string,
@@ -102,8 +96,6 @@ const TableEvaluationTraining2 = () => {
     const currentDate = new Date();
     window.location.href = `/training/evaluation_training2/${trainingId}/${participanId}/details`;
   };
-
-  console.log("statusEvaluation3", statusEvaluation3);
 
 
   return (
@@ -142,44 +134,44 @@ const TableEvaluationTraining2 = () => {
                         {key + 1}
                       </td>
                       <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                        {training.judul}
+                        {training.judul_pelatihan}
                       </td>
                       <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                        {training.nama}
+                        {training.nama_peserta}
                       </td>
                       <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                        {training.jenis}
+                        {training.RKAP_type_pelatihan}
                       </td>
                       <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                        {training.tgl_mulai} - {training.tgl_selesai}
+                        {training.tgl_mulai_pelatihan} - {training.tgl_selesai_pelatihan}
                       </td>
                       <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                        {training.lembaga || "Tidak ada lembaga"}
+                        {training.lembaga_pelatihan || "Tidak ada lembaga"}
                       </td>
                       <td className="flex px-6 py-4 text-right">
                         <button
                           onClick={() =>
                             handleEvaluationClick(
-                              training.tgl_selesai,
-                              Number(training.id),
-                              Number(training.participanId),
+                              training.tgl_mulai_pelatihan,
+                              Number(training.pelatihan_id),
+                              Number(training.user_id),
                             )
                           }
                           className={`mr-2 inline-flex items-center space-x-2 rounded-lg px-4 py-2 text-sm font-medium text-white shadow-md focus:outline-none focus:ring-2 ${
                             statusEvaluation3.some(
                               (status) =>
-                                status.pelatihan_id === Number(training.id) &&
-                                status.bawahan_id === Number(training.participanId) &&
-                                status.is_completed === 1
+                                status.pelatihan_id === Number(training.pelatihan_id) &&
+                                status.user_id === Number(training.user_id) &&
+                                status.status === 1
                             )
                               ? "bg-gray-400 cursor-not-allowed"
                               : "bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 focus:ring-green-400"
                           }`}
                           disabled={statusEvaluation3.some(
                             (status) =>
-                              status.pelatihan_id === Number(training.id) &&
-                              status.bawahan_id === Number(training.participanId) &&
-                              status.is_completed === 1
+                              status.pelatihan_id === Number(training.pelatihan_id) &&
+                              status.user_id === Number(training.user_id) &&
+                              status.status === 1
                           )}                        >
                           <span>Jawab Evaluasi</span>
                         </button>

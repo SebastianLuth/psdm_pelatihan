@@ -1,13 +1,23 @@
 export type UserTrainingEvaluation3 = {
-  id: string;
-  judul: string;
-  nama: string;
-  jenis: string;
-  tgl_mulai: string;
-  tgl_selesai: string;
-  lembaga: string;
-  hasCompletedEvaluation: boolean;
-  participanId: string;
+  id : number,
+  evaluator_id: number,
+  evaluator_name: string,
+  evaluator_niksap: number,
+  evaluator_jabatan: string,
+  pelatihan_id: 35,
+  judul_pelatihan: string,
+  RKAP_type_pelatihan: string,
+  metode_pelatihan: string,
+  lembaga_pelatihan: string,
+  lokasi_pelatihan: string,
+  tgl_mulai_pelatihan: string,
+  tgl_selesai_pelatihan: string,
+  user_id: number,
+  nama_peserta: string,
+  niksap_peserta: number,
+  jabatan_peserta: string,
+  nomor_hp_peserta: string,
+  unit_kerja_peserta: string
 };
 
 export interface Pertanyaan3 {
