@@ -1,11 +1,12 @@
 'use client';
 import { User } from "@/types/manajement-users-type";
-import { useState } from "react";
+import { ChangeEvent, useMemo, useState } from "react";
 
 type CreateBawahanModalProps = {
+  textJudul : string ;
   dataAllUserByUnitKerja: User[];
   onClose: () => void;
-  onAddBawahan: (evaluator_id: number, nama: string) => void;
+  onAddBawahan: (evaluator_id: number, nama: string, kategori: string) => void;
   success?: boolean;
   error?: string | null | undefined;
 };
@@ -16,34 +17,59 @@ export default function CreateBawahanModal({
   onAddBawahan,
   success,
   error,
+  textJudul
 }: CreateBawahanModalProps) {
-  const [currentPage, setCurrentPage] = useState(1);
-  const entriesPerPage = 5;
-
-  const totalEntries = dataAllUserByUnitKerja.length;
-  const totalPages = Math.ceil(totalEntries / entriesPerPage);
-
-  const startIndex = (currentPage - 1) * entriesPerPage;
-  const endIndex = startIndex + entriesPerPage;
-  const currentData = dataAllUserByUnitKerja.slice(startIndex, endIndex);
-
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
+    const [currentPage, setCurrentPage] = useState(1);
+    const entriesPerPage = 5;
+    const [searchQuery, setSearchQuery] = useState('');
+    let kategori = ""
+    if (textJudul === "Kolega") {
+      kategori = "kolega"
+    } else {
+      kategori = "atasan"
     }
-  };
 
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
+    // Handle perubahan input search
+    const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+      setSearchQuery(event.target.value);
+      setCurrentPage(1); // Reset ke halaman pertama saat mencari
+    };
 
-  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) {
-      onClose();
-    }
-  };
+    // Filter data berdasarkan query
+    const filteredTrainingData = useMemo(() => {
+      return dataAllUserByUnitKerja.filter(
+        (training) =>
+          training.nama.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          training.username.toString().includes(searchQuery) ||
+          training.unit_kerja.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }, [searchQuery, dataAllUserByUnitKerja]);
+
+    // Pagination berdasarkan hasil filter
+    const totalEntries = filteredTrainingData.length;
+    const totalPages = Math.ceil(totalEntries / entriesPerPage);
+    const startIndex = (currentPage - 1) * entriesPerPage;
+    const endIndex = startIndex + entriesPerPage;
+    const currentData = filteredTrainingData.slice(startIndex, endIndex);
+
+    const handleNextPage = () => {
+      if (currentPage < totalPages) {
+        setCurrentPage(currentPage + 1);
+      }
+    };
+
+    const handlePreviousPage = () => {
+      if (currentPage > 1) {
+        setCurrentPage(currentPage - 1);
+      }
+    };
+
+
+      const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      };
 
   return (
     <>
@@ -57,13 +83,22 @@ export default function CreateBawahanModal({
           <div className="relative flex flex-col rounded-lg bg-white shadow-lg">
             {/* Header */}
             <div className="flex items-center justify-between border-b p-5">
-              <h3 className="text-xl font-bold">Tambah Bawahan</h3>
+              <h3 className="text-xl font-bold">Tambah {textJudul}</h3>
+              <div className="flex gap-4">
+              <input
+                  onChange={handleSearchChange}
+                  type="text"
+                  className="w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+                  placeholder="Search..."
+                />
               <button
-                className="text-gray-500 hover:text-gray-700"
+                className="text-white hover:text-gray-700 bg-red-500 hover:bg-red-600 rounded-lg p-2"
                 onClick={onClose}
               >
                 ×
-              </button>
+              </button>  
+              </div>
+            
             </div>
             {/* Body */}
             <div className="p-6">
@@ -83,11 +118,12 @@ export default function CreateBawahanModal({
                         <td className="px-4 py-2">{user.nama}</td>
                         <td className="px-4 py-2">{user.username}</td>
                         <td className="px-4 py-2">{user.unit_kerja}</td>
+                        <td className="px-4 py-2">{user.id}</td>
                         <td className="px-4 py-2">
                           <button
                             className="rounded bg-emerald-500 px-4 py-2 text-xs font-semibold text-white hover:bg-emerald-600"
                             onClick={() =>
-                              onAddBawahan(user.id, user.nama)
+                              onAddBawahan(user.id, user.nama, kategori)
                             }
                           >
                             Tambah

@@ -6,12 +6,30 @@ export interface budgetType {
   sisa_anggaran?: number | null;
   lembaga?: string | null;
   tahun_anggaran: number;
+  bulan_anggaran: number | string;
 }
 
 export interface SelectOption  {
   value: number;
   label: string;
 }
+
+
+export const bulanOptions: SelectOption [] = [
+  { value: 1, label: "Januari" },
+  { value: 2, label: "Februari" },
+  { value: 3, label: "Maret" },
+  { value: 4, label: "April" },
+  { value: 5, label: "Mei" },
+  { value: 6, label: "Juni" },
+  { value: 7, label: "Juli" },
+  { value: 8, label: "Agustus" },
+  { value: 9, label: "September" },
+  { value: 10, label: "Oktober" },
+  { value: 11, label: "November" }, 
+  { value: 12, label: "Desember" }
+
+]
 
 export const lembagaOptions: SelectOption [] = [
   { value: 1, label: "LPP" },

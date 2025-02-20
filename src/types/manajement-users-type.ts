@@ -1,76 +1,19 @@
 export type EvaluatorData = {
   user_id : number;
-  "user_username": number;
-  "user_name": string;
-  "user_phone": string;
-  "user_unit_kerja_id": number;
-  "user_unit_kerja": string;
-  "user_jabatan": string;
-  "evaluator_id": number;
-  "evaluator_username": number;
-  "evaluator_name": string;
-  "evaluator_phone": string;
-  "evaluator_unit_kerja_id": number;
-  "evaluator_unit_kerja": string;
-  "evaluator_jabatan": string;
+  user_username: number;
+  user_name: string;
+  user_phone: string;
+  user_unit_kerja_id: number;
+  user_unit_kerja: string;
+  user_jabatan: string;
+  evaluator_id: number;
+  evaluator_username: number;
+  evaluator_name: string;
+  evaluator_phone: string;
+  evaluator_unit_kerja_id: number;
+  evaluator_unit_kerja: string;
+  evaluator_jabatan: string;
 }
-
-export const unitKerjaList = [
-    { id: 1, name: "AKUNTANSI DAN KEUANGAN" },
-    { id: 2, name: "DIVISI SATUAN PENGAWASAN INTERN" },
-    { id: 3, name: "DIVISI SISTEM MANAJEMEN DAN SUSTAINABILITY"},
-    { id: 4, name: "PENGADAAN DAN TEKNOLOGI INFORMASI"},
-    { id: 5, name: "SDM DAN SISTEM MANAJEMEN"},
-    { id: 6, name: "SEKRETARIAT DAN HUKUM" },
-    { id: 7, name: "SEKRETARIAT PERUSAHAAN"},
-    { id: 8, name: "TANAMAN"},
-    { id: 9, name: "TEKNIK DAN PENGOLAHAN"},
-    { id: 10, name: "BENIH"},
-    { id: 11, name: "INDUK ANAK PERUSAHAAN ASOSIASI AFILIASI PLASMA"},
-    { id: 12, name: "KEBUN AJAMU"},
-    { id: 13, name: "KEBUN BAH BIRONG ULU"},
-    { id: 14, name: "KEBUN BAH JAMBI"},
-    { id: 15, name: "KEBUN BALIMBINGAN"},
-    { id: 16, name: "KEBUN BATANG LAPING"},
-    { id: 17, name: "KEBUN BERANGIR"},
-    { id: 18, name: "KEBUN BUKIT LIMA"},
-    { id: 19, name: "KEBUN DAN PABRIK ADOLINA"},
-    { id: 20, name: "KEBUN DAN PABRIK AIR BATU"},
-    { id: 21, name: "KEBUN DAN PABRIK DOLOK SINUMBAH"},
-    { id: 22, name: "KEBUN DAN PABRIK MAYANG"},
-    { id: 23, name: "KEBUN DAN PABRIK PULU RAJA"},
-    { id: 24, name: "KEBUN DAN PABRIK SAWIT LANGKAT"},
-    { id: 25, name: "KEBUN DAN PABRIK SOSA"},
-    { id: 26, name: "KEBUN DAN PABRIK TEH"},
-    { id: 27, name: "KEBUN DOLOK ILIR"},
-    { id: 28, name: "KEBUN GUNUNG BAYU"},
-    { id: 29, name: "KEBUN LARAS"},
-    { id: 30, name: "KEBUN MARIHAT"},
-    { id: 31, name: "KEBUN MARJANDI"},
-    { id: 32, name: "KEBUN MERANTI PAHAM"},
-    { id: 33, name: "KEBUN PABATU"},
-    { id: 34, name: "KEBUN PADANG MATINGGI"},
-    { id: 35, name: "KEBUN PANAI JAYA"},
-    { id: 36, name: "KEBUN PASIR MANDOGE"},
-    { id: 37, name: "KEBUN PLASMA MADINA"}, 
-    { id: 38, name: "KEBUN SEI KOPAS"},
-    { id: 39, name: "KEBUN TANAH ITAM ULU"},
-    { id: 40, name: "KEBUN TIMUR"},
-    { id: 41, name: "KEBUN TINJOWAN"},
-    { id: 42, name: "KEBUN TONDUHAN"},
-    { id: 43, name: "PKS AJAMU"},
-    { id: 44, name: "PKS BAH JAMBI"},
-    { id: 45, name: "PKS BERANGIR"},
-    { id: 46, name: "PKS DOLOK ILIR"},
-    { id: 47, name: "PKS GUNUNG BAYU"},
-    { id: 48, name: "PKS PABATU"},
-    { id: 49, name: "PKS PASIR MANDOGE"},
-    { id: 50, name: "PKS TIMUR"},
-    { id: 51, name: "PKS TINJOWAN"},
-    { id: 52, name: "UNIT GROUP I"},
-    { id: 53, name: "UNIT GROUP II"},
-    { id: 54, name: "UNIT GROUP III"},
-];
 
 export interface User {
   id: number;
@@ -88,7 +31,7 @@ export interface User {
   refresh_token: string;
   }
 
-  export interface UserDataToAdd{
+export interface UserDataToAdd{
     nama: string
     username: number | string,
     nomor_hp: string,
@@ -97,7 +40,7 @@ export interface User {
     level: number | string,
     role: string,
     password: string,
-  }
+}
 
 export interface BawahanUser {
     bawahan_username: number;

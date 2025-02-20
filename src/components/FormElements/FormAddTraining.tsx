@@ -20,6 +20,9 @@ const AddTraining = () => {
   const [jenisPelatihanRKAP, setJenisPelatihanRKAP] = useState<budgetType[]>(
     [],
   );
+  const [selectedMonth, setSelectedMonth] = useState<string | number>(""); // Bulan yang dipilih
+  const [filteredRKAP, setFilteredRKAP] = useState<budgetType[]>([]); // Data yang sudah difilter
+
   const [selectedUnitKerja, setSelectedUnitKerja] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedParticipants, setSelectedParticipants] = useState<number[]>(
@@ -133,7 +136,19 @@ const AddTraining = () => {
     fetchLembagaData();
   }, []);
 
-  console.log(lembagaData, "ini lembaga data dari use state");
+  const availableYears = new Set(jenisPelatihanRKAP.map((item) => item.tahun_anggaran));
+  const selectedYear = Array.from(availableYears)[0] || new Date().getFullYear();
+
+  useEffect(() => {
+    if (selectedMonth) {
+      const filtered = jenisPelatihanRKAP.filter(
+        (item) => item.bulan_anggaran === Number(selectedMonth)
+      );
+      setFilteredRKAP(filtered);
+    } else {
+      setFilteredRKAP([]); // Reset jika bulan tidak dipilih
+    }
+  }, [selectedMonth, jenisPelatihanRKAP]);
 
   return (
     <div className="max-w-6xl mx-auto bg-white p-12 shadow-md rounded-lg dark:border-strokedark dark:bg-boxdark">
@@ -157,28 +172,6 @@ const AddTraining = () => {
           />
         </div>
 
-        {/* Jenis Pelatihan */}
-        <div>
-          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">RKAP Type</label>
-          <select
-            name="jenis"
-            value={trainingData.jenis || ""}
-            onChange={handleInputChange}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            required
-          >
-            <option value="" disabled>
-              Pilih RKAP Pelatihan
-            </option>
-            {/* Options here */}
-            {jenisPelatihanRKAP.map((item, index) => (
-              <option key={index} value={item.jenis_anggaran}>
-                {item.jenis_anggaran}
-              </option>
-            ))}
-          </select>
-        </div>
-
         {/* Metode Pelatihan */}
         <div>
           <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300 ">Metode Pelatihan</label>
@@ -196,6 +189,47 @@ const AddTraining = () => {
             {metodePelatihanOptions.map((item, index) => (
               <option key={index} value={item.label}>
                 {item.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Jenis Pelatihan */}
+        <div>
+          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+            Pilih Bulan
+          </label>
+          <select
+            value={selectedMonth}
+            onChange={(e) => setSelectedMonth(e.target.value)}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          >
+            <option value="">Pilih Bulan</option>
+            {Array.from(new Set(jenisPelatihanRKAP.map((item) => item.bulan_anggaran))).map((bulan) => (
+              <option key={bulan} value={bulan}>
+                {new Date(selectedYear, Number(bulan) - 1).toLocaleString("id-ID", { month: "long" })}
+              </option>
+            ))}
+          </select>
+
+          {/* Dropdown Pilihan RKAP */}
+          <label className="block mt-4 mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+            RKAP Type
+          </label>
+          <select
+            name="jenis"
+            value={trainingData.jenis || ""}
+            onChange={handleInputChange}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            required
+            disabled={!selectedMonth} // Disable jika bulan belum dipilih
+          >
+            <option value="" disabled>
+              {selectedMonth ? "Pilih RKAP Pelatihan" : "Pilih Bulan Terlebih Dahulu"}
+            </option>
+            {filteredRKAP.map((item) => (
+              <option key={item.id} value={item.jenis_anggaran}>
+                {item.jenis_anggaran}
               </option>
             ))}
           </select>

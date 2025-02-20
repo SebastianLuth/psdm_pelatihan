@@ -1,6 +1,6 @@
 "use client";
 import { addBudget } from "@/service/budget";
-import { budgetType, lembagaOptions, rkapTypeOptions } from "@/types/budget-types";
+import { budgetType, bulanOptions, lembagaOptions, rkapTypeOptions } from "@/types/budget-types";
 import { ChangeEvent, FormEvent, useState } from "react";
 import Swal from "sweetalert2";
 
@@ -10,6 +10,7 @@ const FormAddBudget = () => {
     jenis_anggaran: "",
     total_anggaran: null,
     tahun_anggaran: 2025,
+    bulan_anggaran: ""
   });
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
@@ -22,7 +23,8 @@ const FormAddBudget = () => {
       ...prevData,
       [name]:
         name === "total_anggaran" ||
-        name === "tahun_anggaran"
+        name === "tahun_anggaran" ||
+        name === "bulan_anggaran"
           ? +value
           : value,
     }));
@@ -41,6 +43,7 @@ const FormAddBudget = () => {
         jenis_anggaran: "",
         total_anggaran: 0,
         tahun_anggaran: 0,
+        bulan_anggaran: ""
       });
     } catch (err: any) {
       const errorMessage =
@@ -126,17 +129,42 @@ const FormAddBudget = () => {
           />
         </div>
         <div className="mb-5">
-          <label className="mb-1 block font-medium text-gray-600 dark:text-white">
-            Tahun Anggaran
-          </label>
-          <input
-            type="number"
-            name="tahun_anggaran"
-            placeholder="Contoh : 2024"
-            value={budgetData.tahun_anggaran}
-            onChange={handleInputChange}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
+          <div className="flex gap-4">
+            <div className="w-1/4">
+            <label className="mb-1 block font-medium text-gray-600 dark:text-white">
+              Bulan Anggaran
+            </label>
+            <select
+              name="bulan_anggaran"
+              onChange={handleInputChange}
+              value={budgetData.bulan_anggaran || ""}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            >
+              <option value="" disabled>
+                Pilih Bulan
+              </option>
+              {/* Options here */}
+              {bulanOptions.map((item, index) => (
+                <option key={index} value={item.value}>
+                  {item.label}
+                </option>
+              ))}
+            </select>
+            </div>
+            <div className="w-3/4">
+            <label className="mb-1 block font-medium text-gray-600 dark:text-white">
+              Tahun Anggaran
+            </label>
+            <input
+              type="number"
+              name="tahun_anggaran"
+              placeholder="Contoh : 2024"
+              value={budgetData.tahun_anggaran}
+              onChange={handleInputChange}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            />
+            </div>
+          </div>
         </div>
 
         <div className="mt-8 flex justify-end gap-4">

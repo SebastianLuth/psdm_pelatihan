@@ -12,10 +12,8 @@ import {
   updateUser,
 } from "@/service/management-users";
 import {
-  BawahanUser,
   EvaluatorData,
   FinalData,
-  unitKerjaList,
   User,
 } from "@/types/manajement-users-type";
 import { use, useCallback, useEffect, useState } from "react";
@@ -25,6 +23,7 @@ import { trainingFundAbsorption } from "@/types/training-types";
 import { useAuth } from "@/context/AuthContext";
 import { getTrainingFundAbsorptionUser } from "@/service/auth";
 import { useParams } from "next/navigation";
+import axios from "axios";
 
 
 const UserDetailComponent = () => {
@@ -33,11 +32,16 @@ const UserDetailComponent = () => {
   const [user, setUser] = useState<User | null>(null);
 
   const [showModal, setShowModal] = useState(false);
+  const [showModalKolega, setShowModalKolega] = useState(false);
 
   const [allBawahan, setAllBawahan] = useState<EvaluatorData[]>([]);
+
   const [dataAllUserByUnitKerja, setDataAllUserByUnitKerja] = useState<User[]>(
     [],
   );
+
+  const [dataAllUser, setDataAllUser] = useState<User[]>([]);
+
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
@@ -61,11 +65,11 @@ const UserDetailComponent = () => {
     }
   }, [userId]);
 
-  const handleAddEvaluator = async (evaluator_id : number , nama: string) => {
+  const handleAddEvaluator = async (evaluator_id : number , nama: string, kategori: string) => {
     try {
       setSuccess(false);
       setError(null);
-      const result = await addEvaluator(Number(userId), evaluator_id, nama);
+      const result = await addEvaluator(Number(userId), evaluator_id, nama, kategori);
       if (result.success) {
         setSuccess(true);
       } else {
@@ -79,10 +83,12 @@ const UserDetailComponent = () => {
     }
   };
 
-  const fetchAllDataBawahan = useCallback(async () => {
+  const fetchAllDataAtasan = useCallback(async () => {
     const unitKerjaId = user?.unit_kerja_id 
+
     if (unitKerjaId) {
       try {
+        
         const response = await getAllDataBawahanInUnitKerja(unitKerjaId);
         setDataAllUserByUnitKerja(response);
       } catch (error) {
@@ -92,6 +98,21 @@ const UserDetailComponent = () => {
       setError("Terjadi kesalahan saat mengambil data pengguna.");
     }
   }, [user?.unit_kerja_id]);
+
+  const fetchAllDataUser = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/user/users`,
+        {
+          withCredentials: true,
+        }
+      )
+      console.log(response.data.data)
+      setDataAllUser(response.data.data); 
+    } catch (error) {
+      setError("Terjadi kesalahan saat mengambil data pengguna.");
+    }
+  },[])
 
   const fetchAllEvaluator = useCallback(async () => {
     try {
@@ -127,6 +148,11 @@ const UserDetailComponent = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
+    setSuccess(false);
+    setError(null);
+  };
+  const handleCloseModalKolega = () => {
+    setShowModalKolega(false);
     setSuccess(false);
     setError(null);
   };
@@ -201,11 +227,15 @@ const UserDetailComponent = () => {
     }
   }, [user?.username, fetchAllEvaluator]);
 
+  useEffect(()=>{
+    if (showModalKolega === true) fetchAllDataUser();
+  }, [fetchAllDataUser, showModalKolega])
+
   useEffect(() => {
     if (user?.unit_kerja) {
-      fetchAllDataBawahan();
+      fetchAllDataAtasan();
     }
-  }, [user?.unit_kerja, fetchAllDataBawahan]);
+  }, [user?.unit_kerja, fetchAllDataAtasan]);
 
   if (!user) {
     return (
@@ -221,7 +251,7 @@ const UserDetailComponent = () => {
         {/* Header Section */}
         <div className="mb-8 flex w-full items-center justify-between">
           <div>
-            <h2 className="text-4xl font-bold text-gray-900">User Profile</h2>
+            <h2 className="text-4xl font-bold text-gray-800">User Profile</h2>
             <p className="text-base text-gray-500">
               Detail informasi user @{user.username}
             </p>
@@ -256,7 +286,7 @@ const UserDetailComponent = () => {
                     </button>
 
                     <button
-                      onClick={() => setShowModal(true)}
+                      onClick={() => setShowModalKolega(true)}
                       className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-white text-sm font-medium shadow-md transition duration-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 active:scale-95"
                       >
                       Tambah Kolega
@@ -275,8 +305,20 @@ const UserDetailComponent = () => {
               {showModal ? (
                 <>
                   <CreateBawahanModal
+                    textJudul="Evaluator"
                     dataAllUserByUnitKerja={dataAllUserByUnitKerja}
                     onClose={handleCloseModal}
+                    onAddBawahan={handleAddEvaluator}
+                    success={success}
+                    error={error}
+                  />
+                </>
+              ) : showModalKolega ? (
+                <>
+                  <CreateBawahanModal
+                    textJudul = "Kolega"
+                    dataAllUserByUnitKerja={dataAllUser}
+                    onClose={handleCloseModalKolega}
                     onAddBawahan={handleAddEvaluator}
                     success={success}
                     error={error}

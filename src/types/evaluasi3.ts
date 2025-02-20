@@ -29,12 +29,17 @@ export interface Pertanyaan3 {
 }
 
 export interface EvaluationDataLevel3 {
-  user_id: number;
-  name: string;
-  username: string;
-  phone_number: string;
-  unit_kerja: number;
-  jabatan: string;
+  evaluator_id: number,
+  evaluator_name: string,
+  evaluator_niksap: number,
+  evaluator_jabatan: string,
+  evaluator_category: string,
+  user_id: number,
+  name: string,
+  username: number,
+  phone_number: string,
+  unit_kerja: number,
+  jabatan: string,
   pelatihan_id: number;
   pelatihan_title: string;
   pertanyaan: Pertanyaan3[];

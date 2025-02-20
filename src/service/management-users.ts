@@ -42,7 +42,8 @@ export const getDetailUser = async (userId: number) => {
 export const addEvaluator = async (
   user_id: number,
   evaluator_id: number,
-  nama: string | undefined
+  nama: string | undefined,
+  kategori: string
 ) => {
   try {
     await axios.post(
@@ -50,6 +51,7 @@ export const addEvaluator = async (
       {
         user_id,
         evaluator_id,
+        kategori
       },
       {
         withCredentials: true,
