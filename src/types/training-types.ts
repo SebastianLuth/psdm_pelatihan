@@ -2,6 +2,7 @@ export interface TrainingType {
   id?: number;
   judul: string;
   jenis: string;
+  anggaran_id?: number;
   metode: string;
   lokasi: string;
   lembaga: string;

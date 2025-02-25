@@ -7,13 +7,14 @@ export interface budgetType {
   lembaga?: string | null;
   tahun_anggaran: number;
   bulan_anggaran: number | string;
+  jum_peserta_anggaran: number | string;
+  jum_jampel_anggaran: number | string
 }
 
 export interface SelectOption  {
   value: number;
   label: string;
 }
-
 
 export const bulanOptions: SelectOption [] = [
   { value: 1, label: "Januari" },

@@ -77,17 +77,35 @@ const AddTraining = () => {
   };
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setTrainingData((prevData) => ({
-      ...prevData,
-      [name]:
-        name === "jumlah_peserta" || name === "jumlah_anggaran"
-          ? Number(value)
-          : value,
-    }));
+  
+    if (name === "jenis") {
+      try {
+        const parsedValue = JSON.parse(value); // Ubah JSON string menjadi object
+  
+        setTrainingData((prevData) => ({
+          ...prevData,
+          jenis: parsedValue.jenis, // Simpan jenis_anggaran
+          anggaran_id: parsedValue.id, // Simpan ID anggaran
+        }));
+  
+        console.log("Training Data Updated:", parsedValue);
+      } catch (error) {
+        console.error("Error parsing JSON:", error);
+      }
+    } else {
+      setTrainingData((prevData) => ({
+        ...prevData,
+        [name]: name === "jumlah_peserta" || name === "jumlah_anggaran" ? Number(value) : value,
+      }));
+    }
   };
+  
+  
+  
+  
   const handleAddTraining = async (e: FormEvent) => {
     e.preventDefault();
     try {
@@ -136,6 +154,16 @@ const AddTraining = () => {
     fetchLembagaData();
   }, []);
 
+  useEffect(() => {
+    // Reset jenis pelatihan dan anggaran_id jika bulan berubah
+    setTrainingData((prevData) => ({
+      ...prevData,
+      jenis: "",
+      anggaran_id: undefined,
+    }));
+  }, [selectedMonth]);
+  
+  
   const availableYears = new Set(jenisPelatihanRKAP.map((item) => item.tahun_anggaran));
   const selectedYear = Array.from(availableYears)[0] || new Date().getFullYear();
 
@@ -228,7 +256,7 @@ const AddTraining = () => {
               {selectedMonth ? "Pilih RKAP Pelatihan" : "Pilih Bulan Terlebih Dahulu"}
             </option>
             {filteredRKAP.map((item) => (
-              <option key={item.id} value={item.jenis_anggaran}>
+              <option key={item.id} value={JSON.stringify({ id: item.id, jenis: item.jenis_anggaran })}>
                 {item.jenis_anggaran}
               </option>
             ))}

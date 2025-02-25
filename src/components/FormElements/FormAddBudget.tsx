@@ -10,7 +10,9 @@ const FormAddBudget = () => {
     jenis_anggaran: "",
     total_anggaran: null,
     tahun_anggaran: 2025,
-    bulan_anggaran: ""
+    bulan_anggaran: "",
+    jum_peserta_anggaran: "",
+    jum_jampel_anggaran: "",
   });
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
@@ -24,7 +26,9 @@ const FormAddBudget = () => {
       [name]:
         name === "total_anggaran" ||
         name === "tahun_anggaran" ||
-        name === "bulan_anggaran"
+        name === "bulan_anggaran" ||
+        name === "jum_peserta_anggaran" || 
+        name === "jum_jampel_anggaran"
           ? +value
           : value,
     }));
@@ -43,7 +47,9 @@ const FormAddBudget = () => {
         jenis_anggaran: "",
         total_anggaran: 0,
         tahun_anggaran: 0,
-        bulan_anggaran: ""
+        bulan_anggaran: "",
+        jum_peserta_anggaran: "",
+        jum_jampel_anggaran: "",
       });
     } catch (err: any) {
       const errorMessage =
@@ -116,17 +122,47 @@ const FormAddBudget = () => {
         </div>
 
         <div className="mb-5">
-          <label className="mb-1 block font-medium text-gray-600 dark:text-white">
-            Total Anggaran
-          </label>
-          <input
-            type="number"
-            name="total_anggaran"
-            placeholder="Contoh : 20000000"
-            value={budgetData.total_anggaran ?? ""}
-            onChange={handleInputChange}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
+          <div className="flex items-center gap-4">
+            <div className="w-1/3">
+              <label className="mb-1 block font-medium text-gray-600 dark:text-white">
+                Total Anggaran
+              </label>
+              <input
+                type="number"
+                name="total_anggaran"
+                placeholder="Contoh : 20000000"
+                value={budgetData.total_anggaran ?? ""}
+                onChange={handleInputChange}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              />
+            </div>
+            <div className="w-1/3">
+              <label className="mb-1 block font-medium text-gray-600 dark:text-white">
+                Total Peserta
+              </label>
+              <input
+                type="number"
+                name="jum_peserta_anggaran"
+                placeholder="Contoh : 20000000"
+                value={budgetData.jum_peserta_anggaran ?? ""}
+                onChange={handleInputChange}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              />
+            </div>
+            <div className="w-1/3">
+              <label className="mb-1 block font-medium text-gray-600 dark:text-white">
+                Total Jam Pelajaran 
+              </label>
+              <input
+                type="number"
+                name="jum_jampel_anggaran"
+                placeholder="Contoh : 20000000"
+                value={budgetData.jum_jampel_anggaran ?? ""}
+                onChange={handleInputChange}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              />
+            </div>
+          </div>
         </div>
         <div className="mb-5">
           <div className="flex gap-4">

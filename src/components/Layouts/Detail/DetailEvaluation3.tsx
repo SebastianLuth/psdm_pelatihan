@@ -1,6 +1,4 @@
 "use client";
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import ProtectedRoute from "@/components/ProtectedRoute";
 import { getAllEvaluationData } from "@/service/evaluasi3";
 import { EvaluationDataLevel3, Pertanyaan3 } from "@/types/evaluasi3";
 import { useParams } from "next/navigation";
