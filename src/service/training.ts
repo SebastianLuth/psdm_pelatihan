@@ -77,6 +77,20 @@ export const addTraining = async (
   }
 };
 
+export const updateTraining = async (trainingId: number, trainingData: any) => {
+  try {
+    const result = axios.put(`${baseUrl}/api/training/${trainingId}`, trainingData, {
+      withCredentials: true,
+    })
+    return {
+      message : "Berhasil Mengubah Pelatihan",
+      result
+    }
+  } catch (error) {
+    throw error
+  }
+}
+
 export const getTrainingData = async (trainingId: number) => {
   try {
     const response = await axios.get(`${baseUrl}/api/training/${trainingId}`);

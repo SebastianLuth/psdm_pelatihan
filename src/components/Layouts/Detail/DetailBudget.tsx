@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import { PelatihanResponseType, TrainingType } from "@/types/training-types";
 import { getDetailBudget } from "@/service/budget";
 import BudgetSkeleton from "@/components/Skeleton/BudgetSkeleton";
+import Link from "next/link";
 
 const DetailBudgetComponent = () => {
   const [trainingData, setTrainingData] = useState<TrainingType[]>([]);
@@ -264,6 +265,9 @@ const DetailBudgetComponent = () => {
                   <th className="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">
                     Metode
                   </th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">
+                    Action
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -320,6 +324,11 @@ const DetailBudgetComponent = () => {
                       >
                         {training.metode || "Offline"}
                       </span>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-300">
+                      <Link href={`/training/training_data/${training.id}/edit`} className="rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-600">
+                        Edit
+                      </Link>
                     </td>
                   </tr>
                 ))}
