@@ -71,6 +71,20 @@ export interface PelatihanResponseType {
   tanggal_selesai_pelatihan: string;
 }
 
+export interface TrainingEvaluatedCountType {
+  training_id: number,
+  training_title: string,
+  rkap_training_type: string,
+  training_method: string,
+  training_location: string,
+  participant_count: number,
+  start_date: string,
+  end_date: string,
+  evaluated_count: number,
+  not_evaluated_count: number 
+}
+
+
 export interface UserTraining {
   user_id: number;
   name: string;

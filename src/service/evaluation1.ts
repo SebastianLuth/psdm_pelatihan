@@ -1,5 +1,5 @@
 import { EvaluationItem } from "@/types/evaluation1";
-import { TrainingType, UserTraining } from "@/types/training-types";
+import { TrainingEvaluatedCountType, TrainingType, UserTraining } from "@/types/training-types";
 import axios from "axios";
 import { format } from "date-fns";
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -56,9 +56,29 @@ export const getAllTrainingEvaluation1 = async () => {
   }
 };
 
-export const getAllUserAndTheirTrainings = async () => {
+export const getAllTrainingsWithEvaluatedCount = async () => {
   try {
     const response = await axios.get(`${baseUrl}/api/evaluation`, {
+      withCredentials: true,
+    });
+
+    const formattedData = response.data.data.map((training: TrainingEvaluatedCountType) => ({
+      ...training,
+      start_date: format(new Date(training.start_date), "dd MMMM yyyy"),
+      end_date: format(new Date(training.end_date), "dd MMMM yyyy"),
+    }));
+
+    return formattedData;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const getAllUserAndTheirTrainings = async (
+  pelatihanId : number
+) => {
+  try {
+    const response = await axios.get(`${baseUrl}/api/evaluation/${pelatihanId}`, {
       withCredentials: true,
     });
 

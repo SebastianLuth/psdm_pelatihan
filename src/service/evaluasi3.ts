@@ -44,8 +44,6 @@ export const submitAnswerEvaluation3 = async (
 export const getAllUserAndTheirTrainingsEvaluation3 = async (
 ): Promise<UserTrainingEvaluation3[] | undefined> => {
   try {
-  
-
     const result = await axios.get(
       `${baseUrl}/api/evaluation3`,
       {

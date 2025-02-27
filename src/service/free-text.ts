@@ -1,4 +1,5 @@
 import { FreeTextEvaluationForAdmin } from "@/types/freetext-type";
+import { TrainingEvaluatedCountType } from "@/types/training-types";
 import axios from "axios";
 import { format } from "date-fns";
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -12,16 +13,37 @@ export const getAllDataFreeTextTrainingbyUser = async () => {
         withCredentials: true,
       }
     );
+    console.log("ini hasil nya ", result.data)
     return result.data.data;
   } catch (error) {
     throw error;
   }
 };
 
-export const getAllDataFreeTextTrainingByAdmin = async () => {
+export const getAllDataCountEvaluatedFreeTextForAdmin = async () => {
+  try {
+    const response = await axios.get(`${baseUrl}/api/evaluation/all-freetext-summary`, {
+      withCredentials: true,
+    });
+
+    const formattedData = response.data.data.map((training: TrainingEvaluatedCountType) => ({
+      ...training,
+      start_date: format(new Date(training.start_date), "dd MMMM yyyy"),
+      end_date: format(new Date(training.end_date), "dd MMMM yyyy"),
+    }));
+
+    return formattedData;
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+// Perbaikan untuk nanti kalo udah di klik pelatihan free text maka mengambil data orang orang di pelatihan tersebut
+export const getDetailDataFreeTextTraining = async (pelatihanId : number) => {
   try {
     const result = await axios.get(
-      `${baseUrl}/api/evaluation/all-freetext`,
+      `${baseUrl}/api/evaluation/all-freetext/${pelatihanId}`,
       {
         withCredentials: true,
       }

@@ -100,7 +100,7 @@ const UpdateTrainingComponent = () => {
         title: "Berhasil!",
         text: "Data pelatihan berhasil diperbarui.",
         icon: "success",
-      }).then(() => router.push(`/budget/budget_data/${trainingId}`));
+      }).then(() => router.push(`/budget/budget_data`));
     } catch (error: any) {
       const errorMessage =
         error.response?.data.message ||

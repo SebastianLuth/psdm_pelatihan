@@ -7,7 +7,8 @@ export interface vendorType {
     email_lembaga: string;
     website_lembaga: string;
     pic_lembaga: string;
-    company_id?: number
+    company_id?: number;
+    npwp ?: string;
   }
 
 

@@ -199,7 +199,7 @@ export const menuGroups = [
               <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM12 7C10.34 7 9 8.34 9 10H11C11 9.45 11.45 9 12 9C12.55 9 13 9.45 13 10C13 11.1 12.1 12 11 12V15H13V13.1C14.16 12.63 15 11.42 15 10C15 8.34 13.66 7 12 7Z" />
             </svg>
           ),
-          label: "Pelatihan",
+          label: "Pelatihan & Evaluasi",
           route: "#",
           children: [
             { label: "Data Pelatihan", route: "/training/training_data", role: "admin"  },
@@ -222,7 +222,7 @@ export const menuGroups = [
               <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM12 7C10.34 7 9 8.34 9 10H11C11 9.45 11.45 9 12 9C12.55 9 13 9.45 13 10C13 11.1 12.1 12 11 12V15H13V13.1C14.16 12.63 15 11.42 15 10C15 8.34 13.66 7 12 7Z" />
             </svg>
           ),
-          label: "Pelatihan",
+          label: "Pelatihan & Evaluasi",
           route: "#",
           children: [
             { label: "Data Pelatihan", route: "/training/training_data", role: "admin"  },
@@ -246,12 +246,35 @@ export const menuGroups = [
               <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM12 7C10.34 7 9 8.34 9 10H11C11 9.45 11.45 9 12 9C12.55 9 13 9.45 13 10C13 11.1 12.1 12 11 12V15H13V13.1C14.16 12.63 15 11.42 15 10C15 8.34 13.66 7 12 7Z" />
             </svg>
           ),
-          label: "Pelatihan",
+          label: "Pelatihan & Evaluasi",
           route: "#",
           children: [
             { label: "Evaluasi Level 1", route: "/training/evaluation_training1"  },
-            { label: "Evaluasi Feedback Peserta", route: "/training/evaluation_freetext" },
             { label: "Evaluasi Level  3 & 4", route: "/training/evaluation_training2" },
+            { label: "Evaluasi Feedback Peserta", route: "/training/evaluation_freetext" },
+          ],
+          role : "user"
+        },
+        {
+          icon: (
+            <svg
+            className="fill-current"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M3 21V9H5V21H3ZM10 21V3H12V21H10ZM17 21V14H19V21H17ZM21 7L14 14L10.5 10.5L4 17L2.5 15.5L10.5 7.5L14 11L19.5 5.5L21 7Z"
+              fill="currentColor"
+            />
+          </svg>          
+          ),
+          label: "Serapan Anggaran",
+          route: "#",
+          children: [
+            { label: "Evaluasi Level 1", route: "/profile"  },
           ],
           role : "user"
         },

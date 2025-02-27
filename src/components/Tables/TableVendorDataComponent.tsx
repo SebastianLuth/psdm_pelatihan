@@ -29,6 +29,7 @@ const TableVendorDataComponent = () => {
             email_lembaga: item.email,
             website_lembaga: item.website,
             pic_lembaga: item.pic_lembaga,
+            npwp: item.npwp
           };
         }),
       );
@@ -152,6 +153,7 @@ const TableVendorDataComponent = () => {
                   <th className="px-4 py-4">No Telpon Lembaga</th>
                   <th className="px-4 py-4">Email Lembaga</th>
                   <th className="px-4 py-4">Layanan Utama Lembaga</th>
+                  <th className="px-4 py-4">NPWP Lembaga</th>
                   <th className="px-4 py-4 text-center">Action</th>
                 </tr>
               </thead>
@@ -187,7 +189,10 @@ const TableVendorDataComponent = () => {
                       <td className="px-4 py-4 text-gray-800 dark:text-gray-100">
                         {vendor.layanan_utama}
                       </td>
-                      <td className="px-4 py-4 text-right">
+                      <td className="px-4 py-4 text-gray-800 dark:text-gray-100">
+                        {vendor.npwp}
+                      </td>
+                      <td className="flex justify-end gap-2 px-4 py-4 text-right">
                         <button
                           onClick={() => handleDetail(vendor.id)}
                           className="mr-2 inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-green-400 to-green-600 px-4 py-2 text-sm font-medium text-white shadow-md hover:from-green-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-green-400"

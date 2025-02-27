@@ -1,5 +1,5 @@
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import DetailUsersEvaluationStatus from "@/components/Layouts/Detail/DetailUsersEvaluationStatus";
+import DetailUsersEvaluationFreetextStatus from "@/components/Layouts/Detail/DetailUsersEvaluationFreetextStatus";
 import ProtectedRoute from "@/components/ProtectedRoute";
 
 export const metadata = {
@@ -15,7 +15,7 @@ const EvaluasiTraining1Page = () => {
   return (
     <ProtectedRoute allowedRoles={["admin"]}>
       <DefaultLayout>
-        <DetailUsersEvaluationStatus />
+        <DetailUsersEvaluationFreetextStatus/>
       </DefaultLayout>
     </ProtectedRoute>
   );

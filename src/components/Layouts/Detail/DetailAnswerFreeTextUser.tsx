@@ -13,7 +13,7 @@ const DetailFreeTextFromUserComponent = () => {
   const [detailDataFreeTextUser, setDetailDataFreeTextUser] =
     useState<FreeTextEvaluationForAdmin | null>(null);
 
-  const user_id = useParams().id;
+  const user_id = useParams().userId;
   const training_id = useParams().trainingId;
 
   const fetchDetailDataFreeTextUser = useCallback(async () => {

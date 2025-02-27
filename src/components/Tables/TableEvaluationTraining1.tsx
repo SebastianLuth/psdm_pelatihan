@@ -1,11 +1,11 @@
 "use client";
 import { useAuth } from "@/context/AuthContext";
-import { TrainingType, UserTraining } from "@/types/training-types";
+import { TrainingEvaluatedCountType, TrainingType } from "@/types/training-types";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import {
   getAllTrainingEvaluation1,
-  getAllUserAndTheirTrainings,
+  getAllTrainingsWithEvaluatedCount,
 } from "@/service/evaluation1";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 const TableEvaluationTraining1 = () => {
   const { userData } = useAuth();
   const [trainingData, setTrainingData] = useState<TrainingType[]>([]);
-  const [trainingDataAdmin, setTrainingDataAdmin] = useState<UserTraining[]>(
+  const [trainingDataAdmin, setTrainingDataAdmin] = useState<TrainingEvaluatedCountType[]>(
     [],
   );
   const [loadng, setLoading] = useState(false);
@@ -30,9 +30,9 @@ const TableEvaluationTraining1 = () => {
     }
   };
 
-  const fetchAllUserAndTheirTrainings = async () => {
+  const fetchAllTrainingsWithEvaluatedCount = async () => {
     try {
-      const result = await getAllUserAndTheirTrainings();
+      const result = await getAllTrainingsWithEvaluatedCount();
       setTrainingDataAdmin(result);
     } catch (error) {
       setError(true);
@@ -50,7 +50,7 @@ const TableEvaluationTraining1 = () => {
   }, [userData?.role]);
 
   useEffect(() => {
-    if (userData?.role === "admin" || userData?.role === "super admin") fetchAllUserAndTheirTrainings();
+    if (userData?.role === "admin" || userData?.role === "super admin") fetchAllTrainingsWithEvaluatedCount();
   }, [userData?.role]);
 
 
@@ -77,7 +77,7 @@ const TableEvaluationTraining1 = () => {
         confirmButtonColor: "#28a745",
       }).then((result) => {
         if (result.isConfirmed) {
-          router.push(`/training/evaluation_training1/${trainingId}`);
+          router.push(`/training/evaluation_training1/${trainingId}/answer_evaluation`);
         }
       });
     }
@@ -99,12 +99,12 @@ const TableEvaluationTraining1 = () => {
               <thead>
                 <tr className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white">
                   <th className="px-6 py-4">No</th>
-                  <th className="px-6 py-4">NIKSAP</th>
-                  <th className="px-6 py-4">Nama</th>
+                  <th className="px-6 py-4">Jenis RKAP </th>
                   <th className="px-6 py-4">Judul Pelatihan</th>
-                  <th className="px-6 py-4">Jenis Anggaran</th>
+                  <th className="px-6 py-4">Lokasi Pelatihan</th>
                   <th className="px-6 py-4">Tanggal Acara</th>
-                  <th className="px-6 py-4">Status Evaluasi</th>
+                  <th className="px-6 py-4">Jumlah Yang  Telah Evaluasi</th>
+                  <th className="px-6 py-4">Jumlah Yang Belum Evaluasi</th>
                   <th className="px-6 py-4">Action</th>
                 </tr>
               </thead>
@@ -118,31 +118,29 @@ const TableEvaluationTraining1 = () => {
                 ) : (
                   trainingDataAdmin.map((training, key) => (
                     <tr
-                      key={training.user_id}
+                      key={training.training_id}
                       className="group transform transition-transform duration-200 hover:scale-[1.02] hover:bg-gray-50 dark:hover:bg-gray-800"
                     >
                       <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
                         {key + 1}
                       </td>
                       <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                        {training.username}
-                      </td>
-                      <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                        {training.name}
+                        {training.rkap_training_type}
                       </td>
                       <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
                         {training.training_title}
                       </td>
                       <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                        {training.training_type}
+                        {training.training_location}
                       </td>
                       <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
                         {training.start_date} - {training.end_date}
                       </td>
                       <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                        {training.has_completed_evaluation
-                          ? "Selesai"
-                          : "Belum Selesai"}
+                        {training.evaluated_count}
+                      </td>
+                      <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                        {training.not_evaluated_count}
                       </td>
                       <td className="flex px-6 py-4 text-right">
                         <button className="mr-2 inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-green-400 to-green-600 px-4 py-2 text-sm font-medium text-white shadow-md hover:from-green-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-green-400">
@@ -162,7 +160,7 @@ const TableEvaluationTraining1 = () => {
                           </svg>
                           <Link
                             key={training.training_id}
-                            href={`/training/evaluation_training1/${training.user_id}/${training.training_id}`}
+                            href={`/training/evaluation_training1/${training.training_id}`}
                           >
                             {" "}
                             <span>Detail</span>

@@ -1,6 +1,6 @@
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import DetailUsersEvaluationStatus from "@/components/Layouts/Detail/DetailUsersEvaluationStatus";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import AnswerEvaluasiTraining1Component from "@/components/Layouts/Detail/AnswerQuestionEvaluasi1";
 
 export const metadata = {
   title: "N4TALENT | Jawab Evaluasi Pelatihan Lv 1",
@@ -13,9 +13,9 @@ export const metadata = {
 
 const EvaluasiTraining1Page = () => {
   return (
-    <ProtectedRoute allowedRoles={["admin"]}>
+    <ProtectedRoute>
       <DefaultLayout>
-        <DetailUsersEvaluationStatus />
+        <AnswerEvaluasiTraining1Component />
       </DefaultLayout>
     </ProtectedRoute>
   );

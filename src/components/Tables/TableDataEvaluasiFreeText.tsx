@@ -1,19 +1,19 @@
 "use client";
 import { useAuth } from "@/context/AuthContext";
 import { getAllTrainingEvaluation1 } from "@/service/evaluation1";
-import { TrainingType } from "@/types/training-types";
+import { TrainingEvaluatedCountType, TrainingType } from "@/types/training-types";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   FreeTextEvaluation,
-  FreeTextEvaluationForAdmin,
 } from "@/types/freetext-type";
 import {
-  getAllDataFreeTextTrainingByAdmin,
+  getAllDataCountEvaluatedFreeTextForAdmin,
   getAllDataFreeTextTrainingbyUser,
 } from "@/service/free-text";
 import SkeletonTable from "../Skeleton/SkeletonTable";
 import Swal from "sweetalert2";
+import Link from "next/link";
 
 const EvaluastionFreeTextComponent = () => {
   const { userData } = useAuth();
@@ -21,8 +21,8 @@ const EvaluastionFreeTextComponent = () => {
   const [freetextEvaluationData, setFreetextEvaluationData] = useState<
     FreeTextEvaluation[]
   >([]);
-  const [freetextEvaluationDataAdmin, setFreetextEvaluationDataAdmin] =
-    useState<FreeTextEvaluationForAdmin[]>([]);
+  const [freetextEvaluationCountDataAdmin, setFreetextEvaluationCountDataAdmin] =
+    useState<TrainingEvaluatedCountType[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const router = useRouter();
@@ -31,6 +31,7 @@ const EvaluastionFreeTextComponent = () => {
     try {
       setLoading(true);
       const result = await getAllDataFreeTextTrainingbyUser();
+      console.log(result);
       setFreetextEvaluationData(result);
     } catch (error) {
       setError(true);
@@ -39,11 +40,11 @@ const EvaluastionFreeTextComponent = () => {
     }
   };
 
-  const fetchAllDataFreeTextForAdmin = async () => {
+  const fetchAllDataCountEvaluatedFreeTextForAdmin = async () => {
     try {
       setLoading(true);
-      const result = await getAllDataFreeTextTrainingByAdmin();
-      setFreetextEvaluationDataAdmin(result);
+      const result = await getAllDataCountEvaluatedFreeTextForAdmin();
+      setFreetextEvaluationCountDataAdmin(result);
     } catch (error) {
       setError(true);
     } finally {
@@ -63,13 +64,6 @@ const EvaluastionFreeTextComponent = () => {
     }
   };
 
-  const handleDetailFreeTextEvaluation = (
-    userId: number,
-    trainingId: number,
-  ) => {
-    router.push(`/training/evaluation_freetext/${userId}/${trainingId}/detail`);
-  };
-
   useEffect(() => {
     if (userData?.role === "user") fetchAllTraining();
   }, [userData]);
@@ -79,7 +73,7 @@ const EvaluastionFreeTextComponent = () => {
   }, [userData]);
 
   useEffect(() => {
-    if (userData?.role === "admin" || userData?.role === "super admin") fetchAllDataFreeTextForAdmin();
+    if (userData?.role === "admin" || userData?.role === "super admin") fetchAllDataCountEvaluatedFreeTextForAdmin();
   }, [userData]);
 
   const userTraining = trainingData.filter(
@@ -109,7 +103,7 @@ const EvaluastionFreeTextComponent = () => {
             confirmButtonColor: "#28a745",
           }).then((result) => {
             if (result.isConfirmed) {
-              router.push(`/training/evaluation_freetext/${trainingId}`);
+              router.push(`/training/evaluation_freetext/${trainingId}/answer`);
             }
           });
         }
@@ -225,61 +219,52 @@ const EvaluastionFreeTextComponent = () => {
             <table className="dark: min-w-full border-collapse text-left text-sm text-gray-300 text-gray-700">
               <thead>
                 <tr className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white">
-                  <th className="px-6 py-4">No</th>
-                  <th className="px-6 py-4">NIKSAP</th>
-                  <th className="px-6 py-4">Nama</th>
-                  <th className="px-6 py-4">judul</th>
-                  <th className="px-6 py-4">Jenis</th>
-                  <th className="px-6 py-4">Tanggal Pelatihan</th>
-                  <th className="px-6 py-4">Narasumber</th>
-                  <th className="px-6 py-4">Action</th>
+                    <th className="px-6 py-4">No</th>
+                    <th className="px-6 py-4">Jenis RKAP </th>
+                    <th className="px-6 py-4">Judul Pelatihan</th>
+                    <th className="px-6 py-4">Lokasi Pelatihan</th>
+                    <th className="px-6 py-4">Tanggal Acara</th>
+                    <th className="px-6 py-4">Jumlah Yang  Telah Evaluasi</th>
+                    <th className="px-6 py-4">Jumlah Yang Belum Evaluasi</th>
+                    <th className="px-6 py-4">Action</th>
                 </tr>
               </thead>
               <tbody>
-                {freetextEvaluationDataAdmin.length === 0 ? (
+                {freetextEvaluationCountDataAdmin.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="px-6 py-4 text-center">
                       Tidak ada data
                     </td>
                   </tr>
                 ) : (
-                  freetextEvaluationDataAdmin.map((training, key) => (
+                  freetextEvaluationCountDataAdmin.map((training, key) => (
                     <tr
-                      key={training.pelatihan_id}
+                      key={training.training_id}
                       className="group transform transition-transform duration-200 hover:scale-[1.02] hover:bg-gray-50 dark:hover:bg-gray-800"
                     >
                       <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
                         {key + 1}
                       </td>
                       <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                        {training.niksap_peserta}
+                        {training.rkap_training_type}
                       </td>
                       <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                        {training.nama_peserta}
+                        {training.training_title}
                       </td>
                       <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                        {training.judul_pelatihan}
+                        {training.training_location}
                       </td>
                       <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                        {training.jenis_pelatihan}
+                        {training.start_date} - {training.end_date}
                       </td>
                       <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                        {training.tgl_mulai_pelatihan} -{" "}
-                        {training.tgl_selesai_pelatihan}
+                        {training.evaluated_count}
                       </td>
                       <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                        {training.narasumber || "Tidak ada lembaga"}
+                        {training.not_evaluated_count}
                       </td>
                       <td className="flex px-6 py-4 text-right">
-                        <button
-                          className="mr-2 inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-green-400 to-green-600 px-4 py-2 text-sm font-medium text-white shadow-md hover:from-green-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-green-400"
-                          onClick={() =>
-                            handleDetailFreeTextEvaluation(
-                              training.user_id,
-                              training.pelatihan_id,
-                            )
-                          }
-                        >
+                        <button className="mr-2 inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-green-400 to-green-600 px-4 py-2 text-sm font-medium text-white shadow-md hover:from-green-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-green-400">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="h-5 w-5"
@@ -294,7 +279,13 @@ const EvaluastionFreeTextComponent = () => {
                               d="M11 5h2m-1 14V5m9 4H4m5 0a1 1 0 000 2h6a1 1 0 000-2H9z"
                             />
                           </svg>
-                          <span>Lihat Detail</span>
+                          <Link
+                            key={training.training_id}
+                            href={`/training/evaluation_freetext/${training.training_id}`}
+                          >
+                            {" "}
+                            <span>Detail</span>
+                          </Link>
                         </button>
                       </td>
                     </tr>

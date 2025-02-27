@@ -42,12 +42,19 @@ const TableEvaluationTraining2 = () => {
   const fetchAllUserAndTheirTrainings = useCallback(async () => {
     try {
       const result = await getAllUserAndTheirTrainingsEvaluation3();
-      console.log("ini resultnya ", result)
       setTrainingData(result || []);
     } catch (error) {
       setError(true);
     }
   }, []);
+
+  const fetchAllTrainingsWithEvaluatedCountlv3 = async () => {
+    try {
+      console.log("masuk")
+    } catch (error) {
+      setError(true);
+    }
+  }
 
   const fetchAllUserAndTheirTrainingsAdmin = async () => {
     try {

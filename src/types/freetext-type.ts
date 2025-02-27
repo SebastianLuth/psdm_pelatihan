@@ -27,6 +27,7 @@ export interface FreeTextEvaluationForAdmin {
     tgl_mulai_pelatihan: string;
     tgl_selesai_pelatihan: string;
     jam_pelajaran_pelatihan: number;
+    is_completed: boolean | number;
     user_id: number;
     niksap_peserta: number;
     nama_peserta: string;
