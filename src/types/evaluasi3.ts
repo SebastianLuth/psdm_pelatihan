@@ -20,6 +20,18 @@ export type UserTrainingEvaluation3 = {
   unit_kerja_peserta: string
 };
 
+export interface TrainingEvaluasi3Summary{
+  training_id: number,
+  training_title: string,
+  rkap_training_type: string,
+  training_method: string,
+  training_location: string,
+  participant_count: number,
+  start_date: string,
+  end_date: string,
+  evaluated3_count: 0
+}
+
 export interface Pertanyaan3 {
   question_id: number;
   question_text: string;

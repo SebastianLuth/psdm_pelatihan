@@ -2,6 +2,9 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ScrollableCards from "@/components/CardScrollers";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import MyCalendar from "@/components/calendar/page";
+import StatusEvaluation from "@/components/Chart/StatusEvaluation";
+import RealisasiBiayaChart from "@/components/Chart/RealisasiBiayaLPPNLPP";
+import RealisasiJamPeserta from "@/components/Chart/RealisasiJamPembelajara";
 
 export const metadata = {
   title: "N4TALENT | Dashboard PSDM Pelatihan Karyawan",
@@ -20,7 +23,27 @@ export default function Home() {
       <ProtectedRoute>
         <DefaultLayout>
           <ScrollableCards />
-          <MyCalendar />
+          {/* <MyCalendar /> */}
+          <div className="flex justify-center gap-4 ml-4 w-full">
+            <div className="flex-1 basis-3/4">
+                <RealisasiBiayaChart />
+            </div>
+            <div className="basis-1/4">
+                <StatusEvaluation />
+            </div>
+        </div>
+
+        <div className="flex justify-center gap-4 ml-4 w-full mt-5">
+            <div className="w-1/4 p-2">
+                <RealisasiJamPeserta />
+            </div>
+            <div className="w-1/4 p-2">
+                <RealisasiJamPeserta />
+            </div>
+            <div className="w-1/2 p-2">
+                <RealisasiBiayaChart />
+            </div>
+        </div>
         </DefaultLayout>
       </ProtectedRoute>
     </>

@@ -143,7 +143,7 @@ const TableEvaluationTraining1 = () => {
                         {training.not_evaluated_count}
                       </td>
                       <td className="flex px-6 py-4 text-right">
-                        <button className="mr-2 inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-green-400 to-green-600 px-4 py-2 text-sm font-medium text-white shadow-md hover:from-green-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-green-400">
+                        <p className="mr-2 inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-green-400 to-green-600 px-4 py-2 text-sm font-medium text-white shadow-md hover:from-green-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-green-400">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="h-5 w-5"
@@ -165,7 +165,7 @@ const TableEvaluationTraining1 = () => {
                             {" "}
                             <span>Detail</span>
                           </Link>
-                        </button>
+                        </p>
                       </td>
                     </tr>
                   ))

@@ -18,7 +18,7 @@ const DetailFreeTextFromUserComponent = () => {
 
   const fetchDetailDataFreeTextUser = useCallback(async () => {
     try {
-      const result = await getDetailDataFreeTextUser(Number(user_id), Number(training_id));
+      const result = await getDetailDataFreeTextUser( Number(training_id), Number(user_id));
       setDetailDataFreeTextUser(result);
     } catch (error) {
       console.error("Error fetching detail data free text user:", error);

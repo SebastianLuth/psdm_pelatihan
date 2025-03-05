@@ -87,7 +87,7 @@ const DetailUsersEvaluationFreetextStatus = () => {
                         {training.tgl_mulai_pelatihan} - {training.tgl_selesai_pelatihan}
                       </td>
                       <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                        {training.is_completed
+                        {training.is_completed === 1
                           ? "Selesai"
                           : "Belum Selesai"}
                       </td>
@@ -109,7 +109,7 @@ const DetailUsersEvaluationFreetextStatus = () => {
                           </svg>
                           <Link
                             key={training.pelatihan_id}
-                            href={`/training/evaluation_training1/${training.pelatihan_id}/detail/${training.user_id}`}
+                            href={`/training/evaluation_freetext/${training.pelatihan_id}/detail/${training.user_id}`}
                           >
                             {" "}
                             <span>Detail</span>

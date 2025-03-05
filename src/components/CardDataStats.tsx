@@ -30,10 +30,10 @@ const CardDataStats: React.FC<CardDataStatsProps> = ({
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 mt-4">
+      <div className="relative z-10 mt-2">
         <div className="flex items-end justify-between">
           <div>
-            <h4 className="text-2xl font-bold text-gray-800">{total}</h4>
+            <h4 className="text-xl font-bold text-gray-800">{total}</h4>
             <span className="text-sm font-medium text-gray-600">{title}</span>
           </div>
           <span

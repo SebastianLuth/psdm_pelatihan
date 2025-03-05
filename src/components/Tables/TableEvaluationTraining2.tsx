@@ -1,11 +1,9 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { UserTraining } from "@/types/training-types";
-import { getAllUserAndTheirTrainings } from "@/service/evaluation1";
-import { getAllUserAndTheirTrainingsEvaluation3, getStatusEvaluation3 } from "@/service/evaluasi3";
-import { UserTrainingEvaluation3 } from "@/types/evaluasi3";
-
+import { fetchAllTrainingsWithEvaluatedCountlv3, getStatusEvaluation3, getUsersEvaluatedByEvaluator } from "@/service/evaluasi3";
+import { TrainingEvaluasi3Summary, UserTrainingEvaluation3 } from "@/types/evaluasi3";
+import Link from "next/link";
 interface StatusEvaluation3{
   evaluator_id : number;
   user_id : number;
@@ -13,12 +11,13 @@ interface StatusEvaluation3{
   pelatihan_id: number
 }
 
+
 const TableEvaluationTraining2 = () => {
   const { userData } = useAuth();
   const [trainingData, setTrainingData] = useState<UserTrainingEvaluation3[]>(
     [],
   );
-  const [trainingDataAdmin, setTrainingDataAdmin] = useState<UserTraining[]>(
+  const [trainingDataAdmin, setTrainingDataAdmin] = useState<TrainingEvaluasi3Summary[]>(
     [],
   );
 
@@ -39,44 +38,37 @@ const TableEvaluationTraining2 = () => {
     }
   };
 
-  const fetchAllUserAndTheirTrainings = useCallback(async () => {
+  const fetchUsersEvaluatedByEvaluator = async () => {
     try {
-      const result = await getAllUserAndTheirTrainingsEvaluation3();
-      setTrainingData(result || []);
-    } catch (error) {
-      setError(true);
-    }
-  }, []);
 
-  const fetchAllTrainingsWithEvaluatedCountlv3 = async () => {
-    try {
-      console.log("masuk")
+      const result = await getUsersEvaluatedByEvaluator();
+      setTrainingData(result)
     } catch (error) {
       setError(true);
     }
   }
 
-  const fetchAllUserAndTheirTrainingsAdmin = async () => {
+  const fetchAllTrainingsWithEvaluatedCountlv3Admin = async () => {
     try {
-      const result = await getAllUserAndTheirTrainings();
+      const result = await fetchAllTrainingsWithEvaluatedCountlv3();
       setTrainingDataAdmin(result);
     } catch (error) {
       setError(true);
     }
-  };
+  }
+
 
   useEffect(()=>{
     fetchStatusEvaluation3();
   }, [])
 
   useEffect(() => {
-    if (userData?.role === "admin" || userData?.role === "super admin") fetchAllUserAndTheirTrainingsAdmin();
+    if (userData?.role === "admin" || userData?.role === "super admin") fetchAllTrainingsWithEvaluatedCountlv3Admin() ;
   }, [userData]);
 
   useEffect(() => {
-    if (userData?.role === "user") fetchAllUserAndTheirTrainings();
-    
-    }, [fetchAllUserAndTheirTrainings, userData?.level, userData?.role]);
+    if (userData?.role === "user") fetchUsersEvaluatedByEvaluator();
+  }, [userData]);
 
   const handleEvaluationClick = (
     tglSelesai: string,
@@ -93,17 +85,6 @@ const TableEvaluationTraining2 = () => {
       window.location.href = `/training/evaluation_training2/${trainingId}/${participanId}`;
     }
   };
-
-  const handleEvaluationClickAdmin = (
-    tglSelesai: string,
-    trainingId: number | undefined,
-    participanId: number,
-  ) => {
-    const trainingEndDate = new Date(tglSelesai);
-    const currentDate = new Date();
-    window.location.href = `/training/evaluation_training2/${trainingId}/${participanId}/details`;
-  };
-
 
   return (
     <>
@@ -191,77 +172,53 @@ const TableEvaluationTraining2 = () => {
           </div>
         </div>
       )}
+
+      
       <div className="flex flex-col">
         {(userData?.role === "admin" || userData?.role === "super admin") && (
           <table className="min-w-full border-collapse text-left text-sm text-gray-700 dark:text-gray-300">
             <thead>
               <tr className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white">
                 <th className="px-6 py-4">No</th>
-                <th className="px-6 py-4">NIKSAP</th>
-                <th className="px-6 py-4">Nama</th>
                 <th className="px-6 py-4">Judul Pelatihan</th>
-                <th className="px-6 py-4">Jenis Anggaran</th>
+                <th className="px-6 py-4">RKAP Pelatihan</th>
+                <th className="px-6 py-4">Lokasi Pelatihan</th>
                 <th className="px-6 py-4">Tanggal Acara</th>
-                <th className="px-6 py-4">Status Evaluasi</th>
+                <th className="px-6 py-4">Jumlah Yang Telah Evaluasi Level 3</th>
                 <th className="px-6 py-4">Action</th>
               </tr>
             </thead>
             <tbody>
               {trainingDataAdmin.map((training, key) => (
                 <tr
-                  key={training.user_id}
+                  key={training.training_id}
                   className="group transform transition-transform duration-200 hover:scale-[1.02] hover:bg-gray-50 dark:hover:bg-gray-800"
                 >
                   <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
                     {key + 1}
                   </td>
                   <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                    {training.username}
-                  </td>
-                  <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                    {training.name}
-                  </td>
-                  <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
                     {training.training_title}
                   </td>
                   <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                    {training.training_type}
+                    {training.rkap_training_type}
+                  </td>
+                  <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
+                    {training.training_location}
                   </td>
                   <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
                     {training.start_date} - {training.end_date}
                   </td>
                   <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                    {training.has_completed_evaluation
-                      ? "Selesai"
-                      : "Belum Selesai"}
+                    {training.evaluated3_count}
                   </td>
-                  <td className="flex px-6 py-4 text-right">
-                    <button
-                      onClick={() =>
-                        handleEvaluationClickAdmin(
-                          training.end_date,
-                          training.training_id,
-                          training.user_id,
-                        )
-                      }
-                      className="mr-2 inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-green-400 to-green-600 px-4 py-2 text-sm font-medium text-white shadow-md hover:from-green-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-green-400"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M11 5h2m-1 14V5m9 4H4m5 0a1 1 0 000 2h6a1 1 0 000-2H9z"
-                        />
-                      </svg>
-                      <span>Detail</span>
-                    </button>
+                  <td>
+                    <p className="mr-2 inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-green-400 to-green-600 px-4 py-2 text-sm font-medium text-white shadow-md hover:from-green-500 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-green-400">
+                      <Link
+                        href={`/training/evaluation_training2/${training.training_id}`}
+                        key={training.training_id}
+                      >Detail</Link>
+                    </p>
                   </td>
                 </tr>
               ))}

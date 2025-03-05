@@ -68,10 +68,11 @@ export const getDetailDataFreeTextTraining = async (pelatihanId : number) => {
   }
 };
 
-export const getDetailDataFreeTextUser = async(user_id: number, training_id: number) => {
+export const getDetailDataFreeTextUser = async( training_id: number, user_id: number) => {
+  
     try {
         const result = await axios.get(
-            `${baseUrl}/api/evaluation/freetext/${user_id}/${training_id}`,
+            `${baseUrl}/api/evaluation/freetext/${training_id}/${user_id}`,
             {
               withCredentials: true,
             },

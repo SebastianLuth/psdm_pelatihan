@@ -1,4 +1,4 @@
-import { UserTrainingEvaluation3 } from "@/types/evaluasi3";
+import { TrainingEvaluasi3Summary, UserTrainingEvaluation3 } from "@/types/evaluasi3";
 import axios from "axios";
 import { format } from "date-fns";
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -41,8 +41,7 @@ export const submitAnswerEvaluation3 = async (
   }
 };
 
-export const getAllUserAndTheirTrainingsEvaluation3 = async (
-): Promise<UserTrainingEvaluation3[] | undefined> => {
+export const fetchAllTrainingsWithEvaluatedCountlv3 = async () => {
   try {
     const result = await axios.get(
       `${baseUrl}/api/evaluation3`,
@@ -52,32 +51,55 @@ export const getAllUserAndTheirTrainingsEvaluation3 = async (
 
     );
     const data = result.data.data
-    const formattedData = data.map((training: UserTrainingEvaluation3) => ({
-      id : training.id,
-      evaluator_id: training.evaluator_id,
-      evaluator_name: training.evaluator_name,
-      evaluator_niksap: training.evaluator_niksap,
-      evaluator_jabatan: training.evaluator_jabatan,
-      pelatihan_id: training.pelatihan_id,
-      judul_pelatihan: training.judul_pelatihan,
-      RKAP_type_pelatihan: training.RKAP_type_pelatihan,
-      metode_pelatihan: training.metode_pelatihan,
-      lembaga_pelatihan: training.lembaga_pelatihan,
-      lokasi_pelatihan: training.lokasi_pelatihan,
-      tgl_mulai_pelatihan: format(new Date(training.tgl_mulai_pelatihan), "dd MMMM yyyy"),
-      tgl_selesai_pelatihan: format(new Date(training.tgl_selesai_pelatihan), "dd MMMM yyyy"),
-      user_id: training.user_id,
-      nama_peserta: training.nama_peserta,
-      niksap_peserta: training.niksap_peserta,
-      jabatan_peserta: training.jabatan_peserta,
-      nomor_hp_peserta: training.nomor_hp_peserta,
-      unit_kerja_peserta: training.unit_kerja_peserta
+    const formattedData = data.map((training: TrainingEvaluasi3Summary) => ({
+      ...training,
+      start_date: format(new Date(training.start_date), "dd MMMM yyyy"),
+      end_date: format(new Date(training.end_date), "dd MMMM yyyy"),
     }));
     return formattedData;
   } catch (error) {
     throw error;
   }
 };
+
+export const getUsersEvaluatedByEvaluator = async () =>{
+  try {
+    const result = await axios.get(
+      `${baseUrl}/api/evaluation3`,
+      {
+        withCredentials: true,
+      }
+
+    );
+     const formattedData = result.data.data.map((training : UserTrainingEvaluation3) => ({
+       ...training,
+       tgl_mulai_pelatihan: format(new Date(training.tgl_mulai_pelatihan), "dd MMMM yyyy"),
+       tgl_selesai_pelatihan: format(new Date(training.tgl_selesai_pelatihan), "dd MMMM yyyy"),
+     }))
+
+    return formattedData
+  } catch (error) {
+    throw error
+  }
+}
+
+export const getDetailAllEvaluatorAndUserEvaluastion3 = async (trainingId: number) => {
+  try {
+    const result = await axios.get(
+      `${baseUrl}/api/evaluation3/evaluasi/${trainingId}`,
+      {
+        withCredentials: true
+      }
+    )
+
+    const data = result.data.data;
+
+    return data
+
+  } catch (error) {
+    throw error;
+  }
+}
 
 export const getAllEvaluationData = async (
   training_id: number,

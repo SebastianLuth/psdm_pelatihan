@@ -151,18 +151,18 @@ const ScrollableCards: React.FC = () => {
   return (
     <>
       {(userData?.role === "admin" || userData?.role === "super admin") && (
-        <div className="grid grid-cols-8 gap-4 p-4 md:grid-cols-7">
+        <div className="flex gap-4 p-4">
           {/* Say Hay TO admin */}
-          <div className="col-span-1 rounded-lg bg-blue-500 p-6 pb-0 text-white shadow-lg md:col-span-3">
+          <div className=" rounded-lg bg-blue-500 p-6 pb-0 text-white shadow-lg md:col-span-3">
             <div className="flex items-center md:items-start">
               <div className="flex flex-col items-center justify-center">
-                <h1 className="text-xl font-bold">
+                <h1 className="text-base font-bold">
                   {userData?.nama?.split(" ").slice(0, 2).join(" ")}
                 </h1>{" "}
                 <p className="text-xs">Selamat datang di N4TALENT</p>
                 <div className="mt-3 flex flex-col justify-center space-y-4 md:flex-row md:justify-start md:space-x-6 md:space-y-0">
                   <div className="rounded-lg bg-blue-800 p-4 text-center">
-                    <p className="text-xl font-bold">
+                    <p className="text-base font-bold">
                       {countBudgetData.penyerapanAnggaran
                         ? formatCurrencyShort(
                             countBudgetData.penyerapanAnggaran,
@@ -172,7 +172,7 @@ const ScrollableCards: React.FC = () => {
                     <p className="text-xs">Terpakai</p>
                   </div>
                   <div className="rounded-lg bg-blue-800 p-4 text-center">
-                    <p className="text-xl font-bold">
+                    <p className="text-base font-bold">
                       {Math.round(
                         (countBudgetData.penyerapanAnggaran /
                           countBudgetData.totalAnggaran) *
@@ -196,20 +196,18 @@ const ScrollableCards: React.FC = () => {
           {/* Card Scrollable */}
           <div
             ref={scrollRef}
-            className="col-span-1 flex cursor-grab space-x-4 overflow-x-auto active:cursor-grabbing md:col-span-4"
+            className=" flex cursor-grab space-x-4 overflow-x-auto active:cursor-grabbing md:col-span-4"
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeaveOrUp}
             onMouseUp={handleMouseLeaveOrUp}
             style={{
-              maxHeight: "240px",
-              maxWidth: "1420px",
               overflow: "hidden",
               marginLeft: "auto",
               marginRight: "auto",
             }}
           >
-            <div className="flex min-w-fit space-x-4">
+            <div className="flex min-w-fit space-x-2">
               <CardDataStats
                 title="Total Anggaran"
                 total={

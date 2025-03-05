@@ -1,6 +1,6 @@
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import Evaluasi3TrainingComponent from "@/components/Layouts/Detail/AnswerQuestionEvaluasi3";
+import AnswerQuestionEvaluasi3Component from "@/components/Layouts/Detail/AnswerQuestionEvaluasi3";
 
 export const metadata = {
   title: "N4TALENT | Jawab Evaluasi 3",
@@ -14,7 +14,7 @@ const Evaluasia3TrainingPage = () => {
   return (
     <ProtectedRoute>
       <DefaultLayout>
-        <Evaluasi3TrainingComponent />
+        <AnswerQuestionEvaluasi3Component />
       </DefaultLayout>
     </ProtectedRoute>
   );

@@ -9,7 +9,8 @@ export interface QuestionEvaluation3 {
   kategori: string;
 }
 
-const Evaluasi3TrainingComponent = () => {
+
+const AnswerQuestionEvaluasi3Component = () => {
   const router = useRouter();
   const trainingId = useParams().training_id;
   const userId = useParams().participan_id;
@@ -223,4 +224,4 @@ const Evaluasi3TrainingComponent = () => {
   );
 };
 
-export default Evaluasi3TrainingComponent;
+export default AnswerQuestionEvaluasi3Component;
