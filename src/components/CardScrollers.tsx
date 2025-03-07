@@ -151,9 +151,9 @@ const ScrollableCards: React.FC = () => {
   return (
     <>
       {(userData?.role === "admin" || userData?.role === "super admin") && (
-        <div className="flex gap-4 p-4">
+        <div className="flex flex-col lg:flex-row gap-4 p-4">
           {/* Say Hay TO admin */}
-          <div className=" rounded-lg bg-blue-500 p-6 pb-0 text-white shadow-lg md:col-span-3">
+          <div className=" rounded-lg bg-blue-500 p-6 pb-0 text-white shadow-lg w-full lg:w-1/3">
             <div className="flex items-center md:items-start">
               <div className="flex flex-col items-center justify-center">
                 <h1 className="text-base font-bold">
@@ -196,7 +196,7 @@ const ScrollableCards: React.FC = () => {
           {/* Card Scrollable */}
           <div
             ref={scrollRef}
-            className=" flex cursor-grab space-x-4 overflow-x-auto active:cursor-grabbing md:col-span-4"
+            className=" flex cursor-grab space-x-4 overflow-x-auto active:cursor-grabbing w-full lg:w-2/3"
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeaveOrUp}
@@ -223,6 +223,20 @@ const ScrollableCards: React.FC = () => {
                 />
               </CardDataStats>
               <CardDataStats
+                title="Penyerapan Anggaran"
+                total={
+                  countBudgetData.penyerapanAnggaran
+                    ? countBudgetData.penyerapanAnggaran.toLocaleString()
+                    : 0
+                }
+                colorClass="bg-gradient-to-br from-green-100 to-green-200"
+              >
+                <div
+                  id="chart-penyerapan-anggaran"
+                  style={{ width: 100, height: 100 }}
+                />
+              </CardDataStats>
+              <CardDataStats
                 title="Sisa Anggaran"
                 total={
                   countBudgetData.sisaAnggaran
@@ -238,20 +252,7 @@ const ScrollableCards: React.FC = () => {
                   style={{ width: 100, height: 100 }}
                 />
               </CardDataStats>
-              <CardDataStats
-                title="Penyerapan Anggaran"
-                total={
-                  countBudgetData.penyerapanAnggaran
-                    ? countBudgetData.penyerapanAnggaran.toLocaleString()
-                    : 0
-                }
-                colorClass="bg-gradient-to-br from-green-100 to-green-200"
-              >
-                <div
-                  id="chart-penyerapan-anggaran"
-                  style={{ width: 100, height: 100 }}
-                />
-              </CardDataStats>
+            
             </div>
           </div>
         </div>

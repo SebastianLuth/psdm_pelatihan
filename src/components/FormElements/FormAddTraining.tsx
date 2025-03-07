@@ -16,6 +16,8 @@ import { getAllVendorData } from "@/service/vendor";
 import { vendorType } from "@/types/vendor";
 
 const AddTraining = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const entriesPerPage = 25;
   const [trainingData, setTrainingData] = useState<Partial<TrainingType>>({});
   const [jenisPelatihanRKAP, setJenisPelatihanRKAP] = useState<budgetType[]>(
     [],
@@ -25,13 +27,15 @@ const AddTraining = () => {
 
   const [selectedUnitKerja, setSelectedUnitKerja] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState("");
+
   const [selectedParticipants, setSelectedParticipants] = useState<number[]>(
     [],
   );
+
+  const [selectedParticipantShow, setSelectedParticipantShow] = useState<User[]>([]);
   const [lembagaData, setLembagaData] = useState<vendorType[]>([]);
 
   const [participants, setParticipants] = useState<User[]>([]);
-
 
   // Get All Lembaga
   const fetchLembagaData = async () => {
@@ -51,9 +55,8 @@ const AddTraining = () => {
   // Get all user by unit kerja
   const fetchAllUserByUnitKerja = useCallback(async () => {
     try {
-      if (!selectedUnitKerja) return;
       const response = await getAllDataBawahanInUnitKerja(
-        Number(selectedUnitKerja),
+        selectedUnitKerja ? Number(selectedUnitKerja) : 0
       );
       setParticipants(response);
     } catch (error) {
@@ -70,10 +73,30 @@ const AddTraining = () => {
     }
   };
 
-  const handleParticipantSelection = (id: number) => {
-    setSelectedParticipants((prev) =>
-      prev.includes(id) ? prev.filter((pid) => pid !== id) : [...prev, id],
-    );
+  const handleParticipantSelection = (participantId: number) => {
+    setSelectedParticipants((prev) => {
+      if (prev.includes(participantId)) {
+        // Jika sudah dipilih, hapus dari daftar
+        return prev.filter((id) => id !== participantId);
+      } else {
+        // Jika belum dipilih, tambahkan ke daftar
+        return [...prev, participantId];
+      }
+    });
+  
+    setSelectedParticipantShow((prev) => {
+      const participant = participants.find((p) => p.id === participantId);
+      if (!participant) return prev;
+  
+      if (prev.some((p) => p.id === participantId)) {
+        // Jika sudah dipilih, hapus dari daftar
+        return prev.filter((p) => p.id !== participantId);
+      } else {
+        // Jika belum dipilih, tambahkan ke daftar
+        return [...prev, participant];
+      }
+    });
+    
   };
 
   const handleInputChange = (
@@ -83,12 +106,12 @@ const AddTraining = () => {
   
     if (name === "jenis") {
       try {
-        const parsedValue = JSON.parse(value); // Ubah JSON string menjadi object
+        const parsedValue = JSON.parse(value); 
   
         setTrainingData((prevData) => ({
           ...prevData,
-          jenis: parsedValue.jenis, // Simpan jenis_anggaran
-          anggaran_id: parsedValue.id, // Simpan ID anggaran
+          jenis: parsedValue.jenis, 
+          anggaran_id: parsedValue.id, 
         }));
   
         console.log("Training Data Updated:", parsedValue);
@@ -103,9 +126,7 @@ const AddTraining = () => {
     }
   };
   
-  
-  
-  
+
   const handleAddTraining = async (e: FormEvent) => {
     e.preventDefault();
     try {
@@ -167,6 +188,18 @@ const AddTraining = () => {
   const availableYears = new Set(jenisPelatihanRKAP.map((item) => item.tahun_anggaran));
   const selectedYear = Array.from(availableYears)[0] || new Date().getFullYear();
 
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   useEffect(() => {
     if (selectedMonth) {
       const filtered = jenisPelatihanRKAP.filter(
@@ -177,6 +210,20 @@ const AddTraining = () => {
       setFilteredRKAP([]); // Reset jika bulan tidak dipilih
     }
   }, [selectedMonth, jenisPelatihanRKAP]);
+
+  // Filter berdasarkan searchTerm SEBELUM melakukan pagination
+  const filteredParticipants = participants.filter((participant) =>
+    participant.nama.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Hitung ulang total data setelah pencarian
+const totalEntries = filteredParticipants.length;
+const totalPages = Math.ceil(totalEntries / entriesPerPage);
+
+// Lakukan pagination SETELAH filtering
+const startIndex = (currentPage - 1) * entriesPerPage;
+const endIndex = startIndex + entriesPerPage;
+const currentData = filteredParticipants.slice(startIndex, endIndex);
 
   return (
     <div className="max-w-6xl mx-auto bg-white p-12 shadow-md rounded-lg dark:border-strokedark dark:bg-boxdark">
@@ -396,13 +443,33 @@ const AddTraining = () => {
         </div>
 
         {/* Fitur seleksi peserta */}
-        <div className="col-span-1 md:col-span-3">
+        <div className="col-span-1 md:col-span-3 mt-5">
           {/* Header */}
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-            {/* Dropdown Unit Kerja */}
-            <SelectUnitKerja onUnitKerjaChange={setSelectedUnitKerja} />
-
-            <h1>Jumlah Peserta yang telah ditambahkan : {}</h1>
+            
+            <div className = "flex flex-col gap-y-3 w-full md:w-2/3">
+              <h1 className="text-lg font-semibold text-gray-700 flex items-center gap-2">Jumlah Peserta yang telah ditambahkan :  
+                <span className="px-3 py-1 bg-blue-500 text-white text-sm rounded-full">
+                  {selectedParticipantShow.length}
+                </span>
+              </h1>
+              <ol className="mt-2 space-y-2">
+                {
+                  selectedParticipantShow.map((participant, index) => (
+                    <li 
+                      key={index} 
+                      className="p-3 bg-gray-100 rounded-md flex justify-between items-center shadow-sm"
+                    >
+                      <div>
+                        <p className="text-sm font-medium text-gray-800">{participant.nama}</p>
+                        <p className="text-xs text-gray-500">{participant.username}</p>
+                      </div>
+                    </li>
+                  ))
+                }
+              </ol>
+            </div>
+            
 
             {/* Input Cari Peserta */}
             <div className="w-full md:w-1/3">
@@ -451,13 +518,14 @@ const AddTraining = () => {
               {/* Body Tabel */}
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                 {participants.length > 0 ? (
-                  participants
+                  currentData
                     .filter((participant) =>
                       participant.nama
                         .toLowerCase()
                         .includes(searchTerm.toLowerCase()),
                     )
                     .map((participant, index) => (
+                      <>
                       <tr
                         key={participant.id}
                         className="group transform transition-transform duration-200 hover:scale-[1.02] hover:bg-gray-50 dark:hover:bg-gray-800"
@@ -472,7 +540,9 @@ const AddTraining = () => {
                             className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                             checked={selectedParticipants.includes(
                               participant.id,
-                            )}
+                            ) 
+                          
+                          }
                             onChange={() =>
                               handleParticipantSelection(participant.id)
                             }
@@ -488,6 +558,7 @@ const AddTraining = () => {
                           {participant.jabatan}
                         </td>
                       </tr>
+                      </>
                     ))
                 ) : (
                   <tr>
@@ -500,7 +571,31 @@ const AddTraining = () => {
                   </tr>
                 )}
               </tbody>
+              
             </table>
+            <div className="p-4 mt-4 flex items-center justify-between text-sm text-gray-500">
+                  <span> Showing {startIndex + 1} to{" "}
+                  {Math.min(endIndex, totalEntries)} of {totalEntries} entries
+                  </span>
+                  <div className="space-x-2">
+                  <button
+                      type="button"
+                      className="rounded-lg bg-gray-200 px-3 py-1 transition hover:bg-gray-300"
+                      onClick={handlePreviousPage}
+                      disabled={currentPage === 1}
+                    >
+                      Previous
+                    </button>
+                    <button
+                      type="button"
+                      className="rounded-lg bg-gray-200 px-3 py-1 transition hover:bg-gray-300"
+                      onClick={handleNextPage}
+                      disabled={currentPage === totalPages}
+                    >
+                      Next
+                    </button>
+                  </div>
+              </div>
           </div>
         </div>
 

@@ -2,21 +2,38 @@
 import React, { useEffect, useRef } from 'react';
 import * as echarts from 'echarts';
 
-const RealisasiJamPeserta = () => {
+
+type RealisaiProps = {
+    jumlahKeseluruhanJamPelajaran ?: number  ;
+    jumlahKeseluruhanPeserta ?: number ;
+
+    realiasiJamPelajaran? : number;
+    realisasiPeserta? : number;
+
+    title  : string;
+}
+
+const RealisasiJamPelAndPeserta = ({
+    jumlahKeseluruhanJamPelajaran , 
+    jumlahKeseluruhanPeserta , 
+    realiasiJamPelajaran,  
+    realisasiPeserta,
+    title
+    }: RealisaiProps) => {
     const chartRef = useRef(null);
 
     useEffect(() => {
         if (!chartRef.current) return;
-        
+
         const chart = echarts.init(chartRef.current);
 
         const option = {
             title: {
-                text: 'Realisasi Jumlah Peserta',
+                text: title,
                 left: 'center',
                 top: 10,
                 textStyle: {
-                    fontSize: 14,
+                    fontSize: 12, // Ukuran font lebih kecil
                     fontWeight: 'bold'
                 }
             },
@@ -27,24 +44,27 @@ const RealisasiJamPeserta = () => {
             legend: {
                 orient: 'horizontal',
                 bottom: 5,
-                data: ['Realisasi', 'Rencana']
+                data: ['Realisasi', 'Rencana'],
+                textStyle: {
+                    fontSize: 10 // Ukuran font legend lebih kecil
+                }
             },
             series: [
                 {
                     name: 'Peserta',
                     type: 'pie',
-                    radius: ['25%', '45%'],
+                    radius: ['30%', '50%'], // Radius lebih kecil
                     avoidLabelOverlap: false,
                     label: {
                         show: true,
                         position: 'outside',
                         formatter: '{b}: {c} ({d}%)',
-                        fontSize: 12
+                        fontSize: 10 // Ukuran font label lebih kecil
                     },
                     emphasis: {
                         label: {
                             show: true,
-                            fontSize: '10',
+                            fontSize: 10, // Ukuran font emphasis lebih kecil
                             fontWeight: 'semibold'
                         }
                     },
@@ -52,8 +72,8 @@ const RealisasiJamPeserta = () => {
                         show: true
                     },
                     data: [
-                        { value: 320, name: 'Realisasi' },
-                        { value: 500, name: 'Rencana' }
+                        { value: realiasiJamPelajaran? realiasiJamPelajaran : realisasiPeserta, name: 'Realisasi' },
+                        { value: jumlahKeseluruhanJamPelajaran? jumlahKeseluruhanJamPelajaran : jumlahKeseluruhanPeserta, name: 'Rencana' }
                     ]
                 }
             ]
@@ -61,18 +81,19 @@ const RealisasiJamPeserta = () => {
 
         chart.setOption(option);
 
-        window.addEventListener('resize', () => chart.resize());
+        const handleResize = () => chart.resize();
+        window.addEventListener('resize', handleResize);
         return () => {
             chart.dispose();
-            window.removeEventListener('resize', () => chart.resize());
+            window.removeEventListener('resize', handleResize);
         };
-    }, []);
+    }, [jumlahKeseluruhanJamPelajaran, jumlahKeseluruhanPeserta, realiasiJamPelajaran, realisasiPeserta, title]);
 
     return (
-        <div className="p-6 bg-white rounded-2xl shadow-md w-[450px]">
-            <div ref={chartRef} style={{ width: '100%', height: '300px' }} />
+        <div className="p-4 bg-white rounded-2xl shadow-md w-full max-w-[300px] mx-auto"> 
+            <div ref={chartRef} style={{ width: '100%', height: '200px' }} /> 
         </div>
     )
 };
 
-export default RealisasiJamPeserta;
+export default RealisasiJamPelAndPeserta;
