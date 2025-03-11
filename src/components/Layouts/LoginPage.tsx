@@ -62,20 +62,17 @@ const handleLogin = useCallback(
           <div className="relative z-50 w-full rounded-lg bg-white shadow sm:max-w-md md:mt-0 xl:p-0">
             <div className="mt-10 flex justify-center text-xl font-semibold text-gray-900 ">
               <Image
-                width={70}
-                height={70}
-                src="/assets/logoptpn4.png"
+                width={350}
+                height={210}
+                src="/images/logo/palapa.webp"
                 alt="logo ptpn4"
               />
             </div>
-            <div className="space-y-2 p-6 sm:p-8 md:space-y-6">
-              <h1 className="text-center text-xl leading-tight tracking-tight text-gray-900 md:text-2xl ">
-                Selamat Datang di <span className="text-bold"> N4TALENT </span>
-              </h1>
+            <div className="space-y-2 p-6 sm:p-8 md:space-y-4">
               <form className="space-y-4 md:space-y-6" onSubmit={handleLogin}>
                 <div>
                   <label className="mb-2 block text-sm font-medium text-gray-900 ">
-                    Username
+                    NIKSAP
                   </label>
                   <input
                     type="text"
@@ -121,8 +118,8 @@ const handleLogin = useCallback(
             <div className="mb-6">
               <div className="flex flex-col text-center text-xs text-gray-600 sm:block ">
                 <span>
-                  N4TALENT © {new Date().getFullYear()} PT Perkebunan Nusantara IV -
-                  SDM{" "}
+                  PALAPA © {new Date().getFullYear()} PT Perkebunan Nusantara IV -
+                  DPSB{" "}
                 </span>
               </div>
             </div>

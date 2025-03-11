@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useAuth } from "@/context/AuthContext";
 import * as echarts from "echarts";
 import { getCountBudgetPerYears } from "@/service/budget";
+import { PieChartRealisasiStatusEvaluasi } from "./Chart/PieChartRealisasiStatusEvaluasi";
 
 interface CountBudgetData {
   tahun: number;
@@ -15,7 +16,6 @@ interface CountBudgetData {
 
 const ScrollableCards: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [isDragging, setIsDragging] = useState(false);
   const [error, setError] = useState(false);
   const [countBudgetData, setCountBudgetData] = useState<CountBudgetData>({
     tahun: 0,
@@ -23,23 +23,10 @@ const ScrollableCards: React.FC = () => {
     sisaAnggaran: 0,
     penyerapanAnggaran: 0,
   });
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
   const { userData } = useAuth();
 
   const year = new Date().getFullYear();
 
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if (scrollRef.current) {
-      setIsDragging(true);
-      setStartX(e.pageX - scrollRef.current.offsetLeft);
-      setScrollLeft(scrollRef.current.scrollLeft);
-    }
-  };
-
-  const handleMouseLeaveOrUp = () => {
-    setIsDragging(false);
-  };
 
   const fetchCountBudgetPerYears = useCallback(async () => {
     try {
@@ -55,63 +42,8 @@ const ScrollableCards: React.FC = () => {
     }
   }, [year]);
 
-  const renderChart = useCallback(
-    (
-      container: HTMLDivElement | null,
-      value: number,
-      title: string,
-      color: string,
-    ) => {
-      if (!container) return;
 
-      const chart = echarts.init(container);
-      chart.setOption({
-        title: {
-          text: `${Math.round((value / countBudgetData.totalAnggaran) * 100)}%`,
-          left: "center",
-          top: "center",
-          textStyle: {
-            fontSize: 20,
-            fontWeight: "bold",
-          },
-        },
-        series: [
-          {
-            type: "pie",
-            radius: ["70%", "90%"],
-            avoidLabelOverlap: false,
-            label: {
-              show: false,
-            },
-            labelLine: {
-              show: false,
-            },
-            data: [
-              { value, name: title, itemStyle: { color } },
-              {
-                value: countBudgetData.totalAnggaran - value,
-                name: "Remaining",
-                itemStyle: { color: "#e0e0e0" },
-              },
-            ],
-          },
-        ],
-      });
-
-      window.addEventListener("resize", () => {
-        chart.resize();
-      });
-    },
-    [countBudgetData.totalAnggaran],
-  );
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging || !scrollRef.current) return;
-    e.preventDefault();
-    const x = e.pageX - scrollRef.current.offsetLeft;
-    const walk = (x - startX) * 1.5; // Speed multiplier
-    scrollRef.current.scrollLeft = scrollLeft - walk;
-  };
+  
   const formatCurrencyShort = (value: number): string => {
     if (value >= 1_000_000_000) {
       return `${(value / 1_000_000_000).toFixed()} miliar`;
@@ -128,33 +60,14 @@ const ScrollableCards: React.FC = () => {
     fetchCountBudgetPerYears();
   }, [year, fetchCountBudgetPerYears]);
 
-  useEffect(() => {
-    renderChart(
-      document.getElementById("chart-total-anggaran") as HTMLDivElement,
-      countBudgetData.totalAnggaran,
-      "Total Anggaran",
-      "#ff6b6b",
-    );
-    renderChart(
-      document.getElementById("chart-sisa-anggaran") as HTMLDivElement,
-      countBudgetData.sisaAnggaran,
-      "Sisa Anggaran",
-      "#4caf50",
-    );
-    renderChart(
-      document.getElementById("chart-penyerapan-anggaran") as HTMLDivElement,
-      countBudgetData.penyerapanAnggaran,
-      "Penyerapan Anggaran",
-      "#2196f3",
-    );
-  }, [countBudgetData, renderChart]);
+  
   return (
     <>
       {(userData?.role === "admin" || userData?.role === "super admin") && (
         <div className="flex flex-col lg:flex-row gap-4 p-4">
           {/* Say Hay TO admin */}
-          <div className=" rounded-lg bg-blue-500 p-6 pb-0 text-white shadow-lg w-full lg:w-1/3">
-            <div className="flex items-center md:items-start">
+          <div className=" rounded-lg bg-blue-500 p-8 pb-0 text-white shadow-lg w-full lg:w-2/5">
+            <div className="flex jutify-center items-center md:items-start gap-4">
               <div className="flex flex-col items-center justify-center">
                 <h1 className="text-base font-bold">
                   {userData?.nama?.split(" ").slice(0, 2).join(" ")}
@@ -197,17 +110,13 @@ const ScrollableCards: React.FC = () => {
           <div
             ref={scrollRef}
             className=" flex cursor-grab space-x-4 overflow-x-auto active:cursor-grabbing w-full lg:w-2/3"
-            onMouseDown={handleMouseDown}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeaveOrUp}
-            onMouseUp={handleMouseLeaveOrUp}
             style={{
               overflow: "hidden",
               marginLeft: "auto",
               marginRight: "auto",
             }}
           >
-            <div className="flex min-w-fit space-x-2">
+            <div className="flex min-w-fit space-x-4">
               <CardDataStats
                 title="Total Anggaran"
                 total={
@@ -217,9 +126,11 @@ const ScrollableCards: React.FC = () => {
                 }
                 colorClass="bg-gradient-to-br from-pink-100 to-pink-200"
               >
-                <div
-                  id="chart-total-anggaran"
-                  style={{ width: 100, height: 100 }}
+                <PieChartRealisasiStatusEvaluasi
+                  value={countBudgetData.totalAnggaran}
+                  title="Total Anggaran"
+                  color="#4caf50"
+                  total={countBudgetData.totalAnggaran}                
                 />
               </CardDataStats>
               <CardDataStats
@@ -231,9 +142,11 @@ const ScrollableCards: React.FC = () => {
                 }
                 colorClass="bg-gradient-to-br from-green-100 to-green-200"
               >
-                <div
-                  id="chart-penyerapan-anggaran"
-                  style={{ width: 100, height: 100 }}
+                <PieChartRealisasiStatusEvaluasi
+                  value={countBudgetData.penyerapanAnggaran}
+                  title="Penyerapan Anggaran"
+                  color="#ed4a4a"
+                  total={countBudgetData.totalAnggaran}                
                 />
               </CardDataStats>
               <CardDataStats
@@ -247,9 +160,11 @@ const ScrollableCards: React.FC = () => {
                 colorClass="bg-gradient-to-br from-blue-100 to-blue-200"
                 levelDown
               >
-                <div
-                  id="chart-sisa-anggaran"
-                  style={{ width: 100, height: 100 }}
+                <PieChartRealisasiStatusEvaluasi
+                  value={countBudgetData.sisaAnggaran}
+                  title="Sisa Anggaran"
+                  color="#ff4f00"
+                  total={countBudgetData.totalAnggaran}                
                 />
               </CardDataStats>
             

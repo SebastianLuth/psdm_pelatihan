@@ -9,14 +9,24 @@ interface Evaluation {
     color: string;
 }
 
-const evaluations: Evaluation[] = [
-    { label: "Evaluasi Level 1", value: 750, max: 1500, color: "#34D399" }, // Hijau
-    { label: "Evaluasi Level 2", value: 300, color: "#8B5CF6" }, // Ungu
-    { label: "Evaluasi Feedback", value: 700, max: 1100, color: "#FB923C" }, // Orange
-];
+interface StatusEvaluationProps {
+    evaluation1TotalParticipant : number;
+    evaluation1TotalEvaluated : number;
+    evaluation1TotalFreetext: number;
+    evaluation3TotalEvaluated : number;
+}
 
-const StatusEvaluation: React.FC = () => {
+
+
+const StatusEvaluation = ( {evaluation1TotalParticipant, evaluation1TotalEvaluated, evaluation1TotalFreetext, evaluation3TotalEvaluated} : StatusEvaluationProps) => {
     const chartRef = useRef<HTMLDivElement>(null);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const evaluations: Evaluation[] = [
+        { label: "Evaluasi Level 1", value: evaluation1TotalEvaluated, max: evaluation1TotalParticipant, color: "#34D399" }, // Hijau
+        { label: "Evaluasi Level 3", value: evaluation3TotalEvaluated, color: "#8B5CF6" }, // Ungu
+        { label: "Evaluasi Feedback", value: evaluation1TotalFreetext, max: evaluation1TotalParticipant, color: "#FB923C" }, // Orange
+    ];
 
     useEffect(() => {
         if (!chartRef.current) return;
@@ -42,12 +52,14 @@ const StatusEvaluation: React.FC = () => {
         return () => {
             chartInstance.dispose();
         };
-    }, []);
+    }, [evaluations]);
 
     return (
         
         <div className="p-6 bg-white rounded-2xl shadow-md w-full lg:w-[450px]">
-            <h2 className="text-xl font-bold text-gray-900">Status Evaluasi</h2>
+            <div className = "flex items-center justify-between">
+             <h2 className="text-xl font-bold text-gray-900">Status Evaluasi </h2>
+            </div>
             <div className="flex justify-between text-gray-500 text-sm mt-2 mb-4">
                 <span>Evaluasi</span>
                 <span>Jumlah</span>

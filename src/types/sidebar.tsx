@@ -274,7 +274,7 @@ export const menuGroups = [
           label: "Serapan Anggaran",
           route: "#",
           children: [
-            { label: "Evaluasi Level 1", route: "/profile"  },
+            { label: "Investasi Biaya Pelatihan", route: "/profile"  },
           ],
           role : "user"
         },

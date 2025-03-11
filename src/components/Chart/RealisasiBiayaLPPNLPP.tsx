@@ -3,131 +3,145 @@ import React, { useEffect, useRef, useMemo } from "react";
 import * as echarts from "echarts";
 import { tahunOptions } from "@/types/budget-types";
 
-const formatCurrency = (value: number): string => {
-    if (value >= 1_000_000_000) {
-        return `${(value / 1_000_000_000).toFixed(1)} M`;
-    } else if (value >= 1_000_000) {
-        return `${(value / 1_000_000).toFixed(0)} JT`;
-    }
-    return value.toString();
-};
-
 type RealisasiBiayaChartProps = {
-    dataLPP?: number[] | null;
-    dataNonLPP?: number[] | null;
-    dataKeseluruhan?: number[] | null;
+    sisaAnggaranDataLpp : number[];
+    realisasiAnggaranDataLpp : number[];
+    sisaAnggaranDataNonLpp : number[];
+    realisasiAnggaranDataNonLpp: number[];
+    title : string ;
     categories: string[];
-    title: string;
     tahunAnggaran: number;
     onTahunChange: (tahun: number) => void; 
 };
 
-const RealisasiBiayaChart = ({ dataLPP, dataNonLPP, dataKeseluruhan,categories, title, tahunAnggaran, onTahunChange }: RealisasiBiayaChartProps) => {
+const formatNumber = (value: number) => {
+    if (value >= 1_000_000_000) {
+        return `${(value / 1_000_000_000).toFixed(1)}m`; // Format miliar (1.000.000.000 -> 1m)
+    } else if (value >= 1_000_000) {
+        return `${(value / 1_000_000).toFixed(1)}jt`; // Format juta (1.000.000 -> 1jt)
+    } else if (value >= 1_000) {
+        return `${(value / 1_000).toFixed(1)}rb`; // Format ribu (1.000 -> 1rb)
+    } else {
+        return value.toString(); // Biarkan angka asli jika di bawah 1.000
+    }
+};
+
+const RealisasiBiayaChart = ({ tahunAnggaran, onTahunChange, title, categories, sisaAnggaranDataLpp, realisasiAnggaranDataLpp , sisaAnggaranDataNonLpp, realisasiAnggaranDataNonLpp }: RealisasiBiayaChartProps) => {
     const chartRef = useRef<HTMLDivElement>(null);
 
-    // Gunakan useMemo agar series tidak selalu dihitung ulang jika props tidak berubah
-    const series = useMemo(() => {
-        const result: echarts.SeriesOption[] = [];
+     // Data dan opsi untuk EChart
+     const rawData = [
+        realisasiAnggaranDataLpp,
+        sisaAnggaranDataLpp
+    ];
 
-        if (dataLPP && dataLPP.length > 0) {
-            result.push({
-                name: "LPP",
-                type: "bar",
-                data: dataLPP,
-                itemStyle: { 
-                    color: "#3B82F6", 
-                    borderRadius: [6, 6, 0, 0], 
-                },
-                barWidth: 24,
-            });
+    const rawData2 = [
+        realisasiAnggaranDataNonLpp,
+        sisaAnggaranDataNonLpp
+    ];
+
+    const totalData = [];
+    for (let i = 0; i < rawData[0].length; ++i) {
+        let sum = 0;
+        for (let j = 0; j < rawData.length; ++j) {
+            sum += rawData[j][i];
         }
+        totalData.push(sum);
+    }
 
-        if (dataNonLPP && dataNonLPP.length > 0) {
-            result.push({
-                name: "Non LPP",
-                type: "bar",
-                data: dataNonLPP,
-                itemStyle: { 
-                    color: "#10B981", 
-                    borderRadius: [6, 6, 0, 0], 
-                },
-                barWidth: 24,
-            });
-        }
+    const grid = {
+        left: '5%',
+        right: '5%',
+        top: '15%',
+        bottom: '20%'
+    };
 
-        if (dataKeseluruhan && dataKeseluruhan.length > 0) {
-            result.push({
-                name: "Keseluruhan",
-                type: "line",
-                data: dataKeseluruhan,
-                itemStyle: { color: "#EF4444" },
-                lineStyle: { width: 4 },
-            });
-        }
+    const series = [
+        'Realisasi Anggaran LPP',
+        'Sisa Anggaran LPP',
+    ].map((name, sid) => {
+        return {
+            name,
+            type: 'bar',
+            stack: 'total',
+            barWidth: '40%',
+            label: {
+                show: true,
+                position: 'inside',
+                formatter: (params: any) => formatNumber(params.value) // Format label di dalam bar
+            },
+            data: rawData[sid]
+        };
+    });
 
-        return result;
-    }, [dataLPP, dataNonLPP, dataKeseluruhan]);
+    const series2 = [
+        'Realisasi Anggaran NON LPP',
+        'Sisa Anggaran NON LPP',
+    ].map((name, sid) => {
+        return {
+            name,
+            type: 'bar',
+            stack: 'total2',
+            barWidth: '40%',
+            label: {
+                show: true,
+                position: 'inside',
+                formatter: (params: any) => formatNumber(params.value) // Format label di dalam bar
+
+            },
+            data: rawData2[sid]
+        };
+    });
+
+    const doubleSeries = series.concat(series2);
+
+    const option = {
+        tooltip: {
+            trigger: 'axis', // Munculkan tooltip saat hover ke axis (batang bar)
+            axisPointer: {
+                type: 'shadow' // Tampilkan shadow untuk memperjelas batang yang dihover
+            },
+            formatter: (params: any) => {
+                let tooltipText = '';
+                params.forEach((param: any) => {
+                    tooltipText += `
+                        <div style="margin-bottom: 5px;">
+                            <strong>${param.seriesName}</strong>: ${param.value.toLocaleString()}
+                        </div>
+                    `;
+                });
+                return tooltipText;
+            }
+        },
+        legend: {
+            selectedMode: false
+        },
+        grid,
+        yAxis: {
+            type: 'value',
+            axisLabel: {
+                formatter: (value: number) => formatNumber(value)
+            }
+        },
+        xAxis: {
+            type: 'category',
+            data: categories
+        },
+        series: doubleSeries
+    };
 
     useEffect(() => {
-        if (!chartRef.current) return;
+        const chart = echarts.init(chartRef.current);
+        chart.setOption(option);
 
-        const chartInstance = echarts.init(chartRef.current);
-
-        const option: echarts.EChartsOption = {
-            title: {
-                text: title,
-                left: "center",
-                textStyle: { fontSize: 18, fontWeight: "bold", color: "#1F2937" },
-            },
-            tooltip: {
-                trigger: "axis",
-                backgroundColor: "rgba(0,0,0,0.8)",
-                borderRadius: 8,
-                padding: 10,
-                textStyle: { color: "#fff", fontSize: 12 },
-                formatter: (params: any) => {
-                    return params
-                        .map(
-                            (item: any) =>
-                                `<span style="display:inline-block;width:10px;height:10px;margin-right:4px;background-color:${item.color}"></span> 
-                                ${item.seriesName}: <b>Rp ${formatCurrency(item.value)}</b>`
-                        )
-                        .join("<br>");
-                },
-            },
-            legend: {
-                bottom: 10,
-                itemGap: 20,
-                textStyle: { fontSize: 12, color: "#374151" },
-            },
-            xAxis: {
-                type: "category",
-                data: categories,
-                axisLabel: { fontSize: 12, color: "#6B7280" },
-                axisLine: { lineStyle: { color: "#E5E7EB" } },
-            },
-            yAxis: {
-                type: "value",
-                axisLabel: {
-                    fontSize: 12,
-                    color: "#6B7280",
-                    formatter: formatCurrency,
-                },
-                splitLine: { lineStyle: { color: "#E5E7EB", type: "dashed" } },
-            },
-            series,
-            grid: { left: "10%", right: "10%", top: "20%", bottom: "25%" },
-        };
-
-        chartInstance.setOption(option);
-
+        // Bersihkan chart saat komponen di-unmount
         return () => {
-            chartInstance.dispose();
+            chart.dispose();
         };
-    }, [categories, series, title]);
-
+    }, [tahunAnggaran, categories]);
     return (
-        <div className="w-full h-72 bg-white rounded-xl shadow-lg p-4 mx-auto flex flex-col">
+        <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl shadow-lg p-4 mx-auto flex flex-col">
+            <h2 className="text-center text-2xl font-semibold mb-4">{title}</h2>
             <div className="flex justify-end mb-3">
                 <div className="relative">
                     <select 
@@ -161,8 +175,7 @@ const RealisasiBiayaChart = ({ dataLPP, dataNonLPP, dataKeseluruhan,categories, 
                     </div>
                 </div>
             </div>
-
-            <div ref={chartRef} className="w-full h-full"></div>
+            <div ref={chartRef} className="w-full min-h-[400px]"></div>
         </div>
 
     );

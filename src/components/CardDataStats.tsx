@@ -20,7 +20,7 @@ const CardDataStats: React.FC<CardDataStatsProps> = ({
   colorClass,
 }) => {
   return (
-    <div className={`relative rounded-lg ${colorClass} p-6 shadow-lg w-64`}>
+    <div className={`relative rounded-lg ${colorClass} p-6 shadow-lg w-60`}>
       {/* Background Decoration */}
       <div className="absolute -right-6 -top-6 h-20 w-20 rounded-full bg-white opacity-30 blur-xl"></div>
 
