@@ -3,7 +3,7 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
 
 export const metadata = {
-  title: "N4TALENT | Tambah User",
+  title: "PALAPA | Tambah User",
   description: "Tambah User RKAP",
   keywords: "PTPN4, anggaran RKAP, detail data anggaran, manajemen keuangan, pelatihan karyawan, pengembangan kompetensi",
 }

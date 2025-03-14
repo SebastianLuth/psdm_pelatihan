@@ -2,7 +2,6 @@
 import { useAuth } from "@/context/AuthContext";
 import { freetextData } from "@/types/freetext-type";
 import { trainingData } from "@/types/training-types";
-import { useParams } from "next/navigation";
 import React, { useCallback, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { getTrainingById } from "@/service/training";
@@ -10,6 +9,7 @@ import { submitFreeTextEvaluation } from "@/service/free-text";
 import FormSkeleton from "@/components/Skeleton/FormSkeleton";
 import { format } from "date-fns";
 import { id as localeID } from "date-fns/locale";
+import { useParams } from "next/navigation";
 
 
 const formatTanggal = (tgl_mulai: string , tgl_selesai: string) => {
@@ -33,7 +33,8 @@ const FreeTextDetailComponent: React.FC = () => {
     rencana_tindak_lanjut : "",
     narasumber : "",
   });
-  const { id: pelatihanId } = useParams<{ id: string }>();
+
+  const pelatihanId = useParams().trainingId
 
   const fetchTrainingById = useCallback(async () => {
     if (!pelatihanId) return;
@@ -54,8 +55,14 @@ const FreeTextDetailComponent: React.FC = () => {
     try {
       e.preventDefault();
       await submitFreeTextEvaluation(Number(pelatihanId), formData.konseptualiasasi_pembelajaran, formData.rencana_tindak_lanjut, formData.narasumber);
-      Swal.fire("Berhasil", "Data berhasil disimpan!", "success");
-      window.location.href = `/training/evaluation_freetext/`
+      Swal.fire({
+        title: "Berhasil",
+        text: "Data berhasil disimpan!",
+        icon: "success",
+        confirmButtonText: "OK",
+      }).then(() => {
+        window.location.href = `/training/evaluation_freetext/`;
+      });
     } catch (error) {
       Swal.fire("Gagal", "Terjadi kesalahan saat menyimpan data.");
       setIsError(true);

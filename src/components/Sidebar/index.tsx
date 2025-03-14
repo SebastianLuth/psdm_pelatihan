@@ -30,7 +30,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           <Image
             width={100}
             height={32}
-            src={"/images/logo/logo_ptpn4.webp"}
+            src={"/images/logo/logo_ptpn4.png"}
             alt="Logo"
             priority
           />

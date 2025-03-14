@@ -29,7 +29,8 @@ export interface TrainingEvaluasi3Summary{
   participant_count: number,
   start_date: string,
   end_date: string,
-  evaluated3_count: 0
+  evaluated3_count: number,
+  not_evaluated3_count: number
 }
 
 export interface Pertanyaan3 {

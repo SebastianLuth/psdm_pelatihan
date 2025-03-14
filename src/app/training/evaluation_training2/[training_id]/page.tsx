@@ -3,11 +3,22 @@ import DetailUsersEvaluation3Status from "@/components/Layouts/Detail/DetailUser
 import ProtectedRoute from "@/components/ProtectedRoute";
 
 export const metadata = {
-  title: "N4TALENT | Detail Evaluasi Pelatihan Lv 3",
+  title: "PALAPA | Detail Evaluasi Pelatihan Lv 3",
   description:
-    "Detail Evaluasi Level 3 untuk para user yang mengikuti pelatihan dan evaluator yang mengevaluasi user",
-  keywords:
-    "PTPN4, anggaran RKAP, detail data anggaran, manajemen keuangan, pelatihan karyawan, pengembangan kompetensi",
+    "Detail Evaluasi Pelatihan Lv 3 di PALAPA (PALMCO After Learning Application). Akses dan kelola informasi anggaran pelatihan, evaluasi, dan pengembangan karyawan dengan mudah dan efisien.",
+  keywords: [
+    "export RKAP anggaran PALAPA",
+    "PALMCO After Learning Application",
+    "RKAP pelatihan PALMCO",
+    "aplikasi pembelajaran karyawan",
+    "evaluasi PALMCO",
+    "sistem pelatihan PALMCO",
+    "manajemen anggaran pelatihan",
+    "data RKAP PALMCO",
+    "export data anggaran",
+  ],
+  author: "PTPN 4 PALMCO",
+  robot : "index, follow",
 };
 
 

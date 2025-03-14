@@ -3,11 +3,25 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
 
 export const metadata = {
-  title: "N4TALENT | Detail Data Pelatihan",
-  description: "Edit Data Pelatihan ",
-  keywords:
-    "PTPN4, anggaran RKAP, detail data anggaran, manajemen keuangan, pelatihan karyawan, pengembangan kompetensi",
+  title: "PALAPA | Edit Data Pelatihan",
+  description:
+    "Kumpulan Edit Data Pelatihan di PALAPA (PALMCO After Learning Application). Akses dan kelola informasi anggaran pelatihan, evaluasi, dan pengembangan karyawan dengan mudah dan efisien.",
+  keywords: [
+    "export RKAP anggaran PALAPA",
+    "PALMCO After Learning Application",
+    "RKAP pelatihan PALMCO",
+    "aplikasi pembelajaran karyawan",
+    "evaluasi PALMCO",
+    "sistem pelatihan PALMCO",
+    "manajemen anggaran pelatihan",
+    "data RKAP PALMCO",
+    "export data anggaran",
+  ],
+  author: "PTPN 4 PALMCO",
+  robots: "index, follow",
 };
+
+
 
 export default function TrainingDataId() {
   return (

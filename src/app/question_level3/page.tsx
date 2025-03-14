@@ -3,10 +3,19 @@ import QuestionEvaluationLevel3Component from "@/components/Layouts/Question3Com
 import ProtectedRoute from "@/components/ProtectedRoute";
 
 export const metadata = {
-  title: "N4TALENT |Kumpulan Pertanyaan Evaluasi level 1",
-  description: "Kumpulan Pertanyaan Evaluasi level 1",
-  keywords:
-    "PTPN4, anggaran RKAP, detail data anggaran, manajemen keuangan, pelatihan karyawan, pengembangan kompetensi",
+  title: "PALAPA | Kumpulan Pertanyaan Evaluasi level 3",
+  description: "Informasi lengkap tentang  Pertanyaan Evaluasi level 3 yang telah anda buat di PALAPA PALMCO AFTER LEARNING APPLICATION ",
+  keywords: [
+    "PALAPA DATA RKAP Anggaran",
+    "PALMCO After Learning Application",
+    "RKAP pelatihan PALMCO",
+    "aplikasi pembelajaran karyawan",
+    "evaluasi PALMCO",
+    "sistem pelatihan PALMCO",
+    "Informasi lengkap anggaran"
+  ],
+  author : "PTPN 4 PALMCO",
+  robots: "index, follow",
 };
 
 const QuestionEvaluationLevel3Page = () => {

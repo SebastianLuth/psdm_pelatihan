@@ -3,10 +3,21 @@ import ProtectedRoute from "@/components/ProtectedRoute"
 import TableReportEvaluation1 from "@/components/Tables/TableReportEvaluation1"
 
 export const metadata = {
-    title: "N4TALENT |Export Data Evaluasi",
-    description: "Export Data Evaluasi level 1 dan level 3 berdasarkan tanggal ",
-    keywords:
-      "PTPN4, anggaran RKAP, detail data anggaran, manajemen keuangan, pelatihan karyawan, pengembangan kompetensi",
+    title: "PALAPA | Export Data Evaluasi ",
+    description: "Export Data Evaluasi (Evaluasi 1 & 3) di PALAPA (PALMCO After Learning Application). Akses dan kelola informasi anggaran pelatihan, evaluasi, dan pengembangan karyawan dengan mudah dan efisien.",
+    keywords: [
+        "export RKAP anggaran PALAPA",
+        "PALMCO After Learning Application",
+        "RKAP pelatihan PALMCO",
+        "aplikasi pembelajaran karyawan",
+        "evaluasi PALMCO",
+        "sistem pelatihan PALMCO",
+        "manajemen anggaran pelatihan",
+        "data RKAP PALMCO",
+        "export data anggaran",
+    ],
+    author : "PTPN 4 PALMCO",
+    robots: "index, follow",
 };
 
 const Evaluation1Page = () => {

@@ -4,10 +4,20 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import DetailBudgetComponent from "@/components/Layouts/Detail/DetailBudget";
 
 export const metadata = {
-  title: "N4TALENT | Detail Anggaran",
-  description : "Detail Anggaran RKAP PTPN4 terkini. Informasi lengkap mengenai anggaran karyawan pimpinan, pelatihan, dan pengembangan kompetensi karyawan di PTPN4.",
-  keywords: "PTPN4, anggaran RKAP, detail data anggaran, manajemen keuangan, pelatihan karyawan, pengembangan kompetensi",
-}
+  title: "PALAPA | Detail Data RKAP Anggaran",
+  description: "Informasi lengkap tentang RKAP Anggaran yang telah anda tambahkan di PALAPA PALMCO AFTER LEARNING APPLICATION ",
+  keywords: [
+    "PALAPA DATA RKAP Anggaran",
+    "PALMCO After Learning Application",
+    "RKAP pelatihan PALMCO",
+    "aplikasi pembelajaran karyawan",
+    "evaluasi PALMCO",
+    "sistem pelatihan PALMCO",
+    "Informasi lengkap anggaran"
+  ],
+  author : "PTPN 4 PALMCO",
+  robots: "index, follow",
+};
 
 const BudgetDataId = () => {
   return (

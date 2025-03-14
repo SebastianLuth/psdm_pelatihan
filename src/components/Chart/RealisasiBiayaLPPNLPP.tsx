@@ -28,14 +28,14 @@ const formatNumber = (value: number) => {
 
 const RealisasiBiayaChart = ({ tahunAnggaran, onTahunChange, title, categories, sisaAnggaranDataLpp, realisasiAnggaranDataLpp , sisaAnggaranDataNonLpp, realisasiAnggaranDataNonLpp }: RealisasiBiayaChartProps) => {
     const chartRef = useRef<HTMLDivElement>(null);
-
-     // Data dan opsi untuk EChart
      const rawData = [
+       
         realisasiAnggaranDataLpp,
         sisaAnggaranDataLpp
     ];
 
     const rawData2 = [
+        
         realisasiAnggaranDataNonLpp,
         sisaAnggaranDataNonLpp
     ];
@@ -138,7 +138,8 @@ const RealisasiBiayaChart = ({ tahunAnggaran, onTahunChange, title, categories, 
         return () => {
             chart.dispose();
         };
-    }, [tahunAnggaran, categories]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [tahunAnggaran, categories]);    
     return (
         <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl shadow-lg p-4 mx-auto flex flex-col">
             <h2 className="text-center text-2xl font-semibold mb-4">{title}</h2>

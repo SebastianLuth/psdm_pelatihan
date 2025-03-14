@@ -3,9 +3,20 @@ import ProtectedRoute from "@/components/ProtectedRoute"
 import TableVendorDataComponent from "@/components/Tables/TableVendorDataComponent"
 
 export const metadata = {
-    title: "PTPN4 | Data Vendor",
-    description: "Semua Data Vendor yang telah ditambahkan",
-};
+    title: "PALAPA |  Data Vendor",
+    description: "Informasi lengkap tentang Data Vendor yang telah anda tambahkan di PALAPA PALMCO AFTER LEARNING APPLICATION ",
+    keywords: [
+      "PALAPA DATA RKAP Anggaran",
+      "PALMCO After Learning Application",
+      "RKAP pelatihan PALMCO",
+      "aplikasi pembelajaran karyawan",
+      "evaluasi PALMCO",
+      "sistem pelatihan PALMCO",
+      "Informasi lengkap anggaran"
+    ],
+    author : "PTPN 4 PALMCO",
+    robots: "index, follow",
+  };
 
 const VendorDataPage = () => {
     return (

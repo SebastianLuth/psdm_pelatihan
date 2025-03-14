@@ -3,11 +3,22 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import AnswerEvaluasiTraining1Component from "@/components/Layouts/Detail/AnswerQuestionEvaluasi1";
 
 export const metadata = {
-  title: "N4TALENT | Jawab Evaluasi Pelatihan Lv 1",
+  title: "PALAPA | Jawab Evaluasi Level 1 Pelatihan",
   description:
-    "Jawab Evaluasi Level 1 untuk para user yang mengikuti pelatihan",
-  keywords:
-    "PTPN4, anggaran RKAP, detail data anggaran, manajemen keuangan, pelatihan karyawan, pengembangan kompetensi",
+    "Menjaawab Evaluasi level 1 Pelatihan di PALAPA (PALMCO After Learning Application). Akses dan kelola informasi anggaran pelatihan, evaluasi, dan pengembangan karyawan dengan mudah dan efisien.",
+  keywords: [
+    "export RKAP anggaran PALAPA",
+    "PALMCO After Learning Application",
+    "RKAP pelatihan PALMCO",
+    "aplikasi pembelajaran karyawan",
+    "evaluasi PALMCO",
+    "sistem pelatihan PALMCO",
+    "manajemen anggaran pelatihan",
+    "data RKAP PALMCO",
+    "export data anggaran",
+  ],
+  author: "PTPN 4 PALMCO",
+  robot : "index, follow",
 };
 
 
