@@ -32,7 +32,15 @@ const TableDataAnggaran: React.FC = () => {
     setSuccess(false);
     try {
       const result = await getAllBudget();
-      setBudgetData(result);
+
+      const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+
+      const formattedData = result.map((budget: budgetType) => ({
+        ...budget,
+        nama_bulan_anggaran: monthNames[Number(budget.bulan_anggaran) - 1] || "Invalid Month"
+      }))
+      setBudgetData(formattedData);
       setSuccess(true);
     } catch (error) {
       setError(true);
@@ -88,9 +96,13 @@ const TableDataAnggaran: React.FC = () => {
     setLimit(Number(event.target.value));
   };
 
-  const filteredBudgetData = budgetData.filter(budget =>
-    budget.jenis_anggaran.toLowerCase().includes(searchQuery.toLowerCase())
-  ).slice(0, limit);
+  const filteredBudgetData = budgetData
+  .filter((budget) =>
+    budget.jenis_anggaran.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (budget.nama_bulan_anggaran && budget.nama_bulan_anggaran.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    budget.tahun_anggaran.toString().includes(searchQuery)
+  )
+  .slice(0, limit);
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback} onReset={fetchAllBudget}>
@@ -143,6 +155,7 @@ const TableDataAnggaran: React.FC = () => {
                   <th className="px-4 py-4">Total Anggaran</th>
                   <th className="px-4 py-4">Sisa Anggaran</th>
                   <th className="px-4 py-4">Tahun Anggaran</th>
+                  <th className="px-4 py-4">Bulan Anggaran</th>
                   <th className="px-4 py-4 text-center">Action</th>
                 </tr>
               </thead>
@@ -176,6 +189,9 @@ const TableDataAnggaran: React.FC = () => {
                       </td>
                       <td className="px-4 py-4 text-gray-800 dark:text-gray-100">
                         {budget.tahun_anggaran}
+                      </td>
+                      <td className="px-4 py-4 text-gray-800 dark:text-gray-100">
+                        {budget.nama_bulan_anggaran}
                       </td>
                       <td className="flex space-x-2 px-4 py-4 text-right">
                         <button

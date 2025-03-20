@@ -7,7 +7,6 @@ import {
 } from "@/types/budget-types";
 import { User } from "@/types/manajement-users-type";
 import { FormEvent, useCallback, useEffect, useState } from "react";
-import SelectUnitKerja from "../SelectGroup/SelectUnitKerja";
 import { getAllDataBawahanInUnitKerja } from "@/service/management-users";
 import { TrainingType } from "@/types/training-types";
 import Swal from "sweetalert2";
@@ -22,8 +21,8 @@ const AddTraining = () => {
   const [jenisPelatihanRKAP, setJenisPelatihanRKAP] = useState<budgetType[]>(
     [],
   );
-  const [selectedMonth, setSelectedMonth] = useState<string | number>(""); // Bulan yang dipilih
-  const [filteredRKAP, setFilteredRKAP] = useState<budgetType[]>([]); // Data yang sudah difilter
+  const [selectedMonth, setSelectedMonth] = useState<string | number>(""); 
+  const [filteredRKAP, setFilteredRKAP] = useState<budgetType[]>([]); 
 
   const [selectedUnitKerja, setSelectedUnitKerja] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -183,6 +182,8 @@ const AddTraining = () => {
       anggaran_id: undefined,
     }));
   }, [selectedMonth]);
+
+
   
   
   const availableYears = new Set(jenisPelatihanRKAP.map((item) => item.tahun_anggaran));
@@ -269,8 +270,21 @@ const currentData = filteredParticipants.slice(startIndex, endIndex);
           </select>
         </div>
 
-        {/* Jenis Pelatihan */}
+        {/* Lokasi Pelatihan */}
         <div>
+          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Lokasi Pelatihan</label>
+          <input
+            type="text"
+            name="lokasi"
+            value={trainingData.lokasi}
+            onChange={handleInputChange}
+            placeholder="Contoh: Medan / Webinar"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          />
+        </div>
+
+         {/* Jenis Pelatihan */}
+         <div>
           <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
             Bulan Pelaksanaan
           </label>
@@ -303,24 +317,13 @@ const currentData = filteredParticipants.slice(startIndex, endIndex);
               {selectedMonth ? "Pilih RKAP Pelatihan" : "Pilih Bulan Terlebih Dahulu"}
             </option>
             {filteredRKAP.map((item) => (
-              <option key={item.id} value={JSON.stringify({ id: item.id, jenis: item.jenis_anggaran })}>
+              <option 
+              className="text-[12px] truncate" 
+              key={item.id} value={JSON.stringify({ id: item.id, jenis: item.jenis_anggaran })}>
                 {item.jenis_anggaran}
               </option>
             ))}
           </select>
-        </div>
-
-        {/* Lokasi Pelatihan */}
-        <div>
-          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Lokasi Pelatihan</label>
-          <input
-            type="text"
-            name="lokasi"
-            value={trainingData.lokasi}
-            onChange={handleInputChange}
-            placeholder="Contoh: Medan / Webinar"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
         </div>
 
         {/* Lembaga Pelatihan */}

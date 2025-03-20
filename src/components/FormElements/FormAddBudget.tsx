@@ -50,6 +50,7 @@ const FormAddBudget = () => {
         bulan_anggaran: "",
         jum_peserta_anggaran: "",
         jum_jampel_anggaran: "",
+        
       });
     } catch (err: any) {
       const errorMessage =
@@ -107,19 +108,23 @@ const FormAddBudget = () => {
             name="jenis_anggaran"
             onChange={handleInputChange}
             value={budgetData.jenis_anggaran || ""}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 [word-break:break-word]"
           >
-            <option value="" disabled>
+            <option className="text-base truncate" value="" disabled>
               Pilih Jenis RKAP Anggaran
             </option>
-            {/* Options here */}
             {rkapTypeOptions.map((item, index) => (
-              <option key={index} value={item.label}>
-                {item.label}
+              <option 
+                key={index} 
+                value={item.label}
+                className="text-[11px] truncate" 
+              >
+               {item.label}
               </option>
             ))}
           </select>
         </div>
+
 
         <div className="mb-5">
           <div className="flex items-center gap-4">

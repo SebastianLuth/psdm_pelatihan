@@ -3,7 +3,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import { DashboardComponent } from "@/components/Layouts/Dashboard";
 
 export const metadata = {
-  title: "N4TALENT | Dashboard PSDM Pelatihan Karyawan",
+  title: "PALAPA | Dashboard PSDM Pelatihan Karyawan",
   description:
     "Dashboard PSDM untuk manajemen dan pelatihan karyawan. Lihat jadwal pelatihan, perkembangan kompetensi, dan banyak lagi di N4TALENT.",
   keywords:

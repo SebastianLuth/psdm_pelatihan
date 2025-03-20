@@ -1,6 +1,7 @@
 "use client";
 import { useAuth } from "@/context/AuthContext";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -9,26 +10,28 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) => {
   const { userData, isLoading } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
-    if (!isLoading && !userData && userData === null) {
-      window.location.href = "/auth/signin";
+    if (!isLoading && !userData) {
+      router.replace("/auth/signin"); 
     } else if (
       allowedRoles &&
       userData?.role &&
       !allowedRoles.includes(userData.role)
     ) {
-      window.location.href = "/";
+      router.replace("/"); 
     }
-  }, [userData, isLoading, allowedRoles]);
+  }, [userData, isLoading, allowedRoles, router]);
 
-  if (
-    isLoading ||
-    !userData ||
-    (allowedRoles && userData.role && !allowedRoles.includes(userData.role))
-  ) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
+
+  if (!userData || (allowedRoles && userData.role && !allowedRoles.includes(userData.role))) {
+    return null; // 
+  }
+
   return <>{children}</>;
 };
 
