@@ -4,9 +4,26 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { useAuth } from "@/context/AuthContext";
 import axios from "axios";
-import { useRef, useState } from "react";
+import { useParams } from "next/navigation";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-const CreateLearningWalletPage = () => {
+ type RealisasiLWData = {
+        id: number,
+        username: number,
+        nama: string,
+        judul_pelatihan: string,
+        biaya_pelatihan: number,
+        jpl: number,
+        nama_vendor: string,
+        no_vendor: string,
+        foto_pelatihan_url: string,
+        foto_resi_url: string,
+        foto_materi_url: string,
+        foto_sertifikat: string,
+}
+
+
+const EditSubmissionLw = () => {
     const [formData, setFormData] = useState({
         nama: "",
         judul: "",
@@ -23,7 +40,34 @@ const CreateLearningWalletPage = () => {
         sertifikat: ""
     });
 
+    const [detailLWData, setDetailLWData] = useState<RealisasiLWData[]>([])
+
+    const { lwId } = useParams();
     const {userData} = useAuth();
+
+
+    const fetchDetailData = useCallback( async () => {
+        try {
+            const result = await axios.get(`http://localhost:5000/api/learning-wallet/user/lw/${lwId}`,{
+                withCredentials : true
+            })
+            setDetailLWData(result.data.data)
+            if (Array.isArray(result.data.data) && result.data.data.length > 0) {
+                const data = result.data.data[0];
+                setFormData({
+                    nama: data.nama || "",
+                    judul: data.judul_pelatihan || "",
+                    biaya: data.biaya_pelatihan?.toString() || "",
+                    jpl: data.jpl?.toString() || "",
+                    vendor: data.nama_vendor || "",
+                    noVendor: data.no_vendor || ""
+                });
+            }
+            
+        } catch (err) {
+            console.error("Error:", err);
+        }
+    },[lwId])
 
     const getFile = (ref: React.RefObject<HTMLInputElement>) => {
         return ref.current?.files?.[0] || null;
@@ -83,23 +127,25 @@ const CreateLearningWalletPage = () => {
         if(fotoSertifikat) form.append("foto_sertifikat", fotoSertifikat)
     
         try {
-            const res = await axios.post(`
-                http://localhost:5000/api/learning-wallet/user/${userData?.username}
+            const res = await axios.put(`
+                http://localhost:5000/api/learning-wallet/user/${userData?.username}/lw/${lwId}
                 `, 
                 form, 
                 {
                 headers: { "Content-Type": "multipart/form-data" },
                 withCredentials : true
             });
-            console.log("Success:", res.data);
             alert("Pengajuan berhasil!");
         } catch (err) {
-            console.error("Error:", err);
             alert("Terjadi kesalahan saat mengirim data.");
         }
     };
 
+    useEffect(() => {
+        fetchDetailData().catch(console.error)
+    }, [fetchDetailData])
     
+
 
     return (
         <ProtectedRoute>
@@ -108,7 +154,7 @@ const CreateLearningWalletPage = () => {
                     <div className="mt-6 w-full mx-auto bg-white p-8 rounded-lg shadow-lg transform transition-all hover:scale-105 hover:shadow-2xl">
                     <div className="p-4 ">
                         <h2 className="text-xl font-semibold text-gray-900 sm:text-2xl">
-                            Ajukan Learning Wallet Anda
+                            Edit Pengajuan Learning Wallet Anda
                         </h2>
 
                         <p className="mt-2 text-gray-700 text-sm mt-5">Berikut ini cara untuk pengajuan:</p>
@@ -202,6 +248,10 @@ const CreateLearningWalletPage = () => {
                             
 
                             {/* File Inputs */}
+                            <p className="text-blue-600 underline underline-offset-4 decoration-2 decoration-blue-400 font-medium text-sm sm:text-base tracking-wide">
+                                Untuk File Mohon Di Upload Ulang
+                            </p>
+
                             <div className="flex justify-center space-x-4">
                                 <div className="w-full animate-slide-in-left">
                                     <label className="block text-sm font-medium text-gray-700 mb-2">Upload Foto Pelatihan Anda </label>
@@ -302,4 +352,4 @@ const CreateLearningWalletPage = () => {
     );
 };
 
-export default CreateLearningWalletPage;
+export default EditSubmissionLw;

@@ -271,8 +271,8 @@ export const menuGroups = [
           label: "Learning Wallet",
           route: "#",
           children: [
-            { label: "Lerning Wallet", route: "/learning-wallet"  },
-            
+            { label: "Realisasi Lerning Wallet", route: "/learning-wallet"  },
+            { label: "RKAP Learning Wallet", route: "/learning-wallet/rkap-learning-wallet"},
           ],
           role : "admin"
         },
@@ -293,7 +293,7 @@ export const menuGroups = [
           route: "#",
           children: [
             { label: "Lerning Wallet", route: "/learning-wallet"  },
-            
+            { label: "RKAP Learning Wallet", route: "/learning-wallet/rkap-learning-wallet"},
           ],
           role : "super admin"
         },
@@ -313,7 +313,7 @@ export const menuGroups = [
           label: "Learning Wallet",
           route: "#",
           children: [
-            { label: "Lerning Wallet", route: "/learning-wallet"  },
+            { label: "Realisasi Lerning Wallet", route: "/learning-wallet"  },
             
           ],
           role : "user"

@@ -2,16 +2,20 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, ChevronRight } from "lucide-react";
+import { Home, ChevronRight, MoreHorizontal } from "lucide-react";
 
 const Breadcrumb = () => {
   const pathname = usePathname();
   const pathnames = pathname.split("/").filter((x) => x);
 
+  // Jika path lebih dari 3, tampilkan format yang lebih ringkas
+  let displayedPaths = pathnames;
+  if (pathnames.length > 3) {
+    displayedPaths = [pathnames[0], "...", ...pathnames.slice(-2)];
+  }
+
   return (
-    <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-      {/* Title Page */}
-      <div></div>
+    <div className="mb-6 flex justify-end">
       {/* Breadcrumb Navigation */}
       <nav>
         <ol className="flex items-center gap-3 text-gray-600 dark:text-gray-300 text-sm sm:text-base bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-md">
@@ -27,24 +31,28 @@ const Breadcrumb = () => {
           </li>
 
           {/* Dynamic Breadcrumb Links */}
-          {pathnames.map((path, index) => {
+          {displayedPaths.map((path, index) => {
             const href = `/${pathnames.slice(0, index + 1).join("/")}`;
-            const isLast = index === pathnames.length - 1;
+            const isLast = index === displayedPaths.length - 1;
 
             return (
               <li key={index} className="flex items-center gap-3">
                 <ChevronRight className="h-5 w-5 text-gray-400" />
-                {!isLast ? (
+                {path === "....." ? (
+                  <span className="text-gray-400">
+                    <MoreHorizontal className="h-5 w-5" />
+                  </span>
+                ) : isLast ? (
+                  <span className="font-semibold text-white px-4 py-1 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 shadow-md capitalize">
+                    {decodeURIComponent(path)}
+                  </span>
+                ) : (
                   <Link
                     href={href}
                     className="font-semibold text-gray-700 hover:text-blue-600 transition-all capitalize"
                   >
                     {decodeURIComponent(path)}
                   </Link>
-                ) : (
-                  <span className="font-semibold text-white px-4 py-1 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 shadow-md capitalize">
-                    {decodeURIComponent(path)}
-                  </span>
                 )}
               </li>
             );
