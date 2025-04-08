@@ -5,7 +5,6 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import SkeletonTable from "@/components/Skeleton/SkeletonTable";
 import { useAuth } from "@/context/AuthContext";
 import axios from "axios";
-import { PlusIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
@@ -45,6 +44,7 @@ const RKAPLearningWalletDataPage = () => {
           withCredentials: true,
         },
       );
+
       setLearningWalletData(result.data.data);
     } catch (error) {
       setError(true);
@@ -53,25 +53,37 @@ const RKAPLearningWalletDataPage = () => {
     }
   };
 
-  const handleUpdateStatusLW = async (status : string, niksap : string | number, lwId : number) => {
+  const handleDeleteRKAP = async (lwId : number) => {
     try {
-      await axios.put(`
-        http://localhost:5000/api/learning-wallet/admin/update-status/${niksap}
+
+      const result = await axios.delete(`
+        http://localhost:5000/api/learning-wallet/admin/rkaplw/${lwId}
         `,
-      {
-        status : status,
-        learningWalletId : lwId
-      },
-      {
-        withCredentials: true
-      }
-      ).then(
-        () => {
-          fetchAllLearningWalletAdmin();
+        {
+          withCredentials: true
         }
-      )
-    } catch (error) {
+      );
       
+      if (result.status === 200) {
+        alert("Berhasil menghapus Realisasi Learning Wallet");
+      } else if (result.status === 404) {
+        alert("Learning Wallet tidak ditemukan");
+      } else {
+        alert(`Gagal menghapus: ${result.data?.message || 'Terjadi kesalahan'}`);
+      }
+
+    } catch (error) {
+      throw error
+    } finally {
+      fetchAllLearningWalletAdmin();
+    }
+  }
+
+  const handleEditRKAP = async (lwId : number) => {
+    try {
+       router.push(`/learning-wallet/rkap-learning-wallet/edit/${lwId}`);
+    } catch (error) {
+      throw error
     }
   }
 
@@ -341,13 +353,13 @@ const RKAPLearningWalletDataPage = () => {
                                     <div className="py-1">
                                       <button
                                           className="block w-full px-4 py-2 text-left text-sm text-blue-700 hover:bg-blue-100"
-                                          onClick={() => handleUpdateStatusLW("paid", learningWallet.username, learningWallet.id)}
+                                          onClick={() => handleEditRKAP(learningWallet.id)}
                                         >
                                         Edit
                                       </button>
                                       <button
                                         className="block w-full px-4 py-2 text-left text-sm text-red-700 hover:bg-red-100"
-                                        onClick={() => handleUpdateStatusLW("rejected", learningWallet.username, learningWallet.id)}
+                                        onClick={() => handleDeleteRKAP(learningWallet.id)}
                                       >
                                         Delete
                                       </button>
