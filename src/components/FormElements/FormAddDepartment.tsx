@@ -43,7 +43,7 @@ export function FormAddDepartment({
 
   return (
     <div className="max-w-4xl mx-auto bg-white p-12 shadow-md rounded-lg dark:border-strokedark dark:bg-boxdark">
-      <h1 className="text-2xl font-bold mb-6 dark:text-white">Tambah Unit Kerja</h1>
+      <h1 className="text-2xl font-bold mb-6 dark:text-white">{mode === "update" ? "Edit" : "Tambah"} Unit Kerja</h1>
       <form onSubmit={handleSubmit}>
         <div>
           <label className="mb-1 block font-medium text-gray-600 dark:text-white">

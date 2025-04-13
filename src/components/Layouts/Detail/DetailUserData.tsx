@@ -1,8 +1,8 @@
 "use client";
 import DetailedProfileCard from "@/components/Card/DetailedProfileCard";
 import DropdownSettingProfile from "@/components/Dropdowns/DropdownSettingProfile";
-import CreateBawahanModal from "@/components/Modal/CreateBawahan";
-import { TableListBawahan } from "@/components/Tables/TableListBawahan";
+import CreateBawahanModal from "@/components/Modal/CreateEvaluator";
+import { TableListBawahan } from "@/components/Tables/TableListEvaluator";
 import {
   addEvaluator,
   deleteBawahan,
@@ -282,7 +282,7 @@ const UserDetailComponent = () => {
                       onClick={() => setShowModal(true)}
                       className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-white text-sm font-medium shadow-md transition duration-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 active:scale-95"
                       >
-                      Tambah Evaluator
+                      Tambah Atasan
                     </button>
 
                     <button
@@ -305,7 +305,7 @@ const UserDetailComponent = () => {
               {showModal ? (
                 <>
                   <CreateBawahanModal
-                    textJudul="Evaluator"
+                    textJudul="Atasan"
                     dataAllUserByUnitKerja={dataAllUserByUnitKerja}
                     onClose={handleCloseModal}
                     onAddBawahan={handleAddEvaluator}

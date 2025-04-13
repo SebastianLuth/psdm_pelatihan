@@ -1,6 +1,7 @@
 import TrainingDataIdComponent from "@/components/Layouts/Detail/DetailTraining";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 
 export const metadata = {
   title: "PALAPA | Detail Data Pelatihan",
@@ -25,6 +26,7 @@ export default function TrainingDataId() {
   return (
     <ProtectedRoute allowedRoles={["admin", "super admin"]}>
       <DefaultLayout>
+        <Breadcrumb/>
         <TrainingDataIdComponent />
       </DefaultLayout>
     </ProtectedRoute>

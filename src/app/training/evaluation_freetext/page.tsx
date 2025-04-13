@@ -1,3 +1,4 @@
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import EvaluastionFreeTextComponent from "@/components/Tables/TableDataEvaluasiFreeText";
@@ -25,6 +26,7 @@ const EvaluastionFreeTextPage = () => {
   return (
     <ProtectedRoute>
       <DefaultLayout>
+        <Breadcrumb/>
         <EvaluastionFreeTextComponent/>
       </DefaultLayout>
     </ProtectedRoute>

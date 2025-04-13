@@ -1,6 +1,7 @@
 import UsersDataComponent from "@/components/Layouts/UsersData";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 
 export const metadata = {
   title: "PALAPA | Data User",
@@ -12,6 +13,7 @@ const UsersDataPage = () => {
   return (
     <ProtectedRoute allowedRoles={["admin", "super admin"]}>
       <DefaultLayout>
+        <Breadcrumb/>
         <UsersDataComponent/>
       </DefaultLayout>
     </ProtectedRoute>

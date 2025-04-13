@@ -12,6 +12,8 @@ import {
 } from "@/types/evaluasi3";
 import Link from "next/link";
 import SkeletonTable from "../Skeleton/SkeletonTable";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 interface StatusEvaluation3 {
   evaluator_id: number;
   user_id: number;
@@ -37,6 +39,10 @@ const TableEvaluationTraining2 = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const entriesPerPage = 10;
   const [searchQuery, setSearchQuery] = useState("");
+
+
+  const router = useRouter();
+
 
   const fetchStatusEvaluation3 = async () => {
     try {
@@ -144,10 +150,26 @@ const TableEvaluationTraining2 = () => {
     const currentDate = new Date();
 
     if (currentDate < trainingEndDate) {
-      alert("Evaluasi belum dapat dilakukan karena pelatihan belum selesai.");
-    } else {
-      alert("Evaluasi sudah dapat dilakukan.");
-      window.location.href = `/training/evaluation_training2/${trainingId}/${participanId}`;
+        Swal.fire({
+                icon: "warning",
+                title: "Evaluasi Belum Dapat Dilakukan",
+                text: "Pelatihan belum selesai, silakan coba lagi nanti.",
+                confirmButtonColor: "#f39c12",
+              });    
+        } else {
+          Swal.fire({
+                  icon: "success",
+                  title: "Evaluasi Tersedia",
+                  text: "Evaluasi sudah dapat dilakukan.",
+                  confirmButtonText: "Mulai Evaluasi",
+                  confirmButtonColor: "#28a745",
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    router.push(
+                      `/training/evaluation_training2/${trainingId}/${participanId}`,
+                    );
+                  }
+                });
     }
   };
 
@@ -191,10 +213,10 @@ const TableEvaluationTraining2 = () => {
                         <th className="px-6 py-4">Lokasi Pelatihan</th>
                         <th className="px-6 py-4">Tanggal Acara</th>
                         <th className="px-6 py-4">
-                          Jumlah Yang Telah Evaluasi Level 3
+                          Jumlah Telah Evaluasi 
                         </th>
                         <th className="px-6 py-4">
-                          Jumlah Yang Belum Evaluasi Level 3
+                          Jumlah Belum Evaluasi 
                         </th>
                         <th className="px-6 py-4">Action</th>
                       </tr>

@@ -1,3 +1,4 @@
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import AddDepartmentComponent from "@/components/Layouts/AddDepartmentComponent";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -22,6 +23,7 @@ const AddDepartmentPage = () => {
   return (
     <ProtectedRoute allowedRoles={["admin", "super admin"]}>
       <DefaultLayout>
+        <Breadcrumb/>
         <AddDepartmentComponent />
       </DefaultLayout>
     </ProtectedRoute>

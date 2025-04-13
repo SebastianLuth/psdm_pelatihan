@@ -250,7 +250,8 @@ export default function TrainingDataIdComponent() {
   return (
     <>
       <div className="mx-auto space-y-8 p-6">
-        <Breadcrumb pageName={trainingData.judul || ""}></Breadcrumb>
+        {/* <Breadcrumb pageName={trainingData.judul || ""}></Breadcrumb> */}
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 mb-6">{trainingData.judul}</h2>
         {/* Section: Cards */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           <div className="rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 p-6 text-white shadow-lg">
@@ -469,7 +470,7 @@ export default function TrainingDataIdComponent() {
           {/* Header Table */}
           <table className="min-w-full border-collapse text-left text-sm text-gray-700 dark:text-gray-300">
             <thead>
-              <tr className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white">
+              <tr className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white">
                 <th className="px-6 py-4">No</th>
                 <th className="px-6 py-4">NIK SAP</th>
                 <th className="px-6 py-4">Nama</th>

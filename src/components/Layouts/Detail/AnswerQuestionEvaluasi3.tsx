@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { getQuestions3, submitAnswerEvaluation3 } from "@/service/evaluasi3";
+import Swal from "sweetalert2";
 
 export interface QuestionEvaluation3 {
   id: number;
@@ -53,14 +54,31 @@ const AnswerQuestionEvaluasi3Component = () => {
         Number(userId),
         answers,
       );
-      if (result === true) {
-        alert("Jawaban berhasil dikirim!");
+     if (result === true) {
         setAnswers({});
-        router.push("/training/evaluation_training2/");
-
+        Swal.fire({
+          icon: "success",
+          title: "Jawaban berhasil dikirim!",
+          confirmButtonText: "Kembali kehalaman data evaluasi",
+          confirmButtonColor: "#28a745",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            router.push("/training/evaluation_training2/");
+          }
+        });
       }
     } catch (error) {
-      console.error("Error submitting answers:", error);
+      setError(true);
+      Swal.fire({
+        icon : "error",
+        title : "Jawaban gagal dikirim!",
+        confirmButtonText : "Kembali kehalaman data evaluasi dan kembali untuk menambahkan jawaban",
+        confirmButtonColor : "#dc3545",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          router.push("/training/evaluation_training2/");
+        }
+      });
     } finally {
       setLoading(false);
     }

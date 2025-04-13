@@ -128,10 +128,10 @@ const TableDataUnitKerja = () => {
         </div>
       </div>
 
-      <div className="mt-8 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg">
+      <div className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg">
         <table className="min-w-full border-collapse text-left text-sm text-gray-700 dark:text-gray-300">
           <thead>
-            <tr className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white">
+            <tr className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white">
               <th className="px-6 py-4">No</th>
               <th className="px-6 py-4">Nama</th>
               <th className="px-6 py-4 text-center">Action</th>
@@ -195,7 +195,31 @@ const TableDataUnitKerja = () => {
             ))}
           </tbody>
         </table>
+        <div className="mt-8 mb-4 mr-4 flex items-center justify-between text-sm text-gray-500">
+          <span>
+          {/* {" "}
+          Showing {startIndex + 1} to {Math.min(endIndex, totalEntries)}{" "}
+          of {totalEntries} entries */}
+          </span>
+          <div className="space-x-2">
+            <button
+              className="rounded-lg bg-gray-200 px-3 py-1 transition hover:bg-gray-300"
+              // onClick={handlePreviousPage}
+              // disabled={currentPage === 1}
+              >
+                Previous
+            </button>
+            <button
+              className="rounded-lg bg-gray-200 px-3 py-1 transition hover:bg-gray-300"
+              // onClick={handleNextPage}
+              // disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
+          </div>
+        </div>
       </div>
+      
     </div>
   );
 };

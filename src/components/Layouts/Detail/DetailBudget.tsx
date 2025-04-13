@@ -334,6 +334,30 @@ const DetailBudgetComponent = () => {
                 ))}
               </tbody>
             </table>
+            
+            <div className="mt-8 mb-4 mr-4 flex items-center justify-between text-sm text-gray-500">
+              <span>
+              {/* {" "}
+              Showing {startIndex + 1} to {Math.min(endIndex, totalEntries)}{" "}
+              of {totalEntries} entries */}
+              </span>
+              <div className="space-x-2">
+                <button
+                  className="rounded-lg bg-gray-200 px-3 py-1 transition hover:bg-gray-300"
+                  // onClick={handlePreviousPage}
+                  // disabled={currentPage === 1}
+                  >
+                    Previous
+                </button>
+                <button
+                  className="rounded-lg bg-gray-200 px-3 py-1 transition hover:bg-gray-300"
+                  // onClick={handleNextPage}
+                  // disabled={currentPage === totalPages}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
           </div>
         </div>
         {/* Detail Table Section  END*/}

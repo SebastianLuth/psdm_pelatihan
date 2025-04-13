@@ -2,6 +2,7 @@ import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DetailBudgetComponent from "@/components/Layouts/Detail/DetailBudget";
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 
 export const metadata = {
   title: "PALAPA | Detail Data RKAP Anggaran",
@@ -23,6 +24,7 @@ const BudgetDataId = () => {
   return (
     <ProtectedRoute allowedRoles={['admin', 'super admin']}>
       <DefaultLayout>
+        <Breadcrumb/>
         <DetailBudgetComponent />
       </DefaultLayout>
     </ProtectedRoute>

@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import Swal from "sweetalert2";
 import SkeletonTable from "../Skeleton/SkeletonTable";
 import Link from "next/link";
+import { useAuth } from "@/context/AuthContext";
 const ErrorFallback = ({ error, resetErrorBoundary }: { error: Error, resetErrorBoundary: () => void }) => (
   <div role="alert">
     <p>Something went wrong:</p>
@@ -22,8 +23,13 @@ const TableDataAnggaran: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
+
+
+  const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [limit, setLimit] = useState<number>(10);
+  
+  const {userData} = useAuth();
   const router = useRouter();
 
   const fetchAllBudget = useCallback(async () => {
@@ -81,6 +87,44 @@ const TableDataAnggaran: React.FC = () => {
     }
   };
 
+  const getFilteredData = (data: budgetType[]) => {
+    let filtered = data.filter((budget) =>
+      budget.jenis_anggaran
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()),
+    );
+
+    // Pagination berdasarkan hasil filter
+    const totalEntries = filtered?.length || 0;
+    const totalPages = Math.ceil(totalEntries / limit);
+    const startIndex = (currentPage - 1) * limit;
+    const endIndex = startIndex + limit;
+    const currentData = filtered?.slice(startIndex, endIndex);
+
+    return { filtered, currentData, totalEntries, totalPages, startIndex, endIndex };
+  };
+
+  const {
+    filtered: filteredBudgetData,
+    currentData,
+    totalEntries,
+    totalPages,
+    startIndex,
+    endIndex
+  } = getFilteredData(budgetData);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   useEffect(() => {
     fetchAllBudget();
   }, [fetchAllBudget]);
@@ -95,14 +139,6 @@ const TableDataAnggaran: React.FC = () => {
   const handleLimitChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setLimit(Number(event.target.value));
   };
-
-  const filteredBudgetData = budgetData
-  .filter((budget) =>
-    budget.jenis_anggaran.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (budget.nama_bulan_anggaran && budget.nama_bulan_anggaran.toLowerCase().includes(searchQuery.toLowerCase())) ||
-    budget.tahun_anggaran.toString().includes(searchQuery)
-  )
-  .slice(0, limit);
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback} onReset={fetchAllBudget}>
@@ -149,7 +185,7 @@ const TableDataAnggaran: React.FC = () => {
             {/* Header Table */}
             <table className="min-w-full border-collapse text-left text-sm text-gray-700 dark:text-gray-300">
               <thead>
-                <tr className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white">
+                <tr className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white">
                   <th className="px-4 py-4">No</th>
                   <th className="px-4 py-4">Jenis Anggaran</th>
                   <th className="px-4 py-4">Total Anggaran</th>
@@ -170,13 +206,13 @@ const TableDataAnggaran: React.FC = () => {
                     </tr>
                   )
                 : (
-                  filteredBudgetData.map((budget, index) => (
+                  currentData.map((budget, index) => (
                     <tr
-                      key={budget.id}
+                      key={index}
                       className="group transform transition-transform duration-200 hover:scale-[1.02] hover:bg-gray-50 dark:hover:bg-gray-800"
                     >
                       <td className="px-4 py-4 text-gray-800 dark:text-gray-100">
-                        {index + 1}
+                        {(currentPage - 1) * limit + index + 1}
                       </td>
                       <td className="px-4 py-4 text-gray-800 dark:text-gray-100">
                         {budget.jenis_anggaran}
@@ -239,6 +275,29 @@ const TableDataAnggaran: React.FC = () => {
                 )}
               </tbody>
             </table>
+            <div className="p-4 flex items-center justify-between text-sm text-gray-500">
+              <span>
+              {" "}
+              Showing {startIndex + 1} to {Math.min(endIndex, totalEntries)}{" "}
+              of {totalEntries} entries
+              </span>
+              <div className="space-x-2">
+                <button
+                  className="rounded-lg bg-gray-200 px-3 py-1 transition hover:bg-gray-300"
+                  onClick={handlePreviousPage}
+                  disabled={currentPage === 1}
+                  >
+                    Previous
+                </button>
+                <button
+                  className="rounded-lg bg-gray-200 px-3 py-1 transition hover:bg-gray-300"
+                  onClick={handleNextPage}
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )

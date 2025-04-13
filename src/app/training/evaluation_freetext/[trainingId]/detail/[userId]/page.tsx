@@ -1,3 +1,4 @@
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import DetailFreeTextFromUserComponent from "@/components/Layouts/Detail/DetailAnswerFreeTextUser";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -26,6 +27,7 @@ const DetailFreeTextFromUserPage = () => {
   return (
     <ProtectedRoute allowedRoles={["admin"]}>
       <DefaultLayout>
+        <Breadcrumb/>
        <DetailFreeTextFromUserComponent/>
       </DefaultLayout>
     </ProtectedRoute>

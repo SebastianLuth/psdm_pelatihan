@@ -379,8 +379,6 @@ const RKAPLearningWalletDataPage = () => {
                       )}
                     </tbody>
                   </table>
-                  
-                  
                 </div>
                 </div>
                
@@ -406,7 +404,7 @@ const RKAPLearningWalletDataPage = () => {
                             Next
                           </button>
                         </div>
-                  </div>
+                </div>
 
               </div>
             </>

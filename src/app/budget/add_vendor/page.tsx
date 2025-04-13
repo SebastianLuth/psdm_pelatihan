@@ -1,3 +1,4 @@
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import FormAddDataVendorComponent from "@/components/FormElements/FormAddDataVendorComponent"
 import DefaultLayout from "@/components/Layouts/DefaultLayout"
 import ProtectedRoute from "@/components/ProtectedRoute"
@@ -21,6 +22,7 @@ const AddVendorPage = () => {
     return (
         <ProtectedRoute allowedRoles={['admin', 'super admin']}>
             <DefaultLayout>
+                <Breadcrumb/>
                 <FormAddDataVendorComponent/>
             </DefaultLayout>
         </ProtectedRoute>

@@ -102,11 +102,13 @@ export const DashboardComponent = () => {
 
         const categories = realisasiDataAnggaran.map((item) => item.label);
         const dataLPP = realisasiDataAnggaran.map((item) => Number(item.data.total_anggaran_LPP) || 0);
-        const realisasiAnggaranDataLPP = realisasiDataAnggaran.map((item) => (Number(item.data.total_anggaran_LPP) || 0) - (Number(item.data.sisa_anggaran_LPP) || 0));
+        const realisasiAnggaranDataLPP = realisasiDataAnggaran.map((item) => (
+            Number(item.data.total_anggaran_LPP) || 0) - (Number(item.data.sisa_anggaran_LPP) || 0));
         const sisaAnggaranDataLpp = realisasiDataAnggaran.map((item) => (Number(item.data.sisa_anggaran_LPP) || 0));
 
         const dataNonLPP = realisasiDataAnggaran.map((item) => Number(item.data.total_anggaran_NONLPP) || 0);
-        const realisasiAnggaranDataNONLPP =  realisasiDataAnggaran.map((item) => (Number(item.data.total_anggaran_NONLPP) || 0) + (Number(item.data.sisa_anggaran_NONLPP) || 0));
+        const realisasiAnggaranDataNONLPP =  realisasiDataAnggaran.map((item) => (
+            Number(item.data.total_anggaran_NONLPP) || 0) - (Number(item.data.sisa_anggaran_NONLPP) || 0));
         const sisaAnggaranDataNonLpp = realisasiDataAnggaran.map((item) => (Number(item.data.sisa_anggaran_NONLPP) || 0));
 
         const dataKeseluruhan = realisasiDataAnggaran.map((item) => 

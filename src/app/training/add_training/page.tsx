@@ -1,3 +1,4 @@
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import FormAddTraining from "@/components/FormElements/FormAddTraining";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -25,6 +26,7 @@ const AddTrainingPage = () => {
   return (
     <ProtectedRoute allowedRoles={["admin", "super admin"]}>
       <DefaultLayout>
+        <Breadcrumb/>
         <FormAddTraining />
       </DefaultLayout>
     </ProtectedRoute>

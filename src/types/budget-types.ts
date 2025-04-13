@@ -65,7 +65,7 @@ export const rkapTypeOptions: SelectOption [] = [
   {value: 12 , label:"PEMBELAJARAN DAN PENGEMBANGAN SDM - Pelatihan & Pengembangan Kompetensi Karyawan (In House Training) - Women Leader Program"},
   {value: 13 , label: "PEMBELAJARAN DAN PENGEMBANGAN SDM - Pelatihan & Pengembangan Kompetensi Karyawan (In House Training) - Karyawan Pelaksana - Soft Competency"},
   {value: 14  , label: "PEMBELAJARAN DAN PENGEMBANGAN SDM - Pelatihan & Pengembangan Kompetensi Karyawan (In House Training) - Karyawan Pelaksana - Hard Competency"},
-  {value: 15 , label:"PEMBELAJARAN DAN PENGEMBANGAN SDM - Kursus Jabatan (Leadership Development Program) - Karyawan Pimpinan; Talent Source - Plantation Leadership Development Program II (PLDP II)"},
+  {value: 15 , label:"PEMBELAJARAN DAN PENGEMBANGAN SDM - Kursus Jabatan (Leadership Development Program) - Karyawan Pimpinan; Talent Source - Plantation Leadership Development Program I (PLDP I)"},
   {value: 16 , label: "PEMBELAJARAN DAN PENGEMBANGAN SDM - Kursus Jabatan (Leadership Development Program) - Karyawan Pimpinan; Talent Source - Plantation Leadership Development Program II (PLDP II)"},
   {value: 17 , label: "PEMBELAJARAN DAN PENGEMBANGAN SDM - Kursus Jabatan (Leadership Development Program) - Karyawan Pimpinan; Talent Source - Plantation Leadership Development Program III (PLDP III)"},
   {value: 18, label:"PEMBELAJARAN DAN PENGEMBANGAN SDM - Kursus Jabatan (Leadership Development Program) - Karyawan Pimpinan; Talent Pool - Leadership Development Program I"},

@@ -16,6 +16,7 @@ export function TableListBawahan({allBawahan, onDeleteBawahan}: TableListBawahan
           <th className="px-4 py-3">No</th>
           <th className="px-4 py-3">NIK-SAP</th>
           <th className="px-4 py-3">Nama</th>
+          <th className="px-4 py-3">Kategori</th>
           <th className="px-4 py-3 text-center">Action</th>
         </tr>
       </thead>
@@ -27,6 +28,7 @@ export function TableListBawahan({allBawahan, onDeleteBawahan}: TableListBawahan
               {evaluator.evaluator_username}
             </td>
             <td className="px-4 py-3">{evaluator.evaluator_name}</td>
+            <td className="px-4 py-3">{evaluator.evaluator_category}</td>
             <td className="px-4 py-3 text-center">
               <button
                 className="rounded-md bg-red-500 px-3 py-1 text-white transition hover:bg-red-600"

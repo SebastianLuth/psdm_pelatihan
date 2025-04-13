@@ -1,3 +1,4 @@
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import TableDataTraingin from "@/components/Tables/TableDataTraingin";
@@ -25,6 +26,7 @@ const TrainingDataPage = () => {
   return (
     <ProtectedRoute allowedRoles={["admin", "super admin"]}>
       <DefaultLayout>
+        <Breadcrumb />
         <TableDataTraingin />
       </DefaultLayout>
     </ProtectedRoute>

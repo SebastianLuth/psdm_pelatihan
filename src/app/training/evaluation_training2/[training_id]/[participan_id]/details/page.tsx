@@ -1,3 +1,4 @@
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import DetailEvaluation3Component from "@/components/Layouts/Detail/DetailEvaluation3";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -14,6 +15,7 @@ const DetailEvaluation3Page = () => {
   return (
     <ProtectedRoute>
       <DefaultLayout>
+        <Breadcrumb/>
         <DetailEvaluation3Component />
       </DefaultLayout>
     </ProtectedRoute>

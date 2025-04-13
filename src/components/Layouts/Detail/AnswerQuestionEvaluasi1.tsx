@@ -77,6 +77,12 @@ const AnswerEvaluasiTraining1Component = () => {
         });
       }
     } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Jawaban gagal dikirim!",
+        confirmButtonText: "Kembali kehalaman data evaluasi",
+        confirmButtonColor: "#dc3545",
+      })
       setError(true);
     } finally {
       setLoading(false);

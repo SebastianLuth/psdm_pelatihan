@@ -1,3 +1,4 @@
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import FormDataUser from "@/components/FormElements/FormAddUser";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -13,6 +14,7 @@ const AddUserPage = () => {
     <>
       <ProtectedRoute allowedRoles={["admin", "super admin"]}>
         <DefaultLayout>
+          <Breadcrumb />
           <FormDataUser />
         </DefaultLayout>
       </ProtectedRoute>

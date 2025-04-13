@@ -178,10 +178,10 @@ const EvaluastionFreeTextComponent = () => {
           <div className="mb-6 flex flex-col items-start sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h4 className="text-2xl font-semibold text-gray-800 dark:text-white">
-              Evaluasi Pelatihan LV 1
+              Evaluasi Feedback Pelatihan 
             </h4>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              Halaman ini untuk melihat semua Evaluasi Pelatihan LV 1.
+              Halaman ini untuk melihat semua Evaluasi Feedback Pelatihan 
             </p>
           </div>
 

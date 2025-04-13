@@ -1,3 +1,4 @@
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import TableEvaluationTraining1 from "@/components/Tables/TableEvaluationTraining1";
@@ -26,6 +27,7 @@ const Training1Page = () => {
     <>
       <ProtectedRoute >
         <DefaultLayout>
+          <Breadcrumb/>
           <TableEvaluationTraining1 />
         </DefaultLayout>
       </ProtectedRoute>

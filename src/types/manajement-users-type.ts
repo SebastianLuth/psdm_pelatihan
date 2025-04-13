@@ -8,6 +8,7 @@ export type EvaluatorData = {
   user_jabatan: string;
   evaluator_id: number;
   evaluator_username: number;
+  evaluator_category: string;
   evaluator_name: string;
   evaluator_phone: string;
   evaluator_unit_kerja_id: number;

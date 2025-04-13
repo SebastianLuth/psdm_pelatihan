@@ -1,3 +1,4 @@
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import FormAddBudget from "@/components/FormElements/FormAddBudget";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -22,6 +23,7 @@ const AddBudgetPage = () => {
     <>
       <ProtectedRoute allowedRoles={["admin", "super admin"]}>
         <DefaultLayout>
+          <Breadcrumb/>
           <FormAddBudget />
         </DefaultLayout>
       </ProtectedRoute>

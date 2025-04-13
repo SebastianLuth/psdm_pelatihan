@@ -40,8 +40,7 @@ export default function CreateBawahanModal({
       return dataAllUserByUnitKerja.filter(
         (training) =>
           training.nama.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          training.username.toString().includes(searchQuery) ||
-          training.unit_kerja.toLowerCase().includes(searchQuery.toLowerCase())
+          training.username.toString().includes(searchQuery)
       );
     }, [searchQuery, dataAllUserByUnitKerja]);
 

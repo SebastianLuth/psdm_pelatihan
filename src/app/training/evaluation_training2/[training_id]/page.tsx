@@ -1,3 +1,4 @@
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import DetailUsersEvaluation3Status from "@/components/Layouts/Detail/DetailUsersEvaluation3Status";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -26,6 +27,7 @@ const EvaluasiTraining1Page = () => {
   return (
     <ProtectedRoute allowedRoles={["admin"]}>
       <DefaultLayout>
+        <Breadcrumb/>
         <DetailUsersEvaluation3Status/>
       </DefaultLayout>
     </ProtectedRoute>

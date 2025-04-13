@@ -1,3 +1,4 @@
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import DetailEvaluasiTraining1Component from "@/components/Layouts/Detail/DetailEvaluasition1";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -25,6 +26,7 @@ export default function EditEvaluasiTraining1Page() {
   return (
     <ProtectedRoute>
       <DefaultLayout>
+        <Breadcrumb/>
         <DetailEvaluasiTraining1Component />
       </DefaultLayout>
     </ProtectedRoute>

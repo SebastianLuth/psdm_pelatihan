@@ -1,3 +1,4 @@
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import UpdateTrainingComponent from "@/components/FormElements/FormUpdateTraining";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -27,6 +28,7 @@ export default function TrainingDataId() {
   return (
     <ProtectedRoute allowedRoles={["admin", "super admin"]}>
       <DefaultLayout>
+        <Breadcrumb/>
         <UpdateTrainingComponent />
       </DefaultLayout>
     </ProtectedRoute>

@@ -1,3 +1,4 @@
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import UpdateDataVendorComponent from "@/components/Layouts/Detail/UpdateUpdateDataVendorComponent";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -22,6 +23,7 @@ const UpdateDataVendorPage = () => {
     <>
       <ProtectedRoute allowedRoles={["admin", "super admin"]}>
         <DefaultLayout>
+          <Breadcrumb/>
           <UpdateDataVendorComponent />
         </DefaultLayout>
       </ProtectedRoute>
