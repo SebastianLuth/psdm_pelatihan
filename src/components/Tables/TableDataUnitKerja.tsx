@@ -7,15 +7,20 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 import SkeletonTable from "../Skeleton/SkeletonTable";
 import Link from "next/link";
+import { debounce } from "lodash";
 
 const fetcher = async () => {
   return await getUnitKerja();
 };
 
 const TableDataUnitKerja = () => {
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [limit, setLimit] = useState<number>(100);
   const [isLoading, setIsLoading] = useState(true);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [limit, setLimit] = useState<number>(10);
+
+
 
   const { data, error, mutate } = useSWR<UnitKerja[]>("/unitKerja", fetcher, {
     refreshInterval: 10800000,
@@ -23,19 +28,39 @@ const TableDataUnitKerja = () => {
 
   const router = useRouter();
 
-   // Set loading menjadi false setelah data berhasil diambil
-   useEffect(() => {
-    if (data || error) {
-      setIsLoading(false);
-    }
-  }, [data, error]);
+ // Data filtering and pagination
+ const getFilteredData = (data: UnitKerja[] = []) => {
+  const filtered = data.filter(unit =>
+    unit.unit_kerja.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
-  console.log(data);
+  // Pagination
+  const totalEntries = filtered.length;
+  const totalPages = Math.ceil(totalEntries / limit);
+  const startIndex = (currentPage - 1) * limit;
+  const endIndex = Math.min(startIndex + limit, totalEntries);
+  const currentData = filtered.slice(startIndex, endIndex);
 
-  if (error) return <div>Error loading data...</div>;
-  if (isLoading) return <SkeletonTable title="Unit Kerja"/>;
+  return { 
+    filteredData: filtered, 
+    currentData, 
+    totalEntries, 
+    totalPages, 
+    startIndex, 
+    endIndex 
+  };
+};
 
-  // Fungsi Hapusan unit kerja
+const { 
+  filteredData, 
+  currentData, 
+  totalEntries, 
+  totalPages,
+  startIndex,
+  endIndex 
+} = getFilteredData(data);
+
+     // Fungsi Hapusan unit kerja
   const handleDeleteUnitKerja = async (unitKerjaId: number) => {
     try {
       const result = await Swal.fire({
@@ -69,23 +94,43 @@ const TableDataUnitKerja = () => {
   const handleEditUnitKerja = (unitKerjaId: number) => {
     router.push(`/department/department_data/${unitKerjaId}`);
   };
+  
+    const handleNextPage = () => {
+      if (currentPage < totalPages) {
+        setCurrentPage(currentPage + 1);
+      }
+    };
+  
+    const handlePreviousPage = () => {
+      if (currentPage > 1) {
+        setCurrentPage(currentPage - 1);
+      }
+    };
+  
+    const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+      debouncedSearch(event.target.value);
+    };
+  
+    const handleLimitChange = (event: ChangeEvent<HTMLSelectElement>) => {
+      setLimit(Number(event.target.value));
+      setCurrentPage(1); // Reset to first page when changing limit
+    };
+  
+    // Debounced search
+    const debouncedSearch = debounce((query: string) => {
+      setSearchQuery(query);
+      setCurrentPage(1); // Reset to first page when searching
+    }, 300);
 
-  const debouncedSearch = (query: string) => {
-    setSearchQuery(query);
-  }
-
-  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-    debouncedSearch(event.target.value);
-  }
-
-  const handleLimitChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setLimit(Number(event.target.value));
-  }
-
-  // Data yang akan ditampilkan
-  const filteredUnitKerjaData = data
-  ? data.filter((unit) => unit.unit_kerja.toLowerCase().includes(searchQuery.toLowerCase()))
-  : [];
+     // Set loading menjadi false setelah data berhasil diambil
+     useEffect(() => {
+      if (data || error) {
+        setIsLoading(false);
+      }
+    }, [data, error]);
+  
+    if (error) return <div>Error loading data...</div>;
+    if (isLoading) return <SkeletonTable title="Unit Kerja"/>;
 
   return (
     <div className="relative overflow-hidden rounded-xl border border-gray-300 bg-white/70 shadow-xl backdrop-blur-lg dark:border-gray-700 dark:bg-gray-900/70">
@@ -138,13 +183,13 @@ const TableDataUnitKerja = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-            {filteredUnitKerjaData?.map((unit, index) => (
+            {currentData?.map((unit, index) => (
               <tr
-                key={unit.id}
+                key={index}
                 className="group transform transition-transform duration-200 hover:scale-[1.02] hover:bg-gray-50 dark:hover:bg-gray-800"
               >
                 <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                  {index + 1}
+                  {(currentPage - 1) * limit + index + 1}
                 </td>
                 <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
                   {unit.unit_kerja}
@@ -197,22 +242,22 @@ const TableDataUnitKerja = () => {
         </table>
         <div className="mt-8 mb-4 mr-4 flex items-center justify-between text-sm text-gray-500">
           <span>
-          {/* {" "}
+          {" "}
           Showing {startIndex + 1} to {Math.min(endIndex, totalEntries)}{" "}
-          of {totalEntries} entries */}
+          of {totalEntries} entries
           </span>
           <div className="space-x-2">
             <button
               className="rounded-lg bg-gray-200 px-3 py-1 transition hover:bg-gray-300"
-              // onClick={handlePreviousPage}
-              // disabled={currentPage === 1}
+              onClick={handlePreviousPage}
+              disabled={currentPage === 1}
               >
                 Previous
             </button>
             <button
               className="rounded-lg bg-gray-200 px-3 py-1 transition hover:bg-gray-300"
-              // onClick={handleNextPage}
-              // disabled={currentPage === totalPages}
+              onClick={handleNextPage}
+              disabled={currentPage === totalPages}
             >
               Next
             </button>

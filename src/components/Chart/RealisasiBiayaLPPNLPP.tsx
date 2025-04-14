@@ -27,6 +27,29 @@ const formatNumber = (value: number) => {
 };
 
 const RealisasiBiayaChart = ({ tahunAnggaran, onTahunChange, title, categories, sisaAnggaranDataLpp, realisasiAnggaranDataLpp , sisaAnggaranDataNonLpp, realisasiAnggaranDataNonLpp }: RealisasiBiayaChartProps) => {
+    const singkatKategori = (kategori: string): string => {
+        if (kategori.startsWith('PTPN 4 Regional')) {
+          return 'R' + kategori.replace('PTPN 4 Regional ', '');
+        }
+      
+        const mapLainnya: { [key: string]: string } = {
+          'PT AGRO SINERGI NUSANTARA': 'ASN',
+          'PT SINERGI PERKEBUNAN NUSANTARA': 'SPN',
+          'PT PRIMA MEDIKA NUSANTARA': 'PMN',
+          'PT NUSA LIMA MEDIKA': 'NLM',
+          'PT KALIMANTAN MEDIKA NUSANTARA': 'KMN',
+          'PT ALAM LESTARI NUSANTARA': 'ALN',
+          'PT NUSANTARA BATU LICIN': 'NBL',
+          'PT INDUSTRI NABATI LESTARI': 'INL',
+          'PTPN4 Head Office': 'HO',
+        };
+      
+        return mapLainnya[kategori] || kategori;
+      };
+
+      const kategoriSingkat = categories.map(singkatKategori); // pastikan pakai nama fungsi yang benar
+      
+
     const chartRef = useRef<HTMLDivElement>(null);
      const rawData = [
        
@@ -125,7 +148,7 @@ const RealisasiBiayaChart = ({ tahunAnggaran, onTahunChange, title, categories, 
         },
         xAxis: {
             type: 'category',
-            data: categories
+            data: kategoriSingkat,
         },
         series: doubleSeries
     };

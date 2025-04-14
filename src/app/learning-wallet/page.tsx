@@ -42,8 +42,6 @@ type dataRKAPLWUser = {
 const LearningWalletPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [limit, setLimit] = useState<number>(10);
-  const [searchQuery, setSearchQuery] = useState("");
   const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
 
   const [learningWalletData, setLearningWalletData] = useState<
@@ -55,6 +53,10 @@ const LearningWalletPage = () => {
   const [learningWalletUser, setLearningWalletUser] = useState<
     LearningWallet[]
   >([]);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [limit, setLimit] = useState<number>(10);
 
   const router = useRouter();
   const { userData } = useAuth();
@@ -146,10 +148,65 @@ const LearningWalletPage = () => {
         }
       )
     } catch (error) {
-      
+      setError(true);
     }
   }
 
+  const getFilteredData = (data: LearningWallet[]) => {
+    let filtered = data.filter((item) =>
+      item.nama
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()),
+    );
+
+    // Pagination berdasarkan hasil filter
+    const totalEntries = filtered?.length || 0;
+    const totalPages = Math.ceil(totalEntries / limit);
+    const startIndex = (currentPage - 1) * limit;
+    const endIndex = startIndex + limit;
+    const currentData = filtered?.slice(startIndex, endIndex);
+
+    return { filtered, currentData, totalEntries, totalPages, startIndex, endIndex };
+  };
+
+  const {
+    filtered: filteredUser,
+    currentData : currentDataUser,
+    totalEntries : totalEntriesUser,
+    totalPages : totalPagesUser,
+    startIndex : startIndexUser,
+    endIndex : endIndexUser
+  } = getFilteredData(learningWalletUser);
+
+  const {
+    filtered: filteredAdmin,
+    currentData : currenDataAdmin,
+    totalEntries : totalEntriesAdmin,
+    totalPages : totalPagesAdmin,
+    startIndex : startIndexAdmin,
+    endIndex : endIndexAdmin
+  } = getFilteredData(learningWalletData);
+  
+
+  const handleNextPageUser = () => {
+    if (currentPage < totalPagesUser) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handleNextPageAdmin = () => {
+    if (currentPage < totalPagesAdmin) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  
   const debouncedSearch = (query: string) => {
     setSearchQuery(query);
   };
@@ -161,15 +218,6 @@ const LearningWalletPage = () => {
   const handleLimitChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setLimit(Number(event.target.value));
   };
-
-  const filteredData = Array.isArray(learningWalletData)
-  ? learningWalletData.filter((learningWallet) => {
-      return learningWallet.judul_pelatihan
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase());
-    })
-  : [];
-
 
   const toggleDropdown = (id: number) => {
     setOpenDropdownId((prevId) => (prevId === id ? null : id));
@@ -231,6 +279,9 @@ const LearningWalletPage = () => {
                     <thead className="bg-gray-50">
                       <tr>
                       <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          No
+                        </th>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Nama Pegawai
                         </th>
                         <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -260,9 +311,12 @@ const LearningWalletPage = () => {
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                      {Array.isArray(filteredData) && filteredData.length > 0 ? (
-                        filteredData.map((learningWallet, index) => (
+                      {Array.isArray(currenDataAdmin) && currenDataAdmin.length > 0 ? (
+                        currenDataAdmin.map((learningWallet, index) => (
                           <tr key={index} className="hover:bg-gray-50 transition-colors duration-150">
+                            <td className="px-6 py-4 whitespace-nowrap">
+                            {(currentPage - 1) * limit + index + 1}
+                            </td>
                              <td className="px-6 py-4 whitespace-nowrap">
                               <div className="flex items-center">
                                 <p className="text-sm font-medium text-gray-900">
@@ -494,34 +548,32 @@ const LearningWalletPage = () => {
                       )}
                     </tbody>
                   </table>
-                  
-                  
                 </div>
                 </div>
                
-                <div className="mt-8 mb-4 mr-4 flex items-center justify-between text-sm text-gray-500">
-                        <span>
-                          {/* {" "}
-                          Showing {startIndex + 1} to {Math.min(endIndex, totalEntries)}{" "}
-                          of {totalEntries} entries */}
-                        </span>
-                        <div className="space-x-2">
-                          <button
-                            className="rounded-lg bg-gray-200 px-3 py-1 transition hover:bg-gray-300"
-                            // onClick={handlePreviousPage}
-                            // disabled={currentPage === 1}
-                          >
-                            Previous
-                          </button>
-                          <button
-                            className="rounded-lg bg-gray-200 px-3 py-1 transition hover:bg-gray-300"
-                            // onClick={handleNextPage}
-                            // disabled={currentPage === totalPages}
-                          >
-                            Next
-                          </button>
-                        </div>
-                  </div>
+                <div className="p-8 flex items-center justify-between text-sm text-gray-500">
+                      <span>
+                        {" "}
+                        Showing {startIndexAdmin + 1} to {Math.min(endIndexAdmin, totalEntriesAdmin)}{" "}
+                        of {totalEntriesAdmin} entries
+                      </span>
+                      <div className="space-x-2">
+                        <button
+                          className="rounded-lg bg-gray-200 px-3 py-1 transition hover:bg-gray-300"
+                          onClick={handlePreviousPage}
+                          disabled={currentPage === 1}
+                        >
+                          Previous
+                        </button>
+                        <button
+                          className="rounded-lg bg-gray-200 px-3 py-1 transition hover:bg-gray-300"
+                          onClick={handleNextPageAdmin}
+                          disabled={currentPage === totalPagesAdmin}
+                        >
+                          Next
+                        </button>
+                      </div>
+                </div>
 
               </div>
             </>
@@ -621,13 +673,16 @@ const LearningWalletPage = () => {
                   <div className="mt-7 overflow-x-auto">
                     <table className="w-full whitespace-nowrap">
                       <tbody>
-                        { Array.isArray(learningWalletUser) && learningWalletUser.length > 0 ? 
+                        { Array.isArray(currentDataUser) && currentDataUser.length > 0 ? 
                         
-                          learningWalletUser.map((learningWallet, index) => (
+                          currentDataUser.map((learningWallet, index) => (
                           <tr
                             key={index}
                             className="h-16 rounded border border-gray-100 focus:outline-none"
                           >
+                            <td>
+                            {(currentPage - 1) * limit + index + 1}
+                            </td>
                             <td className="">
                               <div className="flex items-center pl-5">
                                 <p className="mr-2 text-base font-medium leading-none text-gray-700">
@@ -853,24 +908,24 @@ const LearningWalletPage = () => {
                         }
                       </tbody>
                     </table>
-                    <div className="mt-8 flex items-center justify-between text-sm text-gray-500">
+                    <div className="p-8 flex items-center justify-between text-sm text-gray-500">
                       <span>
-                        {/* {" "}
-                        Showing {startIndex + 1} to {Math.min(endIndex, totalEntries)}{" "}
-                        of {totalEntries} entries */}
+                        {" "}
+                        Showing {startIndexUser + 1} to {Math.min(endIndexUser, totalEntriesUser)}{" "}
+                        of {totalEntriesUser} entries
                       </span>
                       <div className="space-x-2">
                         <button
                           className="rounded-lg bg-gray-200 px-3 py-1 transition hover:bg-gray-300"
-                          // onClick={handlePreviousPage}
-                          // disabled={currentPage === 1}
+                          onClick={handlePreviousPage}
+                          disabled={currentPage === 1}
                         >
                           Previous
                         </button>
                         <button
                           className="rounded-lg bg-gray-200 px-3 py-1 transition hover:bg-gray-300"
-                          // onClick={handleNextPage}
-                          // disabled={currentPage === totalPages}
+                          onClick={handleNextPageUser}
+                          disabled={currentPage === totalPagesUser}
                         >
                           Next
                         </button>

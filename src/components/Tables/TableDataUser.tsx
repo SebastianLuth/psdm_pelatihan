@@ -17,7 +17,8 @@ interface TableDataUserProps {
 const TableDataUser: React.FC<TableDataUserProps> = ({ selectedUnitKerja }) => {
   const [users, setUsers] = useState<User[]>([]);
 
-  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
   const [limit, setLimit] = useState<number>(10);
 
   // Get all user by unit kerja
@@ -31,6 +32,45 @@ const TableDataUser: React.FC<TableDataUserProps> = ({ selectedUnitKerja }) => {
       console.error("Error fetching user data:", error);
     }
   }, [selectedUnitKerja]);
+
+
+    const getFilteredData = (data: User[]) => {
+      let filtered = data.filter((item) =>
+        item.nama
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase()),
+      );
+  
+      // Pagination berdasarkan hasil filter
+      const totalEntries = filtered?.length || 0;
+      const totalPages = Math.ceil(totalEntries / limit);
+      const startIndex = (currentPage - 1) * limit;
+      const endIndex = startIndex + limit;
+      const currentData = filtered?.slice(startIndex, endIndex);
+  
+      return { filtered, currentData, totalEntries, totalPages, startIndex, endIndex };
+    };
+  
+    const {
+      filtered: filteredBudgetData,
+      currentData,
+      totalEntries,
+      totalPages,
+      startIndex,
+      endIndex
+    } = getFilteredData(users);
+  
+    const handleNextPage = () => {
+      if (currentPage < totalPages) {
+        setCurrentPage(currentPage + 1);
+      }
+    };
+  
+    const handlePreviousPage = () => {
+      if (currentPage > 1) {
+        setCurrentPage(currentPage - 1);
+      }
+    };
 
   useEffect(() => {
     if (selectedUnitKerja) {
@@ -50,13 +90,6 @@ const TableDataUser: React.FC<TableDataUserProps> = ({ selectedUnitKerja }) => {
     setLimit(Number(event.target.value));
   }
 
-  const filteredUsersData = users.filter((user) => {
-    return (
-      user.username.toString().includes(searchQuery) ||
-      user.nama.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.jabatan.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  });
 
   return (
     <div className="relative overflow-hidden rounded-xl border border-gray-300 bg-white/70 shadow-xl backdrop-blur-lg dark:border-gray-700 dark:bg-gray-900/70">
@@ -109,20 +142,20 @@ const TableDataUser: React.FC<TableDataUserProps> = ({ selectedUnitKerja }) => {
           </thead>
           <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
             {
-              filteredUsersData.length === 0 ? (
+              currentData.length === 0 ? (
                 <tr className="bg-white">
                   <td colSpan={4} className="px-6 py-4 text-center">
                     Tidak ada data
                   </td>
                 </tr>
               ) : (
-                filteredUsersData.map((user, index) => (
+                currentData.map((user, index) => (
                   <tr
-                    key={user.id}
+                    key={index}
                     className="group transform transition-transform duration-200 hover:scale-[1.02] hover:bg-gray-50 dark:hover:bg-gray-800"
                   >
                     <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
-                      {index + 1}
+                      {(currentPage - 1) * limit + index + 1}
                     </td>
                     <td className="px-6 py-4 text-gray-800 dark:text-gray-100">
                       {user.username}
@@ -163,22 +196,22 @@ const TableDataUser: React.FC<TableDataUserProps> = ({ selectedUnitKerja }) => {
         </table>
         <div className="mt-8 mb-4 mr-4 flex items-center justify-between text-sm text-gray-500">
           <span>
-          {/* {" "}
+          {" "}
           Showing {startIndex + 1} to {Math.min(endIndex, totalEntries)}{" "}
-          of {totalEntries} entries */}
+          of {totalEntries} entries
           </span>
           <div className="space-x-2">
             <button
               className="rounded-lg bg-gray-200 px-3 py-1 transition hover:bg-gray-300"
-              // onClick={handlePreviousPage}
-              // disabled={currentPage === 1}
+              onClick={handlePreviousPage}
+              disabled={currentPage === 1}
               >
                 Previous
             </button>
             <button
               className="rounded-lg bg-gray-200 px-3 py-1 transition hover:bg-gray-300"
-              // onClick={handleNextPage}
-              // disabled={currentPage === totalPages}
+              onClick={handleNextPage}
+              disabled={currentPage === totalPages}
             >
               Next
             </button>

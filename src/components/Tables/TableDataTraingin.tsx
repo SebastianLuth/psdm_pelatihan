@@ -12,8 +12,11 @@ const TableDataTraingin = () => {
   
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [limit, setLimit] = useState<number>(10);
+
+
+  const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
+  const [limit, setLimit] = useState<number>(10);
 
   const fetchAllTraining = async () => {
     try {
@@ -56,6 +59,52 @@ const TableDataTraingin = () => {
     }
   };
 
+  const getFilteredData = (data: TrainingType[]) => {
+    let filtered = data.filter((item) =>
+      item.judul
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      item.jenis
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      item.lembaga
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()),
+    );
+    
+
+    // Pagination berdasarkan hasil filter
+    const totalEntries = filtered?.length || 0;
+    const totalPages = Math.ceil(totalEntries / limit);
+    const startIndex = (currentPage - 1) * limit;
+    const endIndex = startIndex + limit;
+    const currentData = filtered?.slice(startIndex, endIndex);
+
+    return { filtered, currentData, totalEntries, totalPages, startIndex, endIndex };
+  };
+
+  const {
+    filtered: filteredBudgetData,
+    currentData,
+    totalEntries,
+    totalPages,
+    startIndex,
+    endIndex
+  } = getFilteredData(allTraining);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+
   useEffect(() => {
     fetchAllTraining();
   }, []);
@@ -71,18 +120,6 @@ const TableDataTraingin = () => {
   const handleLimitChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setLimit(Number(event.target.value));
   };
-
-  const filteredTrainingData = allTraining
-    .filter(
-      (training) =>
-        training.judul.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        training.jenis
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase()) ||
-        training.lokasi.toLowerCase().includes(searchQuery.toLowerCase()),
-    )
-    .slice(0, limit);
-
 
   return (
     <>
@@ -142,14 +179,14 @@ const TableDataTraingin = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                {filteredTrainingData.length === 0 ? (
+                {currentData.length === 0 ? (
                   <tr>
                     <td colSpan={9} className="px-6 py-4 text-center">
                       Tidak ada data
                     </td>
                   </tr>
                 ) : (
-                  filteredTrainingData.map((training, index) => (
+                  currentData.map((training, index) => (
                     <tr
                       key={training.id}
                       className="group transform transition-transform duration-200 hover:scale-[1.02] hover:bg-gray-50 dark:hover:bg-gray-800"
@@ -230,22 +267,22 @@ const TableDataTraingin = () => {
             </table>
             <div className="mt-8 mb-4 mr-4 flex items-center justify-between text-sm text-gray-500">
               <span>
-              {/* {" "}
+              {" "}
               Showing {startIndex + 1} to {Math.min(endIndex, totalEntries)}{" "}
-              of {totalEntries} entries */}
+              of {totalEntries} entries
               </span>
               <div className="space-x-2">
                 <button
                   className="rounded-lg bg-gray-200 px-3 py-1 transition hover:bg-gray-300"
-                  // onClick={handlePreviousPage}
-                  // disabled={currentPage === 1}
+                  onClick={handlePreviousPage}
+                  disabled={currentPage === 1}
                   >
                     Previous
                 </button>
                 <button
                   className="rounded-lg bg-gray-200 px-3 py-1 transition hover:bg-gray-300"
-                  // onClick={handleNextPage}
-                  // disabled={currentPage === totalPages}
+                  onClick={handleNextPage}
+                  disabled={currentPage === totalPages}
                 >
                   Next
                 </button>

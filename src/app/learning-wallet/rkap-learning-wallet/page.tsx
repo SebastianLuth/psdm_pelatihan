@@ -24,13 +24,16 @@ interface LearningWallet {
 const RKAPLearningWalletDataPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [limit, setLimit] = useState<number>(10);
-  const [searchQuery, setSearchQuery] = useState("");
   const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
 
   const [learningWalletData, setLearningWalletData] = useState<
     LearningWallet[]
   >([]);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [limit, setLimit] = useState<number>(10);
+
   const router = useRouter();
   const { userData } = useAuth();
 
@@ -86,6 +89,46 @@ const RKAPLearningWalletDataPage = () => {
       throw error
     }
   }
+
+
+  const getFilteredData = (data: LearningWallet[]) => {
+    let filtered = data.filter((item) =>
+      item.nama
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()),
+    );
+
+    // Pagination berdasarkan hasil filter
+    const totalEntries = filtered?.length || 0;
+    const totalPages = Math.ceil(totalEntries / limit);
+    const startIndex = (currentPage - 1) * limit;
+    const endIndex = startIndex + limit;
+    const currentData = filtered?.slice(startIndex, endIndex);
+
+    return { filtered, currentData, totalEntries, totalPages, startIndex, endIndex };
+  };
+
+  const {
+    filtered: filteredBudgetData,
+    currentData,
+    totalEntries,
+    totalPages,
+    startIndex,
+    endIndex
+  } = getFilteredData(learningWalletData);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
 
   const debouncedSearch = (query: string) => {
     setSearchQuery(query);
@@ -167,6 +210,9 @@ const RKAPLearningWalletDataPage = () => {
                     <thead className="bg-gray-50">
                       <tr>
                       <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          No
+                        </th>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Nama Pegawai
                         </th>
                         <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -196,6 +242,9 @@ const RKAPLearningWalletDataPage = () => {
                       {Array.isArray(filteredData) && filteredData.length > 0 ? (
                         filteredData.map((learningWallet, index) => (
                           <tr key={index} className="hover:bg-gray-50 transition-colors duration-150">
+                            <td className="px-6 py-4 whitespace-nowrap">
+                            {(currentPage - 1) * limit + index + 1}
+                            </td>
                              <td className="px-6 py-4 whitespace-nowrap">
                               <div className="flex items-center">
                                 <p className="text-sm font-medium text-gray-900">
@@ -382,24 +431,24 @@ const RKAPLearningWalletDataPage = () => {
                 </div>
                 </div>
                
-                <div className="mt-8 mb-4 mr-4 flex items-center justify-between text-sm text-gray-500">
+                <div className="p-8 flex items-center justify-between text-sm text-gray-500">
                         <span>
-                          {/* {" "}
+                          {" "}
                           Showing {startIndex + 1} to {Math.min(endIndex, totalEntries)}{" "}
-                          of {totalEntries} entries */}
+                          of {totalEntries} entries
                         </span>
                         <div className="space-x-2">
                           <button
                             className="rounded-lg bg-gray-200 px-3 py-1 transition hover:bg-gray-300"
-                            // onClick={handlePreviousPage}
-                            // disabled={currentPage === 1}
+                            onClick={handlePreviousPage}
+                            disabled={currentPage === 1}
                           >
                             Previous
                           </button>
                           <button
                             className="rounded-lg bg-gray-200 px-3 py-1 transition hover:bg-gray-300"
-                            // onClick={handleNextPage}
-                            // disabled={currentPage === totalPages}
+                            onClick={handleNextPage}
+                            disabled={currentPage === totalPages}
                           >
                             Next
                           </button>
