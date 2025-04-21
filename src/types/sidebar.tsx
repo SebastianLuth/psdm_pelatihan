@@ -406,6 +406,69 @@ export const menuGroups = [
           ],
           role : "super admin"
         },
+        {
+          icon: (
+            <svg
+              className="fill-current"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM12 7C10.34 7 9 8.34 9 10H11C11 9.45 11.45 9 12 9C12.55 9 13 9.45 13 10C13 11.1 12.1 12 11 12V15H13V13.1C14.16 12.63 15 11.42 15 10C15 8.34 13.66 7 12 7Z" />
+            </svg>
+          ),
+          label: "Sharing Knowledge MBT",
+          route: "#",
+          children: [
+            { label: "Data Sharing Knowledge MBT", route: "/skmbt"  },
+          ],
+          role : "admin"
+        },
+        {
+          icon: (
+            <svg
+              className="fill-current"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM12 7C10.34 7 9 8.34 9 10H11C11 9.45 11.45 9 12 9C12.55 9 13 9.45 13 10C13 11.1 12.1 12 11 12V15H13V13.1C14.16 12.63 15 11.42 15 10C15 8.34 13.66 7 12 7Z" />
+            </svg>
+          ),
+          label: "Sharing Knowledge MBT",
+          route: "#",
+          children: [
+            { label: "Data Sharing Knowledge MBT", route: "/skmbt"  },
+          ],
+          role : "super admin"
+        },
+        {
+          icon: (
+            <svg
+              className="fill-current"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM12 7C10.34 7 9 8.34 9 10H11C11 9.45 11.45 9 12 9C12.55 9 13 9.45 13 10C13 11.1 12.1 12 11 12V15H13V13.1C14.16 12.63 15 11.42 15 10C15 8.34 13.66 7 12 7Z" />
+            </svg>
+          ),
+          label: "PLANT",
+          route: "#",
+          children: [
+            { label: "CORP. Knowledge", route: "/plant/corp-knowledge"  },
+            { label: "Field Learning", route: "/plant/field-learning"  },
+            { label: "Project Assigment", route: "/plant/project-assignment"  },
+            { label: "Job Orientation", route: "/plant/job-orientation"  },
+          ],
+          role : "admin"
+        },
       ],
     },
   ];
