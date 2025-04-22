@@ -8,6 +8,8 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 
 interface LearningWallet {
   id: number;
@@ -41,7 +43,7 @@ const RKAPLearningWalletDataPage = () => {
     try {
       const result = await axios.get(
         `
-            http://localhost:5000/api/learning-wallet/admin/rkaplw
+            ${baseUrl}/api/learning-wallet/admin/rkaplw
             `,
         {
           withCredentials: true,
@@ -60,7 +62,7 @@ const RKAPLearningWalletDataPage = () => {
     try {
 
       const result = await axios.delete(`
-        http://localhost:5000/api/learning-wallet/admin/rkaplw/${lwId}
+        ${baseUrl}/api/learning-wallet/admin/rkaplw/${lwId}
         `,
         {
           withCredentials: true

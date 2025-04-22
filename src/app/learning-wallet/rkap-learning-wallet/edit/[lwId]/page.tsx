@@ -6,6 +6,7 @@ import { useAuth } from "@/context/AuthContext";
 import axios from "axios";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 
 const EditRKAPLWUser = () => {
@@ -32,7 +33,7 @@ const EditRKAPLWUser = () => {
 
     const fetchDetailData = useCallback( async () => {
         try {
-            const result = await axios.get(`http://localhost:5000/api/learning-wallet/admin/rkaplw/${lwId}`,{
+            const result = await axios.get(`${baseUrl}/api/learning-wallet/admin/rkaplw/${lwId}`,{
                 withCredentials : true
             })
             if (Array.isArray(result.data.data) && result.data.data.length > 0) {
@@ -73,7 +74,7 @@ const EditRKAPLWUser = () => {
     
         try {
             const res = await axios.put(`
-                http://localhost:5000/api/learning-wallet12312/user/${userData?.username}/lw/${lwId}
+                ${baseUrl}/api/learning-wallet12312/user/${userData?.username}/lw/${lwId}
                 `, 
                 form, 
                 {

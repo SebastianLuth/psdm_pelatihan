@@ -6,6 +6,7 @@ import { useAuth } from "@/context/AuthContext";
 import axios from "axios";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
  type RealisasiLWData = {
         id: number,
@@ -48,7 +49,7 @@ const EditSubmissionLw = () => {
 
     const fetchDetailData = useCallback( async () => {
         try {
-            const result = await axios.get(`http://localhost:5000/api/learning-wallet/user/lw/${lwId}`,{
+            const result = await axios.get(`${baseUrl}/api/learning-wallet/user/lw/${lwId}`,{
                 withCredentials : true
             })
             setDetailLWData(result.data.data)
@@ -128,7 +129,7 @@ const EditSubmissionLw = () => {
     
         try {
             const res = await axios.put(`
-                http://localhost:5000/api/learning-wallet/user/${userData?.username}/lw/${lwId}
+                ${baseUrl}/api/learning-wallet/user/${userData?.username}/lw/${lwId}
                 `, 
                 form, 
                 {

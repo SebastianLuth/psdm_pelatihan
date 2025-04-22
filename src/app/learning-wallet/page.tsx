@@ -9,6 +9,8 @@ import { PlusIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 
 interface LearningWallet {
   id: number;
@@ -65,7 +67,7 @@ const LearningWalletPage = () => {
     try {
       const result = await axios.get(
         `
-            http://localhost:5000/api/learning-wallet/admin
+            ${baseUrl}/api/learning-wallet/admin
             `,
         {
           withCredentials: true,
@@ -84,7 +86,7 @@ const LearningWalletPage = () => {
       setLoading(true);
       const result = await axios.get(
         `            
-        http://localhost:5000/api/learning-wallet/user/${userData?.username}
+        ${baseUrl}/api/learning-wallet/user/${userData?.username}
         `,
         {
           withCredentials: true,
@@ -101,7 +103,7 @@ const LearningWalletPage = () => {
 
   const handleDeleteRealisasiLWUser = async (id: number) => {
     try {
-      const result = await axios.delete(`http://localhost:5000/api/learning-wallet/user/lw/${id}`, 
+      const result = await axios.delete(`${baseUrl}/api/learning-wallet/user/lw/${id}`, 
         {
         validateStatus: () => true, // handle manual response 
         withCredentials : true
@@ -133,7 +135,7 @@ const LearningWalletPage = () => {
   const handleUpdateStatusLW = async (status : string, niksap : string | number, lwId : number) => {
     try {
       await axios.put(`
-        http://localhost:5000/api/learning-wallet/admin/update-status/${niksap}
+        ${baseUrl}/api/learning-wallet/admin/update-status/${niksap}
         `,
       {
         status : status,

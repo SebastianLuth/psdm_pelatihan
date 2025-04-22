@@ -24,6 +24,8 @@ import { useAuth } from "@/context/AuthContext";
 import { getTrainingFundAbsorptionUser } from "@/service/auth";
 import { useParams } from "next/navigation";
 import axios from "axios";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 
 
 const UserDetailComponent = () => {
@@ -102,7 +104,7 @@ const UserDetailComponent = () => {
   const fetchAllDataUser = useCallback(async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/user/users`,
+        `${baseUrl}/api/user/users`,
         {
           withCredentials: true,
         }

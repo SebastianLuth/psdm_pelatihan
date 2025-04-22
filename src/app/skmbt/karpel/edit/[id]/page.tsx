@@ -2,28 +2,69 @@
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import { useAuth } from "@/context/AuthContext";
 import axios from "axios";
-import { ChangeEvent, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import Swal from "sweetalert2";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 
 type skmbtType = {
   nama: string;
   niksap: string;
+  jabatan : string; 
 };
 
 type skmbtTypeSubmit = {
-    nama: string;
-    niksap: string;
-  };
+  nama: string;
+  niksap: string;
+  jabatan : string; 
+};
 
-const FormAddSKMBTPage = () => {
+type SkmbtData = {
+  id: number,
+  nama: string,
+  niksap: number,
+  url_pdf_skmbt: string,
+  company_id: number,
+  company_nama: string,
+  created_at: string,
+  updated_at: string
+}
+
+const FormEditSKMBTKarpelPage = () => {
+  const [skmbtData, setSkmbtData] = useState<SkmbtData | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
   const [formData, setFormData] = useState<skmbtType>({
     nama: "",
     niksap: "",
+    jabatan : "",
   });
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState("");
+
+  const {userData} = useAuth();
+  const skmbtId  = useParams().id;
+
+  const fetchDetailDataSKMBT = useCallback (async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/api/skmbt/admin/${skmbtId}`, {
+        withCredentials: true,
+      });
+      const data = response.data.data[0];
+      setSkmbtData(data);
+
+      // Set juga ke formData
+      setFormData({
+        nama: data.nama || "",
+        niksap: data.niksap?.toString() || "",
+        jabatan : data.jabatan || "",
+      });
+    } catch (error) {
+      Swal.fire("Gagal!", "Terjadi kesalahan saat mengambil data SKMBT.", "error");
+    }
+  },[skmbtId])
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -43,9 +84,10 @@ const FormAddSKMBTPage = () => {
       const data = new FormData();
       data.append("nama", formData.nama);
       data.append("niksap", formData.niksap);
+      data.append("jabatan", formData.jabatan);
       data.append("pdf_skmbt", file);
 
-      await axios.post(`http://localhost:5000/api/skmbt/admin`, data,{
+      await axios.put(`${baseUrl}/api/skmbt/admin/${skmbtId}`, data,{
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -53,10 +95,6 @@ const FormAddSKMBTPage = () => {
       });
 
       setSuccess(true);
-      setFormData({
-        nama: "",
-        niksap: "",
-      });
       setFile(null);
       setFileName("");
     } catch (error) {
@@ -88,6 +126,12 @@ const FormAddSKMBTPage = () => {
     setFile(null);
     setFileName("");
   };
+
+  useEffect(() => {
+    fetchDetailDataSKMBT();
+  }, [fetchDetailDataSKMBT]);
+
+  console.log(skmbtData);
 
   return (
     <>
@@ -137,7 +181,26 @@ const FormAddSKMBTPage = () => {
                 />
               </div>
 
+              <div className="mb-6">
+                <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Masukkan Jabatan Karyawan
+                  <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="jabatan"
+                  value={formData.jabatan ?? ""}
+                  onChange={handleInputChange}
+                  className="block w-full rounded-md border border-gray-300 bg-gray-50 p-3 text-gray-900 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                  required
+                />
+              </div>
+
               <div className="mb-8">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <span className="text-blue-500">Masukkan ulang file</span>
+                  <span className="text-red-500">*</span>
+                </label>
                 {/* Area Unggah File */}
                 <div className="mt-5 flex w-full items-center justify-center">
                   <label className="flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600 dark:hover:bg-gray-800">
@@ -251,4 +314,4 @@ const FormAddSKMBTPage = () => {
   );
 };
 
-export default FormAddSKMBTPage;
+export default FormEditSKMBTKarpelPage;

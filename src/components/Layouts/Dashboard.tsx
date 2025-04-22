@@ -7,6 +7,8 @@ import { useAuth } from "@/context/AuthContext";
 import { DashboardUser } from "./DashboardUser";
 import CardDataStats from "../CardDataStats";
 import { PieChartRealisasiStatusEvaluasi } from "../Chart/PieChartRealisasiStatusEvaluasi";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 
 interface CompanyData {
     id: number,
@@ -85,7 +87,7 @@ export const DashboardComponent = () => {
     const fetchCompanies = async () => {
         try {
             const response = await axios.get(
-                `http://localhost:5000/api/company`,
+                `${baseUrl}/api/company`,
                 {
                     withCredentials: true
                 }
@@ -101,7 +103,7 @@ export const DashboardComponent = () => {
         try {
             const response = await axios.get(
                 `
-                    http://localhost:5000/api/budget/dashboard/status_evaluation?tahun_anggaran=${tahun}
+                    ${baseUrl}/api/budget/dashboard/status_evaluation?tahun_anggaran=${tahun}
                 `
             );
             setEvaluationData(response.data.data)
@@ -115,7 +117,7 @@ export const DashboardComponent = () => {
         setLoading(true);
         try {
             const response = await axios.get(
-                `http://localhost:5000/api/budget/dashboard/realisasi-biaya?tahun_anggaran=${tahun}`
+                `${baseUrl}/api/budget/dashboard/realisasi-biaya?tahun_anggaran=${tahun}`
             );
             setRealisasiDataAnggaran(response.data.data); 
         } catch (err) {
@@ -131,7 +133,7 @@ export const DashboardComponent = () => {
         try {
             const companyId = userData?.company_id
             const response = await axios.get(
-                `http://localhost:5000/api/budget/dashboard/realisasi-biaya/${companyId}?tahun_anggaran=${tahun}`
+                `${baseUrl}/api/budget/dashboard/realisasi-biaya/${companyId}?tahun_anggaran=${tahun}`
             );
             setRealisasiDataAnggaranByCompany(response.data.data); 
         } catch (err) {

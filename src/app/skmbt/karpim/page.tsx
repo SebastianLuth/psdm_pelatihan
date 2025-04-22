@@ -8,19 +8,22 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import Swal from "sweetalert2";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 type SkmbtData = {
     id: number,
     nama: string,
     niksap: number,
+    jabatan : string, 
     url_pdf_skmbt: string,
+    url_pdf_skmbt2: string,
     company_id: number,
     company_nama: string,
     created_at: string,
     updated_at: string
 }
 
-const SKMBTDataPage = () => {
+const SKMBTDataKarpimPage = () => {
     const [skmbtData, setSkmbtData] = useState<SkmbtData[]>([]);
     const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
 
@@ -33,7 +36,7 @@ const SKMBTDataPage = () => {
 
     const handleDeleteSkmbt = async (id: number) => {
         try {
-            await axios.delete(`http://localhost:5000/api/skmbt/admin/${id}`, {
+            await axios.delete(`${baseUrl}/api/skmbt/admin/${id}`, {
                 withCredentials: true,
             });
             Swal.fire("Berhasil!", "Data SKMBT berhasil dihapus.", "success");
@@ -45,18 +48,18 @@ const SKMBTDataPage = () => {
     };
 
     const handleEditSkmbt = (id: number) => {
-        router.push(`/skmbt/edit-skmbt/${id}`);
+        router.push(`/skmbt/karpim/edit/${id}`);
     }
     
     const fetchDataSkmbt = useCallback( async () => {
         try {
             let result ;
             if(userData?.role === "admin") {
-                result = await axios.get(`http://localhost:5000/api/skmbt/admin`,{
+                result = await axios.get(`${baseUrl}/api/skmbt/karpim/admin`,{
                     withCredentials : true
                 });
             } else {
-                result = await axios.get(`http://localhost:5000/api/skmbt/super-admin`,{
+                result = await axios.get(`${baseUrl}}/api/skmbt/karpim/super-admin`,{
                     withCredentials : true
                 })
             }
@@ -137,7 +140,7 @@ const SKMBTDataPage = () => {
             <>
                 <div className="flex justify-between">
                 <h4 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 p-4">
-                    Data Semua Sharing Knowledge MBT
+                    Data Semua Wasiat Karpim Pra Pensiun
                 </h4>
                 <Breadcrumb/>
                 </div>
@@ -169,7 +172,7 @@ const SKMBTDataPage = () => {
                             placeholder="Search..."
                         />
                         </div>
-                        <Link href="/skmbt/create-skmbt" className="flex items-center justify-center rounded-lg bg-blue-500 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300">Tambah Sharing Knowledge</Link>
+                        <Link href="/skmbt/karpim/create-skmbt" className="flex items-center justify-center rounded-lg bg-blue-500 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300">Tambah Wasiat Pra Pensiun Karpim</Link>
                     </div>
                     <div className="overflow-visible rounded-lg border border-gray-200 shadow-sm">
                     {/* Header Table */}
@@ -186,13 +189,19 @@ const SKMBTDataPage = () => {
                             NIKSAP
                             </th>
                             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Jabatan
+                            </th>
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Tanggal Upload
                             </th>
                             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Asal Region
                             </th>
                             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Bukti PDF
+                            Bukti PDF 1
+                            </th>
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Bukti PDF 2
                             </th>
                             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Action
@@ -201,7 +210,7 @@ const SKMBTDataPage = () => {
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
                             {Array.isArray(currenDataAdmin) && currenDataAdmin.length > 0 ? (
-                                currenDataAdmin.map((learningWallet, index) => (
+                                currenDataAdmin.map((skmbt, index) => (
                                 <tr key={index} className="hover:bg-gray-50 transition-colors duration-150">
                                     <td className="px-6 py-4 whitespace-nowrap">
                                     {(currentPage - 1) * limit + index + 1}
@@ -209,22 +218,28 @@ const SKMBTDataPage = () => {
                                     <td className="px-6 py-4 whitespace-nowrap">
                                     <div className="flex items-center">
                                         <p className="text-sm font-medium text-gray-900">
-                                            {learningWallet.nama}
+                                            {skmbt.nama}
                                         </p>
                                     </div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                     <div className="flex items-center">
                                         <p className="text-sm font-medium text-gray-900">
-                                        {learningWallet.niksap}
+                                        {skmbt.niksap}
                                         </p>
-                                        
                                     </div>
+                                    </td>
+                                    <td>
+                                        <div className="flex items-center">
+                                            <p className="text-sm font-medium text-gray-900">
+                                                {skmbt.jabatan}
+                                            </p>
+                                        </div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                     <div className="flex items-center">
                                         <p className="text-sm font-medium text-gray-900">
-                                        {learningWallet.created_at}
+                                        {skmbt.created_at}
                                         </p>
                                         <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -270,13 +285,39 @@ const SKMBTDataPage = () => {
                                         </svg>
 
                                         <p className="ml-2 text-sm text-gray-900">
-                                        {learningWallet.company_nama}
+                                        {skmbt.company_nama}
                                         </p>
                                     </div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                     <a
-                                        href={learningWallet.url_pdf_skmbt}
+                                        href={skmbt.url_pdf_skmbt}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                                    >
+                                        <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="18"
+                                        height="18"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        className="mr-2"
+                                        >
+                                        <path d="M3 8l4-4h10l4 4v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                        <circle cx="12" cy="13" r="3"></circle>
+                                        </svg>
+                                        Lihat
+                                    </a>
+                                    </td>
+
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                    <a
+                                        href={skmbt.url_pdf_skmbt2}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 transition-colors duration-200"
@@ -303,7 +344,7 @@ const SKMBTDataPage = () => {
                                     <div className="relative">
                                         <button
                                         className="text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 rounded-md p-1"
-                                        onClick={() => toggleDropdown(learningWallet.id)}
+                                        onClick={() => toggleDropdown(skmbt.id)}
                                         aria-label="Menu"
                                         >
                                         <svg
@@ -335,18 +376,18 @@ const SKMBTDataPage = () => {
                                         </svg>
                                         </button>
 
-                                        {openDropdownId === learningWallet.id && (
+                                        {openDropdownId === skmbt.id && (
                                         <div className=" right-0 z-10 mt-2 w-32 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                                             <div className="py-1">
                                             <button
                                                 className="block w-full px-4 py-2 text-left text-sm text-blue-700 hover:bg-blue-100"
-                                                onClick={() => handleEditSkmbt(learningWallet.id)}
+                                                onClick={() => handleEditSkmbt(skmbt.id)}
                                                 >
                                                 Edit
                                             </button>
                                             <button
                                                 className="block w-full px-4 py-2 text-left text-sm text-red-700 hover:bg-red-100"
-                                                onClick={() => handleDeleteSkmbt(learningWallet.id)}
+                                                onClick={() => handleDeleteSkmbt(skmbt.id)}
                                             >
                                                 Delete
                                             </button>
@@ -401,4 +442,4 @@ const SKMBTDataPage = () => {
     )
 }
 
-export default SKMBTDataPage
+export default SKMBTDataKarpimPage

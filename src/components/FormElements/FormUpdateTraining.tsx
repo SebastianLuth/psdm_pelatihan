@@ -13,6 +13,8 @@ import { getAllVendorData } from "@/service/vendor";
 import { vendorType } from "@/types/vendor";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 
 const UpdateTrainingComponent = () => {
   const [trainingData, setTrainingData] = useState<Partial<TrainingType>>({});
@@ -44,7 +46,7 @@ const UpdateTrainingComponent = () => {
 
   const fetchDetailTraining = useCallback (async () => {
     try {
-      const result = await axios.get(`http://localhost:5000/api/training/${trainingId}`, { withCredentials: true });
+      const result = await axios.get(`${baseUrl}/api/training/${trainingId}`, { withCredentials: true });
       console.log("ini hasil Featching detail training data",result.data.data.training);
       setTrainingData(result.data.data.training);
     } catch (error) {

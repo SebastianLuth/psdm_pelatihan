@@ -7,6 +7,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const CreateRKAPLearningWalletPage = () => {
     const [file, setFile] = useState(null); // State untuk menyimpan file
@@ -29,7 +30,7 @@ const CreateRKAPLearningWalletPage = () => {
     };
 
     const handleDowloadTemplate = () => {
-        window.open("http://localhost:5000/api/learning-wallet/download-template", "_blank");
+        window.open(`${baseUrl}/api/learning-wallet/download-template`, "_blank");
     }
 
     // Fungsi untuk mengunggah file dan mengirim data ke API
@@ -61,7 +62,7 @@ const CreateRKAPLearningWalletPage = () => {
 
             // Kirim JSON ke API
             try {
-                const response = await axios.post("http://localhost:5000/api/learning-wallet/admin/rkaplw", transformedData , {
+                const response = await axios.post(`${baseUrl}/api/learning-wallet/admin/rkaplw`, transformedData , {
                         withCredentials: true
                     });
 

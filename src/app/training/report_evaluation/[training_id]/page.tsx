@@ -5,6 +5,8 @@ import { useAuth } from "@/context/AuthContext";
 import axios from "axios";
 import { useParams } from "next/navigation";
 import { useState } from "react";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 
 const EvaluationDetailReportTrainingPage = () => {
   const { userData } = useAuth();
@@ -28,7 +30,7 @@ const EvaluationDetailReportTrainingPage = () => {
       formData.append("report_evaluation", selectedFile);
 
       await axios.post(
-        `http://localhost:5000/api/evaluation/uploadPdf/${training_id}/:${userData?.id}`,
+        `${baseUrl}/api/evaluation/uploadPdf/${training_id}/:${userData?.id}`,
         formData,
         {
           headers: {

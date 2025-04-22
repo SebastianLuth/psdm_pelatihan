@@ -5,6 +5,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import { useAuth } from "@/context/AuthContext";
 import axios from "axios";
 import { useRef, useState } from "react";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const CreateLearningWalletPage = () => {
     const [formData, setFormData] = useState({
@@ -84,7 +85,7 @@ const CreateLearningWalletPage = () => {
     
         try {
             const res = await axios.post(`
-                http://localhost:5000/api/learning-wallet/user/${userData?.username}
+                ${baseUrl}/api/learning-wallet/user/${userData?.username}
                 `, 
                 form, 
                 {
