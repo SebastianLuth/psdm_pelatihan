@@ -1,9 +1,9 @@
-'use client';
+"use client";
 import { User } from "@/types/manajement-users-type";
 import { ChangeEvent, useMemo, useState } from "react";
 
 type CreateBawahanModalProps = {
-  textJudul : string ;
+  textJudul: string;
   dataAllUserByUnitKerja: User[];
   onClose: () => void;
   onAddBawahan: (evaluator_id: number, nama: string, kategori: string) => void;
@@ -17,61 +17,62 @@ export default function CreateBawahanModal({
   onAddBawahan,
   success,
   error,
-  textJudul
+  textJudul,
 }: CreateBawahanModalProps) {
-    const [currentPage, setCurrentPage] = useState(1);
-    const entriesPerPage = 5;
-    const [searchQuery, setSearchQuery] = useState('');
-    let kategori = ""
-    if (textJudul === "Kolega") {
-      kategori = "kolega"
-    } else {
-      kategori = "atasan"
+  const [currentPage, setCurrentPage] = useState(1);
+  const entriesPerPage = 5;
+  const [searchQuery, setSearchQuery] = useState("");
+  let kategori = "";
+  if (textJudul === "Kolega") {
+    kategori = "kolega";
+  } else {
+    kategori = "atasan";
+  }
+
+  // Handle perubahan input search
+  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+    setCurrentPage(1); // Reset ke halaman pertama saat mencari
+  };
+
+  // Filter data berdasarkan query
+  const filteredTrainingData = useMemo(() => {
+    return dataAllUserByUnitKerja.filter(
+      (training) =>
+        training.nama.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        training.username.toString().includes(searchQuery),
+    );
+  }, [searchQuery, dataAllUserByUnitKerja]);
+
+  // Pagination berdasarkan hasil filter
+  const totalEntries = filteredTrainingData.length;
+  const totalPages = Math.ceil(totalEntries / entriesPerPage);
+  const startIndex = (currentPage - 1) * entriesPerPage;
+  const endIndex = startIndex + entriesPerPage;
+  const currentData = filteredTrainingData.slice(startIndex, endIndex);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
     }
+  };
 
-    // Handle perubahan input search
-    const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-      setSearchQuery(event.target.value);
-      setCurrentPage(1); // Reset ke halaman pertama saat mencari
-    };
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
-    // Filter data berdasarkan query
-    const filteredTrainingData = useMemo(() => {
-      return dataAllUserByUnitKerja.filter(
-        (training) =>
-          training.nama.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          training.username.toString().includes(searchQuery)
-      );
-    }, [searchQuery, dataAllUserByUnitKerja]);
-
-    // Pagination berdasarkan hasil filter
-    const totalEntries = filteredTrainingData.length;
-    const totalPages = Math.ceil(totalEntries / entriesPerPage);
-    const startIndex = (currentPage - 1) * entriesPerPage;
-    const endIndex = startIndex + entriesPerPage;
-    const currentData = filteredTrainingData.slice(startIndex, endIndex);
-
-    const handleNextPage = () => {
-      if (currentPage < totalPages) {
-        setCurrentPage(currentPage + 1);
-      }
-    };
-
-    const handlePreviousPage = () => {
-      if (currentPage > 1) {
-        setCurrentPage(currentPage - 1);
-      }
-    };
-
-
-      const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (e.target === e.currentTarget) {
-          onClose();
-        }
-      };
+  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
 
   return (
     <>
+      <div className="fixed inset-0 z-40 bg-black bg-opacity-30 backdrop-blur-sm" />
+
       {/* Modal */}
       <div
         className="fixed inset-0 z-50 mb-2 mt-2 flex items-center justify-center"
@@ -84,20 +85,19 @@ export default function CreateBawahanModal({
             <div className="flex items-center justify-between border-b p-5">
               <h3 className="text-xl font-bold">Tambah {textJudul}</h3>
               <div className="flex gap-4">
-              <input
+                <input
                   onChange={handleSearchChange}
                   type="text"
                   className="w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
                   placeholder="Search..."
                 />
-              <button
-                className="text-white hover:text-gray-700 bg-red-500 hover:bg-red-600 rounded-lg p-2"
-                onClick={onClose}
-              >
-                ×
-              </button>  
+                <button
+                  className="rounded-lg bg-red-500 p-2 text-white hover:bg-red-600 hover:text-gray-700"
+                  onClick={onClose}
+                >
+                  ×
+                </button>
               </div>
-            
             </div>
             {/* Body */}
             <div className="p-6">
@@ -140,11 +140,13 @@ export default function CreateBawahanModal({
                 {error && <p className="mt-4 text-sm text-red-500">{error}</p>}
               </div>
               <div className="mt-4 flex items-center justify-between text-sm text-gray-500">
-                <span> Showing {startIndex + 1} to{" "}
-                {Math.min(endIndex, totalEntries)} of {totalEntries} entries
+                <span>
+                  {" "}
+                  Showing {startIndex + 1} to {Math.min(endIndex, totalEntries)}{" "}
+                  of {totalEntries} entries
                 </span>
                 <div className="space-x-2">
-                <button
+                  <button
                     className="rounded-lg bg-gray-200 px-3 py-1 transition hover:bg-gray-300"
                     onClick={handlePreviousPage}
                     disabled={currentPage === 1}
