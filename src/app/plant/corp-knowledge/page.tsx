@@ -1,7 +1,7 @@
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import { Bookmark, BookmarkCheck, Building, Dumbbell, FoldersIcon, Gavel, MapPinCheck, UserCheck, UserCog2 } from "lucide-react";
+import { BookmarkCheck, Building, Dumbbell, FoldersIcon, Gavel, MapPinCheck, UserCheck } from "lucide-react";
 import Link from "next/link";
 
 const CORPKnowledgePage = () => {
@@ -17,7 +17,6 @@ const CORPKnowledgePage = () => {
           </div>
           <p className="p-4 text-gray-600 dark:text-gray-400 text-sm">Ini Halaman untuk menilai kemampuan karyawan pimpinan, Segera isi semua nya</p>
         </div>
-        
 
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between rounded-lg bg-white p-4 shadow-md">
@@ -29,7 +28,7 @@ const CORPKnowledgePage = () => {
                 Corporate Knowledge Learning Bintalfisdis
               </p>
             </div>
-            <Link href={"#"} className="text-sm font-semibold text-blue-500">Kerjakan</Link>
+            <Link href={"/plant/corp-knowledge/bintalfisdis"} className="text-sm font-semibold text-blue-500">Kerjakan</Link>
           </div>
 
           <div className="flex items-center justify-between rounded-lg bg-white p-4 shadow-md">
@@ -41,7 +40,7 @@ const CORPKnowledgePage = () => {
                 Corporate Knowledge Learnning Holding
               </p>
             </div>
-            <Link href={"#"} className="text-sm font-semibold text-blue-500">Kerjakan</Link>
+            <Link href={"/plant/corp-knowledge/holding"} className="text-sm font-semibold text-blue-500">Kerjakan</Link>
           </div>
 
           <div className="flex items-center justify-between rounded-lg bg-white p-4 shadow-md">
@@ -53,7 +52,7 @@ const CORPKnowledgePage = () => {
                 Corporate Knoledge Learnning Direksi
               </p>
             </div>
-            <Link href={"#"} className="text-sm font-semibold text-blue-500">Kerjakan</Link>
+            <Link href={"/plant/corp-knowledge/direksi"} className="text-sm font-semibold text-blue-500">Kerjakan</Link>
           </div>
 
           <div className="flex items-center justify-between rounded-lg bg-white p-4 shadow-md">
@@ -65,7 +64,7 @@ const CORPKnowledgePage = () => {
                 Corporate Knowledge Learning Direktorat
               </p>
             </div>
-            <Link href={"#"} className="text-sm font-semibold text-blue-500">Kerjakan</Link>
+            <Link href={"/plant/corp-knowledge/direktorat"} className="text-sm font-semibold text-blue-500">Kerjakan</Link>
           </div>
 
           <div className="flex items-center justify-between rounded-lg bg-white p-4 shadow-md">
@@ -77,7 +76,7 @@ const CORPKnowledgePage = () => {
                 Corporate Knowledge Learnning Kepemimpinan
               </p>
             </div>
-            <Link href={"#"} className="text-sm font-semibold text-blue-500">Kerjakan</Link>
+            <Link href={"/plant/corp-knowledge/kepemimpinan"} className="text-sm font-semibold text-blue-500">Kerjakan</Link>
           </div>
 
           
@@ -91,7 +90,7 @@ const CORPKnowledgePage = () => {
                 Corporate Knowledge Learning Bidang Tugas
               </p>
             </div>
-            <Link href={"#"} className="text-sm font-semibold text-blue-500">Kerjakan</Link>
+            <Link href={"/plant/corp-knowledge/bidang"} className="text-sm font-semibold text-blue-500">Kerjakan</Link>
           </div>
 
           <div className="flex items-center justify-between rounded-lg bg-white p-4 shadow-md">
@@ -103,7 +102,7 @@ const CORPKnowledgePage = () => {
                 Corporate Knowledge Learning Studi Lapangan
               </p>
             </div>
-            <Link href={"#"} className="text-sm font-semibold text-blue-500">Kerjakan</Link>
+            <Link href={"/plant/corp-knowledge/studi-lapangan"} className="text-sm font-semibold text-blue-500">Kerjakan</Link>
           </div>
         </div>
       </DefaultLayout>

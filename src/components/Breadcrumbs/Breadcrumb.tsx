@@ -34,6 +34,7 @@ const Breadcrumb = () => {
           {displayedPaths.map((path, index) => {
             const href = `/${pathnames.slice(0, index + 1).join("/")}`;
             const isLast = index === displayedPaths.length - 1;
+            const formattedPath = decodeURIComponent(path).split("-").join(" ").replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
 
             return (
               <li key={index} className="flex items-center gap-3">
@@ -44,14 +45,14 @@ const Breadcrumb = () => {
                   </span>
                 ) : isLast ? (
                   <span className="font-semibold text-white px-4 py-1 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 shadow-md capitalize">
-                    {decodeURIComponent(path)}
+                    {formattedPath}
                   </span>
                 ) : (
                   <Link
                     href={href}
                     className="font-semibold text-gray-700 hover:text-blue-600 transition-all capitalize"
                   >
-                    {decodeURIComponent(path)}
+                    {formattedPath}
                   </Link>
                 )}
               </li>

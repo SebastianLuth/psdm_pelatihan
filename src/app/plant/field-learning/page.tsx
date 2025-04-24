@@ -16,12 +16,54 @@ const FieldLearningPage = () => {
     {
       id: 1,
       name: "FL Siklus 1",
-      weeks: ["Minggu 1", "Minggu 2", "Minggu 3", "Minggu 4", "Presentasi"],
+      weeks: [
+        {
+          name : "Minggu 1",
+          url : "/plant/field-learning/siklus1/week1"
+        },
+        {
+          name : "Minggu 2",
+          url : "/plant/field-learning/siklus1/week1"
+        },
+        {
+          name : "Minggu 3",
+          url : "/plant/field-learning/siklus1/week1"
+        },
+        {
+          name : "Minggu 4",
+          url : "/plant/field-learning/siklus1/week1"
+        },
+        {
+          name : "Presentasi",
+          url : "/plant/field-learning/siklus1/presentation"
+        },
+      ],
     },
     {
       id: 2,
       name: "FL Siklus 2",
-      weeks: ["Minggu 1", "Minggu 2", "Minggu 3", "Minggu 4", "Presentasi"],
+      weeks: [
+        {
+          name : "Minggu 1",
+          url : "/plant/field-learning/siklus2/week1"
+        },
+        {
+          name : "Minggu 2",
+          url : "/plant/field-learning/siklus2/week1"
+        },
+        {
+          name : "Minggu 3",
+          url : "/plant/field-learning/siklus2/week1"
+        },
+        {
+          name : "Minggu 4",
+          url : "/plant/field-learning/siklus2/week1"
+        },
+        {
+          name : "Presentasi",
+          url : "/plant/field-learning/siklus2/presentation"
+        },
+      ],
     },
   ];
 
@@ -74,7 +116,7 @@ const FieldLearningPage = () => {
                       {cycle.weeks.map((week, index) => (
                         <li key={index}>
                           <a
-                            href="#"
+                            href= {week.url}
                             className={`flex items-center rounded-lg p-3 transition-colors ${
                               index === cycle.weeks.length - 1
                                 ? "bg-green-50 text-green-800 hover:bg-green-100 dark:bg-green-900/30 dark:text-green-200 dark:hover:bg-green-900/50"
@@ -90,7 +132,7 @@ const FieldLearningPage = () => {
                             >
                               {index + 1}
                             </span>
-                            <span className="font-medium">{week}</span>
+                            <span className="font-medium">{week.name}</span>
                           </a>
                         </li>
                       ))}
