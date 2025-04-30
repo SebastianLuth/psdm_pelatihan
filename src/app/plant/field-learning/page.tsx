@@ -7,6 +7,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 type flDataType = {
   id: number;
@@ -56,7 +57,7 @@ const FieldLearningPage = () => {
   const fetchDataFL = useCallback(async () => {
     try {
       const result = await axios.get(
-        `http://localhost:8080/api/ckp/user/fl/${userData?.username}`,
+        `${baseUrl}/api/ckp/user/fl/${userData?.username}`,
         {
           withCredentials: true,
         },

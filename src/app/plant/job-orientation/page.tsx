@@ -7,6 +7,8 @@ import { useAuth } from "@/context/AuthContext";
 import axios from "axios";
 import { Building } from "lucide-react";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 
 type JobOrientationDatType = {
   id: number;
@@ -42,7 +44,7 @@ const JobOrientationPage = () => {
     try {
       const result = await axios.get(
         `
-        http://localhost:8080/api/ckp/user/jo/${userData?.username}
+        ${baseUrl}/api/ckp/user/jo/${userData?.username}
         `,
         {
           withCredentials: true,
@@ -81,7 +83,7 @@ const JobOrientationPage = () => {
       formData.append("pdf_jo", file);
       formData.append("niksap", String(userData?.username));
 
-      await axios.put("http://localhost:8080/api/ckp/user/jo", formData, {
+      await axios.put(`${baseUrl}/api/ckp/user/jo`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

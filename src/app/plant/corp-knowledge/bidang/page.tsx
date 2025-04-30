@@ -8,6 +8,8 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Swal from "sweetalert2";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 
 const BidangCKLPage = () => {
   const [editorContent, setEditorContent] = useState<string>("");
@@ -38,7 +40,7 @@ const BidangCKLPage = () => {
     }
 
     await axios.put(
-      `http://localhost:8080/api/ckp/user/ckl-bidang`,
+      `${baseUrl}/api/ckp/user/ckl-bidang`,
       {
         ckl_bidang: editorContent,
         niksap: userData?.username,

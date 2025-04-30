@@ -8,6 +8,8 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Swal from "sweetalert2";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 
 const ImplementationInovationPAPage = () => {
   const [editorContent, setEditorContent] = useState<string>("");
@@ -38,7 +40,7 @@ const ImplementationInovationPAPage = () => {
     }
 
     await axios.put(
-      `http://localhost:8080/api/ckp/user/pa/implementasi`,
+      `${baseUrl}/api/ckp/user/pa/implementasi`,
       {
         implementasi: editorContent,
         niksap: userData?.username,

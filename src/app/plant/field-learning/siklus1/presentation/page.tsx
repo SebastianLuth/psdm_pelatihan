@@ -8,6 +8,8 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Swal from "sweetalert2";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 
 const Siklus1PresentationFLPage = () => {
   const [editorContent, setEditorContent] = useState<string>("");
@@ -38,7 +40,7 @@ const Siklus1PresentationFLPage = () => {
     }
 
     await axios.put(
-      `http://localhost:8080/api/ckp/user/fl/presentasi`,
+      `${baseUrl}/api/ckp/user/fl/presentasi`,
       {
         presentasi: editorContent,
         niksap: userData?.username,

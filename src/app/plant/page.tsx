@@ -7,6 +7,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import Swal from "sweetalert2";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 
 type CKPDataType = {
     id: number,
@@ -86,7 +88,7 @@ const PlantPage = () => {
     try {
       const result = await axios.get(
         `
-        http://localhost:8080/api/ckp/super-admin
+        ${baseUrl}/api/ckp/super-admin
         `,
         {
           withCredentials: true,

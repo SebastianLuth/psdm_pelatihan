@@ -8,6 +8,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Swal from "sweetalert2";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const HoldingCKLPage = () => {
   const [editorContent, setEditorContent] = useState<string>("");
@@ -38,7 +39,7 @@ const HoldingCKLPage = () => {
     }
 
     await axios.put(
-      `http://localhost:8080/api/ckp/user/ckl-holding`,
+      `${baseUrl}/api/ckp/user/ckl-holding`,
       {
         ckl_holding: editorContent,
         niksap: userData?.username,

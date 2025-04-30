@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 type CKLData = {
   id: number;
@@ -55,7 +56,7 @@ const CORPKnowledgePage = () => {
     try {
       const result = await axios.get(
         `
-        http://localhost:8080/api/ckp/user/ckl/${userData?.username}
+        ${baseUrl}/api/ckp/user/ckl/${userData?.username}
         `, {
           withCredentials: true
         },

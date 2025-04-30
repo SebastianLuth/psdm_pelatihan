@@ -7,6 +7,8 @@ import axios from "axios";
 import { Building, Lightbulb } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
+const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
 
 type PADataType = {
   id: 10;
@@ -34,7 +36,7 @@ const ProjectAssigmentPage = () => {
   const fetchDataPA = useCallback(async () => {
     try {
       const result = await axios.get(
-        `http://localhost:8080/api/ckp/user/pa/${userData?.username}`,
+        `${baseUrl}/api/ckp/user/pa/${userData?.username}`,
         {
           withCredentials: true,
         },
