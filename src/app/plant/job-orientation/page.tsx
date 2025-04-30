@@ -6,10 +6,26 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import { useAuth } from "@/context/AuthContext";
 import axios from "axios";
 import { Building } from "lucide-react";
-import Link from "next/link";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
+
+type JobOrientationDatType = {
+  id: number;
+  niksap: string | number;
+  url: string;
+  created_at: string;
+  updated_at: string;
+  peserta_ckp_id: number;
+  company_id: number;
+  nama_peserta: string;
+  status: string;
+  corp_knowledge_id: number;
+  field_learning_id: number;
+  job_orientation_id: number;
+  project_assignment_id: number;
+};
 
 const JobOrientationPage = () => {
+  const [joData, setJoData] = useState<JobOrientationDatType[]>([]);
   const [fileName, setFileName] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [showModal, setShowModal] = useState(false);
@@ -17,10 +33,28 @@ const JobOrientationPage = () => {
   const [error, setError] = useState<string | null>(null);
 
   const { userData } = useAuth();
-   
+
   const handleCloseModal = () => {
     setShowModal(false);
   };
+
+  const fetchJOData = useCallback(async () => {
+    try {
+      const result = await axios.get(
+        `
+        http://localhost:8080/api/ckp/user/jo/${userData?.username}
+        `,
+        {
+          withCredentials: true,
+        },
+      );
+
+      setJoData(result.data.data);
+    } catch (error) {
+      setError("Terjadi kesalahan saat mengambil data.");
+    }
+  }, [userData?.username]);
+
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
@@ -41,22 +75,18 @@ const JobOrientationPage = () => {
 
   const handleAddJobOrientation = async () => {
     if (!file) return;
-  
+
     try {
       const formData = new FormData();
       formData.append("pdf_jo", file);
-      formData.append("niksap", String(userData?.username)); 
-  
-      await axios.put(
-        "http://localhost:8080/api/ckp/user/jo",
-          formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          withCredentials: true,
-        }
-      );
+      formData.append("niksap", String(userData?.username));
+
+      await axios.put("http://localhost:8080/api/ckp/user/jo", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true,
+      });
       alert("File berhasil diunggah.");
       setFile(null);
       setFileName("");
@@ -65,53 +95,69 @@ const JobOrientationPage = () => {
       setError("Terjadi kesalahan saat mengunggah Job Oriented.");
     }
   };
-  
+
+  useEffect(() => {
+    fetchJOData();
+  }, [fetchJOData]);
 
   return (
     <ProtectedRoute>
       <DefaultLayout>
-        <div className="flex flex-col gap-2">
-          <div className="flex justify-between">
-            <h4 className="p-4 text-2xl font-semibold text-gray-800 dark:text-gray-100">
-              Job Oriented
-            </h4>
-            <Breadcrumb />
-          </div>
-          <p className="p-4 text-sm text-gray-600 dark:text-gray-400">
-            Ini Halaman untuk menilai kemampuan karyawan pimpinan terhadap field
-            learning, Segera isi semua nya
-          </p>
-
-          <div className="flex items-center justify-between rounded-lg bg-white p-4 shadow-md">
-            <div className="flex items-center gap-4">
-              <div className="rounded-full bg-blue-100 p-2 text-blue-600">
-                <Building />
-              </div>
-              <p className="text-sm font-medium text-gray-800">
-                Laporan Job Oriented
-              </p>
-            </div>
-            <button
-              onClick={() => setShowModal(true)}
-              className="text-sm font-semibold text-blue-500"
-            >
-              Kerjakan
-            </button>
-          </div>
-
-          {showModal && (
+        {joData.length > 0 ? (
+          joData[0].status === "aktif" ? (
             <>
-              <CreateJobOrientedModal
-                onClose={handleCloseModal}
-                onAddJobOriented={handleAddJobOrientation}
-                onRemoveFile={handleRemoveFile}
-                fileName={fileName}
-                file={file}
-                onFileChange={handleFileChange}
-              />
+              <div className="flex flex-col gap-2">
+                <div className="flex justify-between">
+                  <h4 className="p-4 text-2xl font-semibold text-gray-800 dark:text-gray-100">
+                    Job Oriented
+                  </h4>
+                  <Breadcrumb />
+                </div>
+                <p className="p-4 text-sm text-gray-600 dark:text-gray-400">
+                  Ini Halaman untuk menilai kemampuan karyawan pimpinan terhadap
+                  field learning, Segera isi semua nya
+                </p>
+
+                <div className="flex items-center justify-between rounded-lg bg-white p-4 shadow-md">
+                  <div className="flex items-center gap-4">
+                    <div className="rounded-full bg-blue-100 p-2 text-blue-600">
+                      <Building />
+                    </div>
+                    <p className="text-sm font-medium text-gray-800">
+                      Laporan Job Oriented
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setShowModal(true)}
+                    className={joData[0].url !== null ? "text-sm font-semibold text-green-500" : "text-sm font-semibold text-blue-500"  }
+                    disabled={joData[0].url !== null}
+                  >
+                    { joData[0].url !== null ? "Anda Sudah Menyelesaikannya" :  "Kerjakan"}
+                  </button>
+                </div>
+
+                {showModal && (
+                  <>
+                    <CreateJobOrientedModal
+                      onClose={handleCloseModal}
+                      onAddJobOriented={handleAddJobOrientation}
+                      onRemoveFile={handleRemoveFile}
+                      fileName={fileName}
+                      file={file}
+                      onFileChange={handleFileChange}
+                    />
+                  </>
+                )}
+              </div>
             </>
-          )}
-        </div>
+          ) : joData[0].status === "selesai" ? (
+            <>Anda Telah Selesai Melaksanakan Proses CKP Terimakasih</>
+          ) : (
+            <>Anda belum dapat mengakses halaman ini</>
+          )
+        ) : (
+          <>Loading Data</>
+        )}
       </DefaultLayout>
     </ProtectedRoute>
   );

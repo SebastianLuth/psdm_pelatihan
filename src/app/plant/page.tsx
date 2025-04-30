@@ -4,49 +4,50 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import axios from "axios";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 type CKPDataType = {
-    "id": number,
-    "user_id": number | string,
-    "nama_peserta": string,
-    "status": string,
-    "created_at": string,
-    "updated_at": string,
-    "corp_knowledge_id": number,
-    "field_learning_id": number,
-    "job_orientation_id": number,
-    "project_assignment_id": number,
-    "peserta_ckp_id": 1,
-    "company_id": number,
-    "company_name": string,
-    "ckl_bintalfisdis": string,
-    "ckl_holding": string,
-    "ckl_direksi": string,
-    "ckl_direktorat": string,
-    "ckl_direktorat2": string,
-    "ckl_direktorat3": string,
-    "ckl_direktorat4": string,
-    "ckl_direktorat5": string,
-    "ckl_direktorat6": string,
-    "ckl_direktorat7": string,
-    "ckl_kepemimpinan": string,
-    "ckl_bidang": string,
-    "ckl_studi_lapangan": string,
-    "minggu1": string,
-    "minggu2": string,
-    "minggu3": string,
-    "minggu4": string,
-    "minggu5": string,
-    "minggu6": string,
-    "minggu7": string,
-    "minggu8": string,
-    "presentasi": string,
-    "presentasi2": string,
-    "ide": string,
-    "implementasi": string,
-    "url": string
+    id: number,
+    user_id: number | string,
+    nama_peserta: string,
+    status: string,
+    created_at: string,
+    updated_at: string,
+    corp_knowledge_id: number,
+    field_learning_id: number,
+    job_orientation_id: number,
+    project_assignment_id: number,
+    peserta_ckp_id: 1,
+    company_id: number,
+    company_name: string,
+    ckl_bintalfisdis: string,
+    ckl_holding: string,
+    ckl_direksi: string,
+    ckl_direktorat: string,
+    ckl_direktorat2: string,
+    ckl_direktorat3: string,
+    ckl_direktorat4: string,
+    ckl_direktorat5: string,
+    ckl_direktorat6: string,
+    ckl_direktorat7: string,
+    ckl_kepemimpinan: string,
+    ckl_bidang: string,
+    ckl_studi_lapangan: string,
+    minggu1: string,
+    minggu2: string,
+    minggu3: string,
+    minggu4: string,
+    minggu5: string,
+    minggu6: string,
+    minggu7: string,
+    minggu8: string,
+    presentasi: string,
+    presentasi2: string,
+    ide: string,
+    implementasi: string,
+    url: string
 };
 
 const PlantPage = () => {
@@ -56,6 +57,8 @@ const PlantPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [limit, setLimit] = useState<number>(10);
   const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
+
+  const router = useRouter();
 
   const getFilteredData = (data: CKPDataType[]) => {
     let filtered = data.filter((item) =>
@@ -176,6 +179,10 @@ const PlantPage = () => {
     const percentage = (filledFields / totalFields) * 100;
 
     return Math.round(percentage); 
+  };
+
+  const handleDetailAnswerCKP = (id: string | number) => {
+   router.push(`/plant/review/${id}`);
   };
 
   return (
@@ -337,9 +344,9 @@ const PlantPage = () => {
                                   <div className="py-1">
                                     <button
                                       className="block w-full px-4 py-2 text-left text-sm text-blue-700 hover:bg-blue-100"
-                                    //   onClick={() => handleEditSkmbt(ckp.id)}
+                                      onClick={() => handleDetailAnswerCKP(ckp.id)}
                                     >
-                                      Edit
+                                      Lihat Detail
                                     </button>
                                     <button
                                       className="block w-full px-4 py-2 text-left text-sm text-red-700 hover:bg-red-100"

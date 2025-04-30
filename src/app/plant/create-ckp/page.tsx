@@ -111,7 +111,7 @@ const FormDataUser = () => {
         <>
           <div className="mx-auto max-w-4xl rounded-lg bg-white p-12 shadow-md dark:border-strokedark dark:bg-boxdark">
             <h1 className="mb-6 text-2xl font-bold dark:text-white">
-              Tambah User
+              Tambah Calon CKP
             </h1>
             <form onSubmit={handleAddUser}>
               <div className="mb-6 grid gap-6 lg:grid-cols-2">
@@ -146,7 +146,7 @@ const FormDataUser = () => {
               </div>
               <div className="mb-6">
                 <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-300">
-                  Unit Kerja
+                  Asal Region
                 </label>
                 <select
                   name="company_id"
@@ -156,7 +156,7 @@ const FormDataUser = () => {
                   required
                 >
                   <option value={""} disabled>
-                    Pilih Unit Kerja
+                    Pilih Asal Region
                   </option>
                   {companyData.map((unit) => (
                     <option key={unit.id} value={unit.id}>
