@@ -1,17 +1,72 @@
-'use client'
+"use client";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { CreateJobOrientedModal } from "@/components/Modal/CreateJobOrientedModal";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import { useAuth } from "@/context/AuthContext";
+import axios from "axios";
 import { Building } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 
 const JobOrientationPage = () => {
-    const [showModal, setShowModal] = useState(false);
-    const handleCloseModal = () => {
-        setShowModal(false);
-    };
+  const [fileName, setFileName] = useState("");
+  const [file, setFile] = useState<File | null>(null);
+  const [showModal, setShowModal] = useState(false);
+
+  const [error, setError] = useState<string | null>(null);
+
+  const { userData } = useAuth();
+   
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files?.[0];
+    if (selectedFile) {
+      if (selectedFile.type !== "application/pdf") {
+        alert("Hanya file PDF yang diperbolehkan.");
+        event.target.value = ""; // reset input file
+        return;
+      }
+      setFile(selectedFile);
+      setFileName(selectedFile.name); // Simpan nama file
+    }
+  };
+
+  const handleRemoveFile = () => {
+    setFile(null);
+    setFileName("");
+  };
+
+  const handleAddJobOrientation = async () => {
+    if (!file) return;
+  
+    try {
+      const formData = new FormData();
+      formData.append("pdf_jo", file);
+      formData.append("niksap", String(userData?.username)); 
+  
+      await axios.put(
+        "http://localhost:8080/api/ckp/user/jo",
+          formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
+        }
+      );
+      alert("File berhasil diunggah.");
+      setFile(null);
+      setFileName("");
+      setShowModal(false);
+    } catch (error) {
+      setError("Terjadi kesalahan saat mengunggah Job Oriented.");
+    }
+  };
+  
+
   return (
     <ProtectedRoute>
       <DefaultLayout>
@@ -36,17 +91,24 @@ const JobOrientationPage = () => {
                 Laporan Job Oriented
               </p>
             </div>
-            <button 
-            onClick={() => setShowModal(true)}
-            className="text-sm font-semibold text-blue-500">
+            <button
+              onClick={() => setShowModal(true)}
+              className="text-sm font-semibold text-blue-500"
+            >
               Kerjakan
             </button>
           </div>
 
           {showModal && (
             <>
-              <CreateJobOrientedModal 
-              onClose={handleCloseModal} />
+              <CreateJobOrientedModal
+                onClose={handleCloseModal}
+                onAddJobOriented={handleAddJobOrientation}
+                onRemoveFile={handleRemoveFile}
+                fileName={fileName}
+                file={file}
+                onFileChange={handleFileChange}
+              />
             </>
           )}
         </div>

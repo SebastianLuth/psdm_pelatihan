@@ -1,7 +1,7 @@
 
 export type UserData = {
     id: number;
-    username: number;
+    username: number | string;
     nama: string;
     nomor_hp: string;
     unit_kerja: string;

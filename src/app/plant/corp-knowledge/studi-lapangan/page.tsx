@@ -3,12 +3,19 @@ import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import QuillEditor from "@/components/QuillEditor";
+import { useAuth } from "@/context/AuthContext";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 const StudiLapanganCKLPage = () => {
   const [editorContent, setEditorContent] = useState<string>("");
   const MAX_WORDS = 1000;
   const MAX_CHARS = 6000;
+
+  const { userData } = useAuth();
+  const router = useRouter();
 
 
   const handleEditorChange = (content: string) => {
@@ -17,7 +24,7 @@ const StudiLapanganCKLPage = () => {
     console.log(content); // For debugging
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Validasi sebelum submit
     const text = editorContent.replace(/<[^>]*>/g, " ");
     const words = text
@@ -31,15 +38,28 @@ const StudiLapanganCKLPage = () => {
       return;
     }
 
-    // Proses penyimpanan
-    console.log("Menyimpan:", {
-      content: editorContent,
-      wordCount: words.length,
-      charCount: chars,
-    });
-
+    await axios.put(
+      `http://localhost:8080/api/ckp/user/ckl-studi-lapangan`,
+      {
+        ckl_studi_lapangan: editorContent,
+        niksap: userData?.username,
+        wordCount: words.length,
+        charCount: chars,
+      },
+      {
+        withCredentials: true,
+      },
+    );
+              
     // Di sini Anda bisa menambahkan API call untuk menyimpan data
-    alert("Project assignment berhasil disimpan!");
+    Swal.fire({
+      title: "Success!",
+      text: "Berhasil menambahkan Jawaban.",
+      icon: "success",
+      confirmButtonText: "OK",
+    }).then(() => {
+      router.push("/plant/corp-knowledge");
+    });
   };
 
   return (
