@@ -176,7 +176,7 @@ const TableReportEvaluation1: React.FC = () => {
 
     useEffect(() => {
         if (userData?.role === "super admin")  fetchAllCompany();
-    }, []);
+    }, [userData?.role]);
 
     return (
         <>

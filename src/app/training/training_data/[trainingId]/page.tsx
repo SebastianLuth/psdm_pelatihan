@@ -1,6 +1,6 @@
 import TrainingDataIdComponent from "@/components/Layouts/Detail/DetailTraining";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import ProtectedRoute from "@/components/ProtectedRoute";
+import ProtectedRoute from "@/components/Layouts/ProtectedRoute";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 
 export const metadata = {

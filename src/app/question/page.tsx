@@ -1,6 +1,6 @@
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import QuestionComponent from "@/components/Layouts/QuestionComponent";
-import ProtectedRoute from "@/components/ProtectedRoute";
+import ProtectedRoute from "@/components/Layouts/ProtectedRoute";
 
 export const metadata = {
   title: "PALAPA | Pertanyaan Evaluasi level 1",

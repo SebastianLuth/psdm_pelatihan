@@ -1,7 +1,7 @@
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import FormAddTraining from "@/components/FormElements/FormAddTraining";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import ProtectedRoute from "@/components/ProtectedRoute";
+import ProtectedRoute from "@/components/Layouts/ProtectedRoute";
 
 export const metadata = {
   title: "PALAPA | Tambah Realiasasi Pelatihan",

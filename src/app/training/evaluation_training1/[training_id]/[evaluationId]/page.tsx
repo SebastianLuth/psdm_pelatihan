@@ -1,7 +1,7 @@
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import DetailEvaluasiTraining1Component from "@/components/Layouts/Detail/DetailEvaluasition1";
-import ProtectedRoute from "@/components/ProtectedRoute";
+import ProtectedRoute from "@/components/Layouts/ProtectedRoute";
 
 export const metadata = {
   title: "PALAPA | Detail Evaluasi Level 1 Pelatihan",

@@ -1,7 +1,7 @@
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import DetailFreeTextFromUserComponent from "@/components/Layouts/Detail/DetailAnswerFreeTextUser";
-import ProtectedRoute from "@/components/ProtectedRoute";
+import ProtectedRoute from "@/components/Layouts/ProtectedRoute";
 
 export const metadata = {
   title: "PALAPA | Detail Evaluasi Free Text Pelatihan",

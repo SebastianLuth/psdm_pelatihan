@@ -1,12 +1,9 @@
-import React from "react";
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import ProtectedRoute from "@/components/ProtectedRoute";
-import DetailBudgetComponent from "@/components/Layouts/Detail/DetailBudget";
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import { Metadata } from "next";
+import DetailBudgetDataByIdPage from "@/features/budget/pages/DetailBudgetDataByIdPage";
 
-export const metadata = {
-  title: "PALAPA | Detail Data RKAP Anggaran",
-  description: "Informasi lengkap tentang RKAP Anggaran yang telah anda tambahkan di PALAPA PALMCO AFTER LEARNING APPLICATION ",
+export const metadata: Metadata = {
+  title: "Detail RKAP Anggaran - PALAPA PTPN IV ",
+  description: "Halaman Detail RKAP Anggaran resmi Sistem PALAPA PT Perkebunan Nusantara IV. Akses Informasi lengkap tentang RKAP Anggaran yang telah anda tambahkan di PALAPA PALMCO AFTER LEARNING APPLICATION",
   keywords: [
     "PALAPA DATA RKAP Anggaran",
     "PALMCO After Learning Application",
@@ -16,19 +13,12 @@ export const metadata = {
     "sistem pelatihan PALMCO",
     "Informasi lengkap anggaran"
   ],
-  author : "PTPN 4 PALMCO",
-  robots: "index, follow",
+  authors: [{ name: "PT Perkebunan Nusantara IV" }],
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+  },
 };
 
-const BudgetDataId = () => {
-  return (
-    <ProtectedRoute allowedRoles={['admin', 'super admin']}>
-      <DefaultLayout>
-        <Breadcrumb/>
-        <DetailBudgetComponent />
-      </DefaultLayout>
-    </ProtectedRoute>
-  );
-};
-
-export default BudgetDataId;
+export default DetailBudgetDataByIdPage;

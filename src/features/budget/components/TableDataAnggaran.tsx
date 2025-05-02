@@ -7,7 +7,7 @@ import React from "react";
 import { debounce } from "lodash";
 import { useRouter } from 'next/navigation';
 import Swal from "sweetalert2";
-import SkeletonTable from "../Skeleton/SkeletonTable";
+import SkeletonTable from "../../../components/Skeleton/SkeletonTable";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 const ErrorFallback = ({ error, resetErrorBoundary }: { error: Error, resetErrorBoundary: () => void }) => (

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import ClickOutside from "@/components/ClickOutside";
+import ClickOutside from "@/components/Layouts/ClickOutside";
 import { useAuth } from "@/context/AuthContext";
 
 const DropdownUser = () => {

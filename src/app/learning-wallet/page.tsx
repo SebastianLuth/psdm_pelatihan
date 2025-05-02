@@ -1,7 +1,7 @@
 "use client";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import ProtectedRoute from "@/components/ProtectedRoute";
+import ProtectedRoute from "@/components/Layouts/ProtectedRoute";
 import SkeletonTable from "@/components/Skeleton/SkeletonTable";
 import { useAuth } from "@/context/AuthContext";
 import axios from "axios";

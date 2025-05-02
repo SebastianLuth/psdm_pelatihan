@@ -1,32 +1,24 @@
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import FormAddDataVendorComponent from "@/components/FormElements/FormAddDataVendorComponent"
-import DefaultLayout from "@/components/Layouts/DefaultLayout"
-import ProtectedRoute from "@/components/ProtectedRoute"
+import AddVendorPage from "@/features/budget/pages/AddVendor";
+import { Metadata } from "next";
 
-export const metadata = {
-    title: "PALAPA | Tambah RKAP Anggaran",
-    description: "Tambah RKAP Anggaran Anda di PALAPA (PALMCO After Learning Application) untuk realisasi anggaran anda nantinya ",
+export const metadata: Metadata = {
+    title: "Tambahkan Data Vendor - PALAPA PTPN IV ",
+    description: "Halaman Menambahkan Data Vendor Sistem PALAPA PT Perkebunan Nusantara IV. Akses Informasi lengkap Penambahan Data Vendor di PALAPA PALMCO AFTER LEARNING APPLICATION",
     keywords: [
-      "PALAPA Tambah RKAP Anggaran",
+      "PALAPA DATA Data Vendor",
       "PALMCO After Learning Application",
       "RKAP pelatihan PALMCO",
       "aplikasi pembelajaran karyawan",
       "evaluasi PALMCO",
       "sistem pelatihan PALMCO",
+      "Informasi lengkap anggaran"
     ],
-    author : "PTPN 4 PALMCO",
-    robots: "index, follow",
+    authors: [{ name: "PT Perkebunan Nusantara IV" }],
+    robots: {
+      index: false,
+      follow: false,
+      nocache: true,
+    },
   };
-  
-const AddVendorPage = () => {
-    return (
-        <ProtectedRoute allowedRoles={['admin', 'super admin']}>
-            <DefaultLayout>
-                <Breadcrumb/>
-                <FormAddDataVendorComponent/>
-            </DefaultLayout>
-        </ProtectedRoute>
-    )
-}
 
 export default AddVendorPage

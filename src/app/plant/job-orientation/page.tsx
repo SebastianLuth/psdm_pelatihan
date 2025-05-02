@@ -2,7 +2,7 @@
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { CreateJobOrientedModal } from "@/components/Modal/CreateJobOrientedModal";
-import ProtectedRoute from "@/components/ProtectedRoute";
+import ProtectedRoute from "@/components/Layouts/ProtectedRoute";
 import { useAuth } from "@/context/AuthContext";
 import axios from "axios";
 import { Building } from "lucide-react";

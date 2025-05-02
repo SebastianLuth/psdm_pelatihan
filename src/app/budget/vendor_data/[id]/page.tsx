@@ -1,34 +1,26 @@
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import UpdateDataVendorComponent from "@/components/Layouts/Detail/UpdateUpdateDataVendorComponent";
-import ProtectedRoute from "@/components/ProtectedRoute";
+import EditDataVendorPage from "@/features/budget/pages/EditVendorData";
+import { Metadata } from "next";
 
-export const metadata = {
-  title: "PALAPA | Detail Data Vendor",
-  description: "Informasi lengkap tentang Data Vendor yang telah anda tambahkan di PALAPA PALMCO AFTER LEARNING APPLICATION ",
+export const metadata : Metadata = {
+  title: "Edit Data Vendor - PALAPA PTPN IV",
+  description:
+    "Halaman Edit Data Vendor resmi Sistem PALAPA PT Perkebunan Nusantara IV. Akses Informasi lengkap tentang Edit Data Vendor yang telah anda tambahkan di PALAPA PALMCO AFTER LEARNING APPLICATION",
   keywords: [
-    "PALAPA DATA RKAP Anggaran",
+    "PALAPA Edit Data Vendor",
     "PALMCO After Learning Application",
     "RKAP pelatihan PALMCO",
     "aplikasi pembelajaran karyawan",
     "evaluasi PALMCO",
     "sistem pelatihan PALMCO",
-    "Informasi lengkap anggaran"
+    "Informasi lengkap anggaran",
   ],
-  author : "PTPN 4 PALMCO",
-  robots: "index, follow",
-};
-const UpdateDataVendorPage = () => {
-  return (
-    <>
-      <ProtectedRoute allowedRoles={["admin", "super admin"]}>
-        <DefaultLayout>
-          <Breadcrumb/>
-          <UpdateDataVendorComponent />
-        </DefaultLayout>
-      </ProtectedRoute>
-    </>
-  );
+  authors: [{ name: "PT Perkebunan Nusantara IV" }],
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+  },
 };
 
-export default UpdateDataVendorPage;
+
+export default EditDataVendorPage;

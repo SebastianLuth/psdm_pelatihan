@@ -1,6 +1,6 @@
 import UserDetailComponent from "@/components/Layouts/Detail/DetailUserData";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import ProtectedRoute from "@/components/ProtectedRoute";
+import ProtectedRoute from "@/components/Layouts/ProtectedRoute";
 
 export const metadata = {
   title: "PALAPA | Detail User",

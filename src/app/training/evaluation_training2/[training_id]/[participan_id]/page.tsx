@@ -1,5 +1,5 @@
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import ProtectedRoute from "@/components/ProtectedRoute";
+import ProtectedRoute from "@/components/Layouts/ProtectedRoute";
 import AnswerQuestionEvaluasi3Component from "@/components/Layouts/Detail/AnswerQuestionEvaluasi3";
 
 export const metadata = {

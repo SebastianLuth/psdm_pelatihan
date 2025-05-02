@@ -1,5 +1,5 @@
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import ProtectedRoute from "@/components/ProtectedRoute";
+import ProtectedRoute from "@/components/Layouts/ProtectedRoute";
 import ExportDataBudget from "@/components/Tables/ExportDataBudget";
 export const metadata = {
     title: "PALAPA | Export RKAP Anggaran ",

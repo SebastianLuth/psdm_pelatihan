@@ -1,6 +1,6 @@
 "use client";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import ProtectedRoute from "@/components/ProtectedRoute";
+import ProtectedRoute from "@/components/Layouts/ProtectedRoute";
 import { useAuth } from "@/context/AuthContext";
 import { getAllTrainingEvaluation1 } from "@/service/evaluation1";
 import { getAdminTrainingReportAllUser } from "@/service/training";

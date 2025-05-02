@@ -5,7 +5,7 @@ import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import EventSummaryPopover from "@/components/event-summary-popover";
 import { colorsBarCalendar, Event } from "@/types/dashboar-tipe";
-import ProtectedRoute from "@/components/ProtectedRoute";
+import ProtectedRoute from "@/components/Layouts/ProtectedRoute";
 import { getAllTraining } from "@/service/training";
 
 moment.locale("en-GB");

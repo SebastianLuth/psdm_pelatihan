@@ -3,7 +3,7 @@ import { useState } from "react";
 import * as XLSX from "xlsx";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import ProtectedRoute from "@/components/ProtectedRoute";
+import ProtectedRoute from "@/components/Layouts/ProtectedRoute";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";

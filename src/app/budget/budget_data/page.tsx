@@ -1,34 +1,25 @@
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import DefaultLayout from "@/components/Layouts/DefaultLayout"
-import ProtectedRoute from "@/components/ProtectedRoute"
-import TableDataAnggaran from "@/components/Tables/TableDataAnggaran"
+import DataBudgetPage from "@/features/budget/pages/DataBudgetPage";
 
-export const metadata = {
-    title: "PALAPA | Data RKAP Anggaran",
-    description: "Informasi lengkap tentang RKAP Anggaran yang telah anda tambahkan di PALAPA PALMCO AFTER LEARNING APPLICATION ",
-    keywords: [
-      "PALAPA DATA RKAP Anggaran",
-      "PALMCO After Learning Application",
-      "RKAP pelatihan PALMCO",
-      "aplikasi pembelajaran karyawan",
-      "evaluasi PALMCO",
-      "sistem pelatihan PALMCO",
-      "Informasi lengkap anggaran"
-    ],
-    author : "PTPN 4 PALMCO",
-    robots: "index, follow",
-  };
+import { Metadata } from "next";
 
-const DataBudgetPage = () => {
-    return (
-        <>
-        <ProtectedRoute allowedRoles={['admin', 'super admin']}>
-          <DefaultLayout>
-            <Breadcrumb/>
-            <TableDataAnggaran/>
-          </DefaultLayout>
-        </ProtectedRoute>
-        </>
-    )
-}
-export default DataBudgetPage
+export const metadata: Metadata = {
+  title: "Data RKAP Anggaran - PALAPA PTPN IV",
+  description: "Halaman RKAP Anggaran resmi Sistem PALAPA PT Perkebunan Nusantara IV. Akses Informasi lengkap tentang RKAP Anggaran yang telah anda tambahkan di PALAPA PALMCO AFTER LEARNING APPLICATION",
+  keywords: [
+    "PALAPA DATA RKAP Anggaran",
+    "PALMCO After Learning Application",
+    "RKAP pelatihan PALMCO",
+    "aplikasi pembelajaran karyawan",
+    "evaluasi PALMCO",
+    "sistem pelatihan PALMCO",
+    "Informasi lengkap anggaran"
+  ],
+  authors: [{ name: "PT Perkebunan Nusantara IV" }],
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+  },
+};
+
+export default DataBudgetPage;

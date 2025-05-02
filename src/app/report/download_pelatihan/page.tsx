@@ -1,5 +1,5 @@
 import DefaultLayout from "@/components/Layouts/DefaultLayout"
-import ProtectedRoute from "@/components/ProtectedRoute"
+import ProtectedRoute from "@/components/Layouts/ProtectedRoute"
 import TableReportEvaluation2 from "@/components/Tables/TableReportEvaluation2"
 
 export const metadata = {

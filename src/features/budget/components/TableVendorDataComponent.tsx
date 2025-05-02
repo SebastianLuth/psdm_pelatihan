@@ -3,7 +3,7 @@ import { deleteVendorData, getAllVendorData } from "@/service/vendor";
 import { vendorType } from "@/types/vendor";
 import { ChangeEvent, useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import SkeletonTable from "../Skeleton/SkeletonTable";
+import SkeletonTable from "../../../components/Skeleton/SkeletonTable";
 import Link from "next/link";
 import { debounce } from "lodash";
 

@@ -1,8 +1,8 @@
 "use client";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import ProtectedRoute from "@/components/ProtectedRoute";
-import QuillEditor from "@/components/QuillEditor";
+import ProtectedRoute from "@/components/Layouts/ProtectedRoute";
+import QuillEditor from "@/components/Layouts/QuillEditor";
 import { useState } from "react";
 
 const DirektoratCKLPage = () => {

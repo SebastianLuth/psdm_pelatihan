@@ -1,7 +1,8 @@
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import AddDepartmentComponent from "@/components/Layouts/AddDepartmentComponent";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import ProtectedRoute from "@/components/ProtectedRoute";
+import ProtectedRoute from "@/components/Layouts/ProtectedRoute";
+
 
 export const metadata = {
   title: "PALAPA | Tambah Unit Kerja",

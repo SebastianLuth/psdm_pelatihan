@@ -1,6 +1,6 @@
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import FreeTextDetailComponent from "@/components/Layouts/Detail/AnswerFreetextByUser";
-import ProtectedRoute from "@/components/ProtectedRoute";
+import ProtectedRoute from "@/components/Layouts/ProtectedRoute";
 
 export const metadata = {
   title: "PALAPA | Answer Evaluasi Free Text Pelatihan",

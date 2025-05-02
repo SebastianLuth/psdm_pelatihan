@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Link from "next/link";
-import ClickOutside from "@/components/ClickOutside";
+import ClickOutside from "@/components/Layouts/ClickOutside";
 type SettingDropdownProps = {
     handleStatusUpdate: () => void
 }

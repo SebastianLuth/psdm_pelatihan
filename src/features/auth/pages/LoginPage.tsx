@@ -1,16 +1,22 @@
-'use client'
+"use client";
+import ButtonLoading from "@/components/buttons/ButtonLoading";
+import { SectionContainer } from "@/components/Layouts/SectionCointainer";
 import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { AiOutlineWarning } from "react-icons/ai";
-import ButtonLoading from "../buttons/ButtonLoading";
 
-const LoginPageLayout = (): JSX.Element => {
-    const [formData, setFormData] = useState<{ username: number | null; password: string }>({
-        username: null,
-        password: "",
-    });    const { login, errorMessage, isLoading } = useAuth();
-    const [isError, setIsError] = useState(false);
+
+const LoginPage = (): JSX.Element => {
+  const [formData, setFormData] = useState<{
+    username: number | null;
+    password: string;
+  }>({
+    username: null,
+    password: "",
+  });
+  const { login, errorMessage, isLoading } = useAuth();
+  const [isError, setIsError] = useState(false);
 
   const { userData } = useAuth();
 
@@ -22,26 +28,25 @@ const LoginPageLayout = (): JSX.Element => {
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: name === "username" ? Number(value) || null : value,
-        }));
+      const { name, value } = e.target;
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: name === "username" ? Number(value) || null : value,
+      }));
     },
-    []
-);
-  
+    [],
+  );
 
-const handleLogin = useCallback(
+  const handleLogin = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const { username, password } = formData;
-        if (username !== null) {
-            login(username, password);
-        }
+      e.preventDefault();
+      const { username, password } = formData;
+      if (username !== null) {
+        login(username, password);
+      }
     },
-    [formData, login]
-);
+    [formData, login],
+  );
 
   useEffect(() => {
     setIsError(!!errorMessage);
@@ -49,26 +54,28 @@ const handleLogin = useCallback(
 
   return (
     <>
-      <section className="relative min-h-screen overflow-hidden bg-gray-50">
+      <div className="relative min-h-screen w-screen flex items-center justify-center">
         <Image
           src="/images/bg-login.png"
           alt="background"
-          layout="fill"
-          objectFit="cover"
-          className="opacity-60"
+          fill
+          className="object-cover opacity-60"
           priority
         />
-        <div className="mx-auto flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
-          <div className="relative z-50 w-full rounded-lg bg-white shadow sm:max-w-md md:mt-0 xl:p-0">
-            <div className="mt-10 flex justify-center text-xl font-semibold text-gray-900 ">
+        <SectionContainer
+          padded
+          className="flex h-full w-full items-center justify-center"
+        >
+          <div className="p-10 w-full max-w-[640px] bg-white shadow rounded-lg items-center mx-auto">
+            <div className="flex flex-col items-center justify-center">
               <Image
-                width={350}
-                height={210}
+                width={240}
+                height={120}
                 src="/images/logo/palapa.webp"
                 alt="logo ptpn4"
               />
             </div>
-            <div className="space-y-2 p-6 sm:p-8 md:space-y-4">
+            <div className="space-y-2 p-3 sm:p-4 md:space-y-4 mt-4">
               <form className="space-y-4 md:space-y-6" onSubmit={handleLogin}>
                 <div>
                   <label className="mb-2 block text-sm font-medium text-gray-900 ">
@@ -115,21 +122,19 @@ const handleLogin = useCallback(
                 </button>
               </form>
             </div>
-            <div className="mb-6">
+            <div className="flex flex-col gap-4">
               <div className="flex flex-col text-center text-xs text-gray-600 sm:block ">
                 <span>
-                  PALAPA © {new Date().getFullYear()} PT Perkebunan Nusantara IV -
-                  DPSB{" "}
+                  PALAPA © {new Date().getFullYear()} PT Perkebunan Nusantara
+                  IV - DPSB{" "}
                 </span>
               </div>
             </div>
           </div>
-          <div className="relative z-10">
-          </div>
-        </div>
-      </section>
+        </SectionContainer>
+      </div>
     </>
   );
 };
 
-export default LoginPageLayout;
+export default LoginPage;

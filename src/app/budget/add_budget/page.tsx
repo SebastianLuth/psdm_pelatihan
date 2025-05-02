@@ -1,34 +1,24 @@
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import FormAddBudget from "@/components/FormElements/FormAddBudget";
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import ProtectedRoute from "@/components/ProtectedRoute";
+import AddBudgetPage from "@/features/budget/pages/AddBudget";
+import { Metadata } from "next";
 
-export const metadata = {
-  title: "PALAPA | Tambah RKAP Anggaran",
-  description: "Tambah RKAP Anggaran Anda di PALAPA (PALMCO After Learning Application) untuk realisasi anggaran anda nantinya ",
+export const metadata: Metadata = {
+  title: "Tambahkan RKAP Anggaran - PALAPA PTPN IV ",
+  description: "Halaman Menambahkan RKAP Anggaran Sistem PALAPA PT Perkebunan Nusantara IV. Akses Informasi lengkap Penambahan RKAP Anggaran di PALAPA PALMCO AFTER LEARNING APPLICATION",
   keywords: [
-    "PALAPA Tambah RKAP Anggaran",
+    "PALAPA DATA RKAP Anggaran",
     "PALMCO After Learning Application",
     "RKAP pelatihan PALMCO",
     "aplikasi pembelajaran karyawan",
     "evaluasi PALMCO",
     "sistem pelatihan PALMCO",
+    "Informasi lengkap anggaran"
   ],
-  author : "PTPN 4 PALMCO",
-  robots: "index, follow",
+  authors: [{ name: "PT Perkebunan Nusantara IV" }],
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+  },
 };
 
-const AddBudgetPage = () => {
-  return (
-    <>
-      <ProtectedRoute allowedRoles={["admin", "super admin"]}>
-        <DefaultLayout>
-          <Breadcrumb/>
-          <FormAddBudget />
-        </DefaultLayout>
-      </ProtectedRoute>
-    </>
-  );
-};
-
-export default AddBudgetPage;
+export default AddBudgetPage

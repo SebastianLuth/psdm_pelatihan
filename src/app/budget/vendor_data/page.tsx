@@ -1,33 +1,24 @@
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import DefaultLayout from "@/components/Layouts/DefaultLayout"
-import ProtectedRoute from "@/components/ProtectedRoute"
-import TableVendorDataComponent from "@/components/Tables/TableVendorDataComponent"
+import VendorDataPage from "@/features/budget/pages/VendorDataPage";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Data Vendor - PALAPA PTPN IV",
+  description:
+    "Halaman Data Vendor resmi Sistem PALAPA PT Perkebunan Nusantara IV. Akses Informasi lengkap tentang Data Vendor yang telah anda tambahkan di PALAPA PALMCO AFTER LEARNING APPLICATION",
+  keywords: [
+    "PALAPA DATA Data Vendor",
+    "PALMCO After Learning Application",
+    "RKAP pelatihan PALMCO",
+    "aplikasi pembelajaran karyawan",
+    "evaluasi PALMCO",
+    "sistem pelatihan PALMCO",
+    "Informasi lengkap anggaran",
+  ],
+  authors: [{ name: "PT Perkebunan Nusantara IV" }],
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+  },
+};
 
-export const metadata = {
-    title: "PALAPA |  Data Vendor",
-    description: "Informasi lengkap tentang Data Vendor yang telah anda tambahkan di PALAPA PALMCO AFTER LEARNING APPLICATION ",
-    keywords: [
-      "PALAPA DATA RKAP Anggaran",
-      "PALMCO After Learning Application",
-      "RKAP pelatihan PALMCO",
-      "aplikasi pembelajaran karyawan",
-      "evaluasi PALMCO",
-      "sistem pelatihan PALMCO",
-      "Informasi lengkap anggaran"
-    ],
-    author : "PTPN 4 PALMCO",
-    robots: "index, follow",
-  };
-
-const VendorDataPage = () => {
-    return (
-        <ProtectedRoute allowedRoles={['admin', 'super admin']} >
-            <DefaultLayout>
-                <Breadcrumb />
-                <TableVendorDataComponent />
-            </DefaultLayout>
-        </ProtectedRoute>
-    )
-}
-
-export default VendorDataPage
+export default VendorDataPage;
