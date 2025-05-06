@@ -1,10 +1,7 @@
-import DepartmentDataIdComponent from "@/components/Layouts/Detail/DetailDepartmentData";
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import ProtectedRoute from "@/components/Layouts/ProtectedRoute";
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import UpdateDepartmentPageById from "@/features/deparments/pages/UpdateDepartmentPage";
 
 export const metadata = {
-  title: "PALAPA | Edit Detail Data Unit Kerja",
+  title: "Edit Data Unit Kerja - PALAPA PTPN IV",
   description: "Edit detail data unit kerja di PALAPA PALMCO AFTER LEARNING APPLICATION ",
   keywords: [
     "PALAPA DATA RKAP Anggaran",
@@ -19,13 +16,4 @@ export const metadata = {
   robots: "index, follow"
 };
 
-export default function DepartmentDataId() {
-  return (
-    <ProtectedRoute allowedRoles={["admin"]}>
-      <DefaultLayout>
-        <Breadcrumb />
-        <DepartmentDataIdComponent />
-      </DefaultLayout>
-    </ProtectedRoute>
-  );
-}
+export default UpdateDepartmentPageById

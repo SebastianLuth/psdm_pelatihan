@@ -7,7 +7,7 @@ import SkeletonTable from "../../../components/Skeleton/SkeletonTable";
 import Link from "next/link";
 import { debounce } from "lodash";
 
-const TableVendorDataComponent = () => {
+export const TableVendorDataComponent = () => {
   const [vendorData, setVendorData] = useState<vendorType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -300,5 +300,3 @@ const TableVendorDataComponent = () => {
     </>
   );
 };
-
-export default TableVendorDataComponent;

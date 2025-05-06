@@ -1,7 +1,7 @@
 'use client'
 import { useState } from "react";
-import SelectUnitKerja from "../SelectGroup/SelectUnitKerja"
-import TableDataUser from "../Tables/TableDataUser"
+import SelectUnitKerja from "../../../components/SelectGroup/SelectUnitKerja"
+import TableDataUser from "../../../components/Tables/TableDataUser"
 
 const UsersDataComponent = () => {
     const [selectedUnitKerja, setSelectedUnitKerja] = useState<string>("");

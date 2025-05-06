@@ -1,7 +1,7 @@
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import FormAddDataVendorComponent from "@/features/budget/components/FormAddDataVendorComponent"
 import DefaultLayout from "@/components/Layouts/DefaultLayout"
 import ProtectedRoute from "@/components/Layouts/ProtectedRoute"
+import { FormAddDataVendorComponent } from "../components/FormAddDataVendorComponent";
 
 const AddVendorPage = () => {
     return (

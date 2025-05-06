@@ -1,7 +1,7 @@
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout"
 import ProtectedRoute from "@/components/Layouts/ProtectedRoute"
-import TableDataAnggaran from "@/features/budget/components/TableDataAnggaran"
+import { TableDataAnggaran } from "../components/TableDataAnggaran";
 
 const DataBudgetPage = () => {
     return (

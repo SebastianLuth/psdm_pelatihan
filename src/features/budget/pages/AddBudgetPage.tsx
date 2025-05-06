@@ -1,7 +1,7 @@
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import FormAddBudget from "@/features/budget/components/FormAddBudget";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/components/Layouts/ProtectedRoute";
+import { FormAddBudget } from "../components/FormAddBudget";
 const AddBudgetPage = () => {
   return (
     <>

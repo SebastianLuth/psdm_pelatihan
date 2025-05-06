@@ -5,7 +5,7 @@ import { UnitKerja } from "@/types/department-type";
 import Swal from "sweetalert2";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
-import SkeletonTable from "../Skeleton/SkeletonTable";
+import SkeletonTable from "../../../components/Skeleton/SkeletonTable";
 import Link from "next/link";
 import { debounce } from "lodash";
 
@@ -13,7 +13,7 @@ const fetcher = async () => {
   return await getUnitKerja();
 };
 
-const TableDataUnitKerja = () => {
+export const TableDataUnitKerja = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -268,5 +268,3 @@ const {
     </div>
   );
 };
-
-export default TableDataUnitKerja;

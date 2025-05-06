@@ -1,12 +1,12 @@
 "use client";
-import { FormAddDepartment } from "@/components/FormElements/FormAddDepartment";
+import { FormAddDepartment } from "@/features/deparments/components/FormAddDepartment";
 import FormSkeleton from "@/components/Skeleton/FormSkeleton";
 import { getDetailUnitKerja, updateUnitKerja } from "@/service/department";
 import { UnitKerja } from "@/types/department-type";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
-export default function DepartmentDataIdComponent() {
+export const UpdateDepartmentDataIdComponent = () => {
   const [newUnitKerja, setUnitKerja] = useState<string>("");
   const [detailUnitKerja, setDetailUnitKerja] = useState<UnitKerja[]>([]);
   const [error, setError] = useState<string | null>(null);

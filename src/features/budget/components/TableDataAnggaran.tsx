@@ -18,7 +18,7 @@ const ErrorFallback = ({ error, resetErrorBoundary }: { error: Error, resetError
   </div>
 );
 
-const TableDataAnggaran: React.FC = () => {
+export const TableDataAnggaran: React.FC = () => {
   const [budgetData, setBudgetData] = useState<budgetType[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -306,5 +306,3 @@ const TableDataAnggaran: React.FC = () => {
     </ErrorBoundary>
   );
 };
-
-export default React.memo(TableDataAnggaran);

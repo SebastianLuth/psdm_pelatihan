@@ -1,22 +1,20 @@
-import UserDetailComponent from "@/components/Layouts/Detail/DetailUserData";
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import ProtectedRoute from "@/components/Layouts/ProtectedRoute";
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import DetailUserPage from "@/features/users-manajemen/pages/DetailDataUserPage";
 
 export const metadata = {
-  title: "PALAPA | Detail User",
-  description: "Detail User ",
-  keywords: "PTPN4, anggaran RKAP, detail data anggaran, manajemen keuangan, pelatihan karyawan, pengembangan kompetensi",
-}
-
-const UserDetailPage = () => {
-  return (
-    <ProtectedRoute allowedRoles={["admin", "super admin"]}>
-      <DefaultLayout>
-        <Breadcrumb/>
-        <UserDetailComponent />
-      </DefaultLayout>
-    </ProtectedRoute>
-  );
+  title: "Detail User - PALAPA PTPN IV",
+  description: "Informasi lengkap tentang Detail User yang telah anda tambahkan di PALAPA PALMCO AFTER LEARNING APPLICATION ",
+  keywords: [
+    "PALAPA Detail User Atau Karyawan",
+    "PALMCO After Learning Application",
+    "Detail User PALMCO",
+    "aplikasi pembelajaran karyawan",
+    "evaluasi PALMCO",
+    "sistem pelatihan PALMCO",
+    "Informasi lengkap anggaran",
+    "Monitoring Anggaran"
+  ],
+  author : "PTPN 4 PALMCO",
+  robots: "index, follow",
 };
-export default UserDetailPage;
+
+export default DetailUserPage;

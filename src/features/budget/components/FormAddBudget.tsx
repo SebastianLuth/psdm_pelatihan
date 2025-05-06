@@ -4,7 +4,7 @@ import { budgetType, bulanOptions, lembagaOptions, rkapTypeOptions } from "@/typ
 import { ChangeEvent, FormEvent, useState } from "react";
 import Swal from "sweetalert2";
 
-const FormAddBudget = () => {
+export const FormAddBudget = () => {
   const [budgetData, setBudgetData] = useState<budgetType>({
     lembaga: "",
     jenis_anggaran: "",
@@ -221,5 +221,3 @@ const FormAddBudget = () => {
     </>
   );
 };
-
-export default FormAddBudget;

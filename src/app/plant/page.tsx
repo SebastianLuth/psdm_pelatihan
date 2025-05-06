@@ -114,7 +114,7 @@ const PlantPage = () => {
     endIndex: endIndex,
   } = getFilteredData(ckpData);
 
-  const handleNextPageAdmin = () => {
+  const handleNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
     }
@@ -352,9 +352,7 @@ const PlantPage = () => {
                                     </button>
                                     <button
                                       className="block w-full px-4 py-2 text-left text-sm text-red-700 hover:bg-red-100"
-                                    //   onClick={() =>
-                                    //     handleDeleteSkmbt(ckp.id)
-                                    //   }
+                                      // onClick={() => handleDeleteCKP(ckp.id)}
                                     >
                                       Delete
                                     </button>
@@ -380,21 +378,21 @@ const PlantPage = () => {
             <div className="flex items-center justify-between p-8 text-sm text-gray-500">
               <span>
                 {" "}
-                {/* Showing {startIndexAdmin + 1} to {Math.min(endIndexAdmin, totalEntriesAdmin)}{" "}
-                            of {totalEntriesAdmin} entries */}
+                Showing {startIndex + 1} to {Math.min(endIndex, totalEntries)}{" "}
+                            of {totalEntries} entries
               </span>
               <div className="space-x-2">
                 <button
                   className="rounded-lg bg-gray-200 px-3 py-1 transition hover:bg-gray-300"
-                  // onClick={handlePreviousPage}
-                  // disabled={currentPage === 1}
+                  onClick={handlePreviousPage}
+                  disabled={currentPage === 1}
                 >
                   Previous
                 </button>
                 <button
                   className="rounded-lg bg-gray-200 px-3 py-1 transition hover:bg-gray-300"
-                  // onClick={handleNextPageAdmin}
-                  // disabled={currentPage === totalPagesAdmin}
+                  onClick={handleNextPage}
+                  disabled={currentPage === totalPages}
                 >
                   Next
                 </button>

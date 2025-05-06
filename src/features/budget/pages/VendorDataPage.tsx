@@ -1,7 +1,7 @@
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout"
 import ProtectedRoute from "@/components/Layouts/ProtectedRoute"
-import TableVendorDataComponent from "@/features/budget/components/TableVendorDataComponent"
+import { TableVendorDataComponent } from "../components/TableVendorDataComponent";
 
 const VendorDataPage = () => {
     return (

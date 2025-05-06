@@ -1,9 +1,9 @@
 "use client";
-import { FormAddDepartment } from "@/components/FormElements/FormAddDepartment";
+import { FormAddDepartment } from "@/features/deparments/components/FormAddDepartment";
 import { addUnitKerja } from "@/service/department";
 import { useState } from "react";
 
-const AddDepartmentComponent = () => {
+export const AddDepartmentComponent = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
 
@@ -32,5 +32,3 @@ const AddDepartmentComponent = () => {
     />
   );
 };
-
-export default AddDepartmentComponent;

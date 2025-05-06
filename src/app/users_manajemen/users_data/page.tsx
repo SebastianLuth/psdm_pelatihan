@@ -1,23 +1,20 @@
-import UsersDataComponent from "@/components/Layouts/UsersData";
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import ProtectedRoute from "@/components/Layouts/ProtectedRoute";
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import DataUsersPage from "@/features/users-manajemen/pages/DataUserPage";
 
 export const metadata = {
-  title: "PALAPA | Data User",
-  description: "Lihat data user RKAP PTPN4 terkini. Informasi lengkap mengenai anggaran karyawan pimpinan, pelatihan, dan pengembangan kompetensi karyawan di PTPN4.",
-  keywords: "PTPN4, anggaran RKAP, data anggaran, manajemen keuangan, pelatihan karyawan, pengembangan kompetensi",
-}
-
-const UsersDataPage = () => {
-  return (
-    <ProtectedRoute allowedRoles={["admin", "super admin"]}>
-      <DefaultLayout>
-        <Breadcrumb/>
-        <UsersDataComponent/>
-      </DefaultLayout>
-    </ProtectedRoute>
-  );
+  title: "Data User - PALAPA PTPN IV",
+  description: "Informasi lengkap tentang Data User yang telah anda tambahkan di PALAPA PALMCO AFTER LEARNING APPLICATION ",
+  keywords: [
+    "PALAPA Data User Atau Karyawan",
+    "PALMCO After Learning Application",
+    "Data User PALMCO",
+    "aplikasi pembelajaran karyawan",
+    "evaluasi PALMCO",
+    "sistem pelatihan PALMCO",
+    "Informasi lengkap anggaran",
+    "Monitoring Anggaran"
+  ],
+  author : "PTPN 4 PALMCO",
+  robots: "index, follow",
 };
 
-export default UsersDataPage;
+export default DataUsersPage;

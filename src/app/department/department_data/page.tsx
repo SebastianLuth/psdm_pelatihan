@@ -1,10 +1,7 @@
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import ProtectedRoute from "@/components/Layouts/ProtectedRoute";
-import TableDataUnitKerja from "@/components/Tables/TableDataUnitKerja";
+import DataDepartmentPage from "@/features/deparments/pages/DepartmentDataPage";
 
 export const metadata = {
-  title: "PALAPA | Data Unit Kerja",
+  title: "Data Unit Kerja - PALAPA PTPN IV",
   description: "Informasi lengkap tentang Unit Kerja yang telah anda tambahkan di PALAPA PALMCO AFTER LEARNING APPLICATION ",
   keywords: [
     "PALAPA DATA RKAP Anggaran",
@@ -19,15 +16,4 @@ export const metadata = {
   robots: "index, follow",
 };
 
-const DataDepartmentPage = () => {
-  return (
-    <ProtectedRoute allowedRoles={["admin", "super admin"]}>
-      <DefaultLayout>
-        <Breadcrumb/>
-        <TableDataUnitKerja />
-      </DefaultLayout>
-    </ProtectedRoute>
-  );
-};
-
-export default DataDepartmentPage;
+export default DataDepartmentPage

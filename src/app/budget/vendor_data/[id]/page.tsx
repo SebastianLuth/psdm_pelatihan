@@ -1,4 +1,4 @@
-import EditDataVendorPage from "@/features/budget/pages/EditVendorData";
+import EditDataVendorPage from "@/features/budget/pages/EditVendorDataPage";
 import { Metadata } from "next";
 
 export const metadata : Metadata = {

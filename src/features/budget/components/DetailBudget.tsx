@@ -8,7 +8,7 @@ import { getDetailBudget } from "@/service/budget";
 import BudgetSkeleton from "@/components/Skeleton/BudgetSkeleton";
 import Link from "next/link";
 
-const DetailBudgetComponent = () => {
+export const DetailBudgetComponent = () => {
   const [trainingData, setTrainingData] = useState<TrainingType[]>([]);
   const [budgetData, setBudgetData] = useState<budgetType | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -370,5 +370,3 @@ const DetailBudgetComponent = () => {
     
   );
 };
-
-export default DetailBudgetComponent;

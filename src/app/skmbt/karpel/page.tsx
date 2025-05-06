@@ -58,7 +58,7 @@ const SKMBTDataKarpelPage = () => {
                 result = await axios.get(`${baseUrl}/api/skmbt/admin`,{
                     withCredentials : true
                 });
-            } else {
+            } else if(userData?.role === "super-admin") {
                 result = await axios.get(`${baseUrl}/api/skmbt/super-admin`,{
                     withCredentials : true
                 })

@@ -3,7 +3,7 @@ import { submitVendorData } from "@/service/vendor";
 import { vendorType } from "@/types/vendor";
 import { useState } from "react";
 
-const FormAddDataVendorComponent = () => {
+export const FormAddDataVendorComponent = () => {
   const [success, setSuccess] = useState<boolean>(false);
   const [formData, setFormData] = useState<vendorType>({
     nama: "",
@@ -181,5 +181,3 @@ const FormAddDataVendorComponent = () => {
     </>
   );
 };
-
-export default FormAddDataVendorComponent;

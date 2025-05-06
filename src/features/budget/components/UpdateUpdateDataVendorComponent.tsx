@@ -15,7 +15,7 @@ interface vendorType {
   pic_lembaga: string;
 }
 
-const UpdateDataVendorComponent = () => {
+export const UpdateDataVendorComponent = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -197,5 +197,3 @@ const UpdateDataVendorComponent = () => {
     </>
   );
 };
-
-export default UpdateDataVendorComponent;

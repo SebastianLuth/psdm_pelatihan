@@ -28,7 +28,7 @@ const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
 
 
-const UserDetailComponent = () => {
+const DetailUserDataComponent = () => {
   const [trainingFundAbsorption, setTrainingFundAbsorption] = useState<trainingFundAbsorption[]>([]);
 
   const [user, setUser] = useState<User | null>(null);
@@ -351,4 +351,4 @@ const UserDetailComponent = () => {
     </>
   );
 };
-export default UserDetailComponent;
+export default DetailUserDataComponent;

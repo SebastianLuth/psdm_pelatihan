@@ -1,8 +1,8 @@
 import React from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/components/Layouts/ProtectedRoute";
-import DetailBudgetComponent from "@/features/budget/components/DetailBudget";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import { DetailBudgetComponent } from "../components/DetailBudget";
 const DetailBudgetDataByIdPage = () => {
   return (
     <ProtectedRoute allowedRoles={['admin', 'super admin']}>
