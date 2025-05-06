@@ -1,6 +1,4 @@
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import QuestionEvaluationLevel3Component from "@/components/Layouts/Question3Component";
-import ProtectedRoute from "@/components/Layouts/ProtectedRoute";
+import DataQuestionEvaluationLevel3Page from "@/features/question/level3/pages/DataQuestionLevel3Page";
 
 export const metadata = {
   title: "PALAPA | Kumpulan Pertanyaan Evaluasi level 3",
@@ -18,14 +16,4 @@ export const metadata = {
   robots: "index, follow",
 };
 
-const QuestionEvaluationLevel3Page = () => {
-  return (
-    <ProtectedRoute allowedRoles={["super admin"]}>
-      <DefaultLayout>
-        <QuestionEvaluationLevel3Component />
-      </DefaultLayout>
-    </ProtectedRoute>
-  );
-};
-
-export default QuestionEvaluationLevel3Page;
+export default DataQuestionEvaluationLevel3Page;

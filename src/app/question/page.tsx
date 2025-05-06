@@ -1,10 +1,9 @@
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import QuestionComponent from "@/components/Layouts/QuestionComponent";
-import ProtectedRoute from "@/components/Layouts/ProtectedRoute";
+import DataQuestionLevel1Page from "@/features/question/level1/pages/DataQuestionLevel1Page";
 
 export const metadata = {
-  title: "PALAPA | Pertanyaan Evaluasi level 1",
-  description: "Informasi lengkap tentang  Pertanyaan Evaluasi level 1 yang telah anda buat di PALAPA PALMCO AFTER LEARNING APPLICATION ",
+  title: "Pertanyaan Evaluasi level 1 - PALAPA PTPN IV ",
+  description:
+    "Informasi lengkap tentang  Pertanyaan Evaluasi level 1 yang telah anda buat di PALAPA PALMCO AFTER LEARNING APPLICATION ",
   keywords: [
     "PALAPA DATA RKAP Anggaran",
     "PALMCO After Learning Application",
@@ -12,20 +11,10 @@ export const metadata = {
     "aplikasi pembelajaran karyawan",
     "evaluasi PALMCO",
     "sistem pelatihan PALMCO",
-    "Informasi lengkap anggaran"
+    "Informasi lengkap anggaran",
   ],
-  author : "PTPN 4 PALMCO",
+  author: "PTPN 4 PALMCO",
   robots: "index, follow",
 };
 
-const QuestionPage = () => {
-  return (
-    <ProtectedRoute allowedRoles={["super admin"]}>
-      <DefaultLayout>
-        <QuestionComponent />
-      </DefaultLayout>
-    </ProtectedRoute>
-  );
-};
-
-export default QuestionPage;
+export default DataQuestionLevel1Page;

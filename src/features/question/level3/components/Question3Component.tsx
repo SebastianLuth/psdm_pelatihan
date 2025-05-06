@@ -1,15 +1,15 @@
 "use client";
 import { QuestionType, QuestionTypeLevel3Form } from "@/types/question-type";
 import { useEffect, useState } from "react";
-import CreateQuestionLevel3 from "../Modal/CreateQuestionLevel3";
+import CreateQuestionLevel3 from "../../../../components/Modal/CreateQuestionLevel3";
 import {
   addQuestionLevel3,
   deleteQuestionLevel3,
   getQuestionLevel3,
 } from "@/service/question";
-import SkeletonTable from "../Skeleton/SkeletonTable";
+import SkeletonTable from "../../../../components/Skeleton/SkeletonTable";
 
-const QuestionEvaluationLevel3Component = () => {
+const DataQuestionEvaluationLevel3Component = () => {
   const [questionData, setQuestionData] = useState<QuestionType[]>([]);
   const [open, setOpen] = useState(false);
   const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
@@ -267,4 +267,4 @@ const QuestionEvaluationLevel3Component = () => {
   );
 };
 
-export default QuestionEvaluationLevel3Component;
+export default DataQuestionEvaluationLevel3Component;

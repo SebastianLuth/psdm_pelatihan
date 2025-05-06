@@ -1,37 +1,35 @@
 "use client";
 import {
-  getDetailQuestionLevel1,
-  updateQuestionLevel1,
+  getDetailQuestionLevel3,
+  updateQuestionLevel3,
 } from "@/service/question";
-import { QuestionType, QuestionTypeLevel1Form } from "@/types/question-type";
+import { QuestionTypeLevel3Form } from "@/types/question-type";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { FormEvent, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
-const DetailQuestionLevel1Component = () => {
-  const { questionId } = useParams();
-  const [detailQuestion, setDetailQuestion] = useState<QuestionType[]>([]);
+const EditQuestionLevel3DetailComponent = () => {
   const [success, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-
-  const [formData, setFormData] = useState<QuestionTypeLevel1Form>({
+  const [detailQuestion, setDetailQuestion] = useState<
+    QuestionTypeLevel3Form[]
+  >([]);
+  const [formData, setFormData] = useState<QuestionTypeLevel3Form>({
     pertanyaan: "",
     kategori: "",
   });
 
-  const getDetailQuestion = useCallback(async () => {
+  const questionId = useParams().questionId;
+
+  const fetchDetailQuestion = useCallback(async () => {
     try {
-      const result = await getDetailQuestionLevel1(Number(questionId));
-      setDetailQuestion(result);
+      const response = await getDetailQuestionLevel3(Number(questionId));
+      setDetailQuestion(response);
     } catch (error) {
       setError("Gagal memuat data pertanyaan.");
+      console.error(error);
     }
   }, [questionId]);
-
-
-  useEffect(() => {
-    getDetailQuestion();
-  }, [getDetailQuestion]);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -39,22 +37,30 @@ const DetailQuestionLevel1Component = () => {
     e.preventDefault();
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  
-  const handleSubmit = async (e: FormEvent) => {
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setSuccess(false);
     try {
-      await updateQuestionLevel1(Number(questionId), formData.pertanyaan, formData.kategori);
+      await updateQuestionLevel3(
+        Number(questionId),
+        formData.pertanyaan,
+        formData.kategori,
+      );
       setSuccess(true);
     } catch (error) {
       setError("Gagal memperbarui pertanyaan.");
     }
   };
 
+  useEffect(() => {
+    fetchDetailQuestion();
+  }, [fetchDetailQuestion]);
   return (
-    <div className="rounded-sm border border-stroke bg-white p-8 shadow-default dark:border-strokedark dark:bg-boxdark">
-     <form className="mx-auto w-full bg-white p-10" onSubmit={handleSubmit}>
+    <>
+      <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+        <form className="mx-auto w-full bg-white p-10" onSubmit={handleSubmit}>
           <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
             Kategori
           </label>
@@ -66,11 +72,9 @@ const DetailQuestionLevel1Component = () => {
             className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
           >
             <option selected>Pilih Kategori</option>
-            <option value="mutu materi">Mutu Materi</option>
-            <option value="kesan">Kesan Terhadap Narasumber</option>
-            <option value="sarana">Sarana yang disediakan Pelatihan</option>
-            <option value="review materi">Review Implementasi Program Pembelajaran</option>
-            <option value="kesimpulan">Comment</option>
+            <option value="pengetahuan">Pengetahuan</option>
+            <option value="kemampuan">Kemampuan</option>
+            <option value="sikap">Sikap</option>
           </select>
           <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
             Pertanyaan
@@ -92,16 +96,17 @@ const DetailQuestionLevel1Component = () => {
         </form>
         {success && (
           <p className="mt-4 text-green-500">
-            Pertanyaan berhasil diupdate, silahkan cek di{" "}
-            <Link href="/question" className="text-blue-500">
+            Pertanyaan berhasil diubah, silahkan cek di{" "}
+            <Link href="/question_level3" className="text-blue-500">
               {" "}
               daftar Pertanyaan
             </Link>
           </p>
         )}
         {error && <p className="mt-4 text-red-500">{error}</p>}
-    </div>
+      </div>
+    </>
   );
 };
 
-export default DetailQuestionLevel1Component;
+export default EditQuestionLevel3DetailComponent;

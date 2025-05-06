@@ -6,8 +6,8 @@ import {
 } from "@/service/question";
 import { QuestionType, QuestionTypeLevel1Form } from "@/types/question-type";
 import { useEffect, useState } from "react";
-import CreateQuestionLevel1 from "../Modal/CreateQuestionLevel1";
-import SkeletonTable from "../Skeleton/SkeletonTable";
+import CreateQuestionLevel1 from "../../../../components/Modal/CreateQuestionLevel1";
+import SkeletonTable from "../../../../components/Skeleton/SkeletonTable";
 
 const QuestionComponent = () => {
   const [questionData, setQuestionData] = useState<QuestionType[]>([]);
