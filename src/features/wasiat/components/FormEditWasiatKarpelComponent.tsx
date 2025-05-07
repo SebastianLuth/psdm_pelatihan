@@ -1,7 +1,7 @@
 "use client";
 import { useAuth } from "@/context/AuthContext";
 import { editWasiatKarpel, getDetailDataWasiatKarpelById } from "@/service/wasiat";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 

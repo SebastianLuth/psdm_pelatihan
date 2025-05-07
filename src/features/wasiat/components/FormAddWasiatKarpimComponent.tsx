@@ -223,8 +223,10 @@ export const FormAddWasiatKarpimComponent = () => {
                 </div>
               </>
             )}
-
-            <div className="mt-5 flex w-full items-center justify-center">
+            <div className="mt-5">
+            <p className="mb-2 text-sm text-blue-500 dark:text-white text-start">Wasiat Penelitian Karpim</p>
+            </div>
+            <div className=" flex flex-col w-full items-center justify-center">
               <label className="flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600 dark:hover:bg-gray-800">
                 <div className="flex flex-col items-center justify-center pb-6 pt-5">
                   <svg

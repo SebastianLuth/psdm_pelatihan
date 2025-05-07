@@ -1,16 +1,20 @@
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import ProtectedRoute from "@/components/Layouts/ProtectedRoute";
+import ResultAnswerCKPUserPage from "@/features/plant/pages/super-admin/ResultAnswerCKPUserPage";
 
-const reviewPage = () => {
-  return (
-    <>
-      <ProtectedRoute allowedRoles={["admin", "super admin"]}>
-        <DefaultLayout>
-          <div>Review Page</div>
-        </DefaultLayout>
-      </ProtectedRoute>
-    </>
-  );
+export const metadata = {
+  title: "Result Answer CKP - PALAPA PTPN4",
+  description:
+    "Informasi lengkap tentang  Result Answer CKP Data yang telah anda buat di PALAPA PALMCO AFTER LEARNING APPLICATION ",
+  keywords: [
+    "PALAPA Result Answer CKP DATA",
+    "PALMCO After Learning Application",
+    "RKAP pelatihan PALMCO",
+    "aplikasi pembelajaran karyawan",
+    "evaluasi PALMCO",
+    "sistem pelatihan PALMCO",
+    "Informasi lengkap anggaran",
+  ],
+  author: "PTPN 4 PALMCO",
+  robots: "index, follow",
 };
 
-export default reviewPage;
+export default ResultAnswerCKPUserPage;

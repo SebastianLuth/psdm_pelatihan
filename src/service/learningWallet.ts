@@ -291,6 +291,31 @@ export const getAllRKAPLW = async () => {
   }
 };
 
+export const editRKAPLWById = async (data: any, lwId: number) => {
+  try {
+    const result = await axios.put(
+      `${baseUrl}/api/learning-wallet/admin/rkaplw/${lwId}`,
+      data,
+      {
+        withCredentials: true,
+      }
+    );
+
+    if(result.status === 200 || result.status === 201) {
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: result.data.message,
+        confirmButtonText: "Oke",
+      }).then(() => {
+        window.location.replace("/learning-wallet/rkap-learning-wallet")
+      })
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const detailRKAPLWById = async (lwId: number) => {
   try {
     const result = await axios.get(

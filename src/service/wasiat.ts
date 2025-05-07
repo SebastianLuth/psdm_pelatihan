@@ -186,9 +186,10 @@ export const getAllDataWasiatKarpimAdmin = async () => {
 
 export const getAllDataWasiatKarpimSuperAdmin = async () => {
   try {
-    const result = await axios.get(`${baseUrl}}/api/skmbt/karpim/super-admin`, {
+    const result = await axios.get(`${baseUrl}/api/skmbt/karpim/super-admin`, {
       withCredentials: true,
     });
+    console.log(result);
     return result.data.data || [];
   } catch (error) {
     Swal.fire(

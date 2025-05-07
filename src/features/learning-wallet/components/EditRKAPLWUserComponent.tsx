@@ -3,7 +3,7 @@ import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ProtectedRoute from "@/components/Layouts/ProtectedRoute";
 import { useAuth } from "@/context/AuthContext";
-import { detailRKAPLWById } from "@/service/learningWallet";
+import { detailRKAPLWById, editRKAPLWById } from "@/service/learningWallet";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
@@ -48,13 +48,13 @@ export const EditRKAPLWUserComponent = () => {
     });
   };
 
-  // Belum Selesai Handle Submit Untuk Edit RKAP LW Baik FE dan BE
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     try {
-      console.log(formData);
-    } catch (err) {}
+      editRKAPLWById(formData, Number(lwId));
+    } catch (err) {
+      console.error("Error Submit Data")
+    }
   };
 
   useEffect(() => {
@@ -62,137 +62,142 @@ export const EditRKAPLWUserComponent = () => {
   }, [fetchDetailData]);
 
   return (
-    <div className="mx-auto mt-6 w-full transform rounded-lg bg-white p-8 shadow-lg transition-all hover:scale-105 hover:shadow-2xl">
-      <div className="p-4 ">
-        <h2 className="text-xl font-semibold text-gray-900 sm:text-2xl">
-          Edit Pengajuan Learning Wallet Anda
+    <div className="mx-auto max-w-4xl rounded-xl bg-white p-6 shadow-lg">
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold text-gray-800">
+          Edit Pengajuan Learning Wallet
         </h2>
-
-        <p className="mt-2 mt-5 text-sm text-gray-700">
-          Berikut ini cara untuk pengajuan:
-        </p>
-
-        <ul className="mt-2 list-inside list-disc space-y-2 text-sm text-gray-600">
-          <li>Isi semua inputan seperti nama, NIKSAP, dan lainnya.</li>
-          <li>Untuk inputan file, hanya format PDF yang diterima.</li>
-          <li>
-            Kumpulkan semua foto struk belanja dalam satu file dan kirimkan
-            sebagai PDF.
-          </li>
-        </ul>
+        
+        <div className="mt-4 rounded-lg bg-blue-50 p-4">
+          <h3 className="text-lg font-medium text-blue-800">Petunjuk Pengisian</h3>
+          <ul className="mt-2 space-y-2 pl-5 text-sm text-gray-700">
+            <li className="list-disc">Isi semua inputan seperti nama, NIKSAP, dan lainnya.</li>
+            <li className="list-disc">Untuk inputan file, hanya format PDF yang diterima.</li>
+            <li className="list-disc">
+              Kumpulkan semua foto struk belanja dalam satu file dan kirimkan sebagai PDF.
+            </li>
+          </ul>
+        </div>
       </div>
-      <form className="mt-4 space-y-6" onSubmit={handleSubmit}>
-        {/* Text Inputs */}
-        <div className="animate-slide-in-left flex flex-wrap items-center gap-4">
-          <div className="w-[calc(50%-8px)]">
-            <label className="mb-2 block text-sm font-medium text-gray-700">
+
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          {/* NIKSAP */}
+          <div>
+            <label className="mb-1 block text-sm font-medium text-gray-700">
               NIKSAP
             </label>
             <input
               type="text"
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 transition-all hover:shadow-md focus:border-transparent focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full bg-transparent border-0 px-0 py-1 text-gray-900 cursor-default focus:outline-none focus:ring-0"
               placeholder="Masukkan NIKSAP Pegawai"
               value={formData.username}
               onChange={handleChange}
               name="username"
+              readOnly
             />
           </div>
-          <div className="w-[calc(50%-8px)]">
-            <label className="mb-2 block text-sm font-medium text-gray-700">
+
+          {/* Nama */}
+          <div>
+            <label className="mb-1 block text-sm font-medium text-gray-700">
               Nama
             </label>
             <input
               type="text"
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 transition-all hover:shadow-md focus:border-transparent focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full bg-transparent border-0 px-0 py-1 text-gray-900 cursor-default focus:outline-none focus:ring-0"
               placeholder="Masukkan Nama Anda"
               value={formData.nama}
               onChange={handleChange}
               name="nama"
+              readOnly
             />
           </div>
-        </div>
 
-        <div className="animate-slide-in-left flex flex-wrap items-center gap-4">
-          <div className="w-[calc(50%-8px)]">
-            <label className="mb-2 block text-sm font-medium text-gray-700">
+          {/* Biaya RKAP LW */}
+          <div>
+            <label className="mb-1 block text-sm font-medium text-gray-700">
               Biaya RKAP LW
             </label>
             <input
               type="number"
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 transition-all hover:shadow-md focus:border-transparent focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-indigo-500 focus:ring-indigo-500"
               placeholder="Masukkan Biaya RKAP LW Pegawai"
               value={formData.biaya_rkap_lw}
               onChange={handleChange}
               name="biaya_rkap_lw"
             />
           </div>
-          <div className=" w-[calc(50%-8px)]">
-            <label className="mb-2 block text-sm font-medium text-gray-700">
+
+          {/* Sisa Biaya LW */}
+          <div>
+            <label className="mb-1 block text-sm font-medium text-gray-700">
               Sisa Biaya LW
             </label>
             <input
               type="text"
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 transition-all hover:shadow-md focus:border-transparent focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-indigo-500 focus:ring-indigo-500"
               placeholder="Masukkan Biaya Sisa LW Pegawai"
               value={formData.sisa_biaya_lw}
               onChange={handleChange}
               name="sisa_biaya_lw"
             />
           </div>
-        </div>
 
-        <div className="animate-slide-in-left flex flex-wrap items-center gap-4">
-          <div className="w-[calc(50%-8px)]">
-            <label className="mb-2 block text-sm font-medium text-gray-700">
+          {/* RKAP Jam Pelajaran */}
+          <div>
+            <label className="mb-1 block text-sm font-medium text-gray-700">
               RKAP Jam Pelajaran
             </label>
             <input
               type="text"
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 transition-all hover:shadow-md focus:border-transparent focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-indigo-500 focus:ring-indigo-500"
               placeholder="Masukkan Vendor Yang Anda Ikuti"
               value={formData.rkap_jpl}
               onChange={handleChange}
               name="rkap_jpl"
             />
           </div>
-          <div className="w-[calc(50%-8px)]">
-            <label className="mb-2 block text-sm font-medium text-gray-700">
+
+          {/* Sisa Jam Pelajaran */}
+          <div>
+            <label className="mb-1 block text-sm font-medium text-gray-700">
               Sisa Jam Pelajaran
             </label>
             <input
               type="text"
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 transition-all hover:shadow-md focus:border-transparent focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-indigo-500 focus:ring-indigo-500"
               placeholder="Masukkan No Telp Vendor Yang Dapat dihubungi"
               value={formData.sisa_jpl}
               onChange={handleChange}
               name="sisa_jpl"
             />
           </div>
-        </div>
 
-        <div className="animate-slide-in-left flex flex-wrap items-center gap-4">
-          <div className="w-[calc(50%-8px)]">
-            <label className="mb-2 block text-sm font-medium text-gray-700">
+          {/* Tahun RKAP LW */}
+          <div>
+            <label className="mb-1 block text-sm font-medium text-gray-700">
               Tahun RKAP LW
             </label>
             <input
               type="text"
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 transition-all hover:shadow-md focus:border-transparent focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="Masukkan Vendor Yang Anda Ikuti"
+              className="w-full bg-transparent border-0 px-0 py-1 text-gray-900 cursor-default focus:outline-none focus:ring-0"
+                placeholder="Masukkan Tahun RKAP"
               value={formData.rkap_tahun}
               onChange={handleChange}
               name="rkap_tahun"
+              readOnly
             />
           </div>
         </div>
 
         {/* Submit Button */}
-        <div className="animate-fade-in text-center">
+        <div className="pt-6">
           <button
             type="submit"
-            className="w-full transform rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-3 font-semibold text-white transition-all hover:scale-105 hover:from-indigo-700 hover:to-purple-700 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className="w-full rounded-lg bg-indigo-600 px-6 py-4 text-lg font-semibold text-white shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
-            Submit
+            Simpan Perubahan
           </button>
         </div>
       </form>
